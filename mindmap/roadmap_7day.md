@@ -1,6 +1,6 @@
-# 🛡️ VaultLife — 7-Day Sprint Roadmap (Spring Boot + Angular)
+# 🛡️ Jenseiroku — 7-Day Sprint Roadmap (Spring Boot + Angular)
 
-> **Goal:** Ship a fully functional, deployed VaultLife in 7 days.
+> **Goal:** Ship a fully functional, deployed Jenseiroku in 7 days.
 > **Backend:** Spring Boot 3.x (Java 17+) — REST API, Spring Security, Spring Data JPA
 > **Frontend:** Angular 18+ — Angular Material / PrimeNG, RxJS, Web Crypto API
 > **Database:** PostgreSQL (recommended, but no restriction)
@@ -33,9 +33,9 @@
 ### Backend (Spring Boot)
 
 ```
-vaultlife-api/
-├── src/main/java/com/vaultlife/
-│   ├── VaultLifeApplication.java
+jenseiroku-api/
+├── src/main/java/com/jenseiroku/
+│   ├── JenseirokuApplication.java
 │   ├── config/
 │   │   ├── SecurityConfig.java          (Spring Security filter chain)
 │   │   ├── CorsConfig.java
@@ -110,7 +110,7 @@ vaultlife-api/
 ### Frontend (Angular)
 
 ```
-vaultlife-web/
+jenseiroku-web/
 ├── src/
 │   ├── app/
 │   │   ├── app.component.ts
@@ -207,13 +207,13 @@ vaultlife-web/
 
 - [ ] Install JDK 17+ (or 21), Maven/Gradle
 - [ ] Install Node.js 20+ and Angular CLI (`npm install -g @angular/cli`)
-- [ ] Install PostgreSQL, create database: `createdb vaultlife_dev`
+- [ ] Install PostgreSQL, create database: `createdb jenseiroku_dev`
 - [ ] Install MinIO locally (Docker: `docker run -p 9000:9000 -p 9001:9001 minio/minio server /data --console-address ":9001"`)
-- [ ] Create GitHub repo `vaultlife`
+- [ ] Create GitHub repo `jenseiroku`
 - [ ] Generate Spring Boot project at [start.spring.io](https://start.spring.io):
   - Java 17+, Maven/Gradle, Spring Boot 3.x
   - Dependencies: Spring Web, Spring Security, Spring Data JPA, PostgreSQL Driver, Validation, Lombok
-- [ ] Generate Angular project: `ng new vaultlife-web --style=scss --routing --ssr=false`
+- [ ] Generate Angular project: `ng new jenseiroku-web --style=scss --routing --ssr=false`
 
 ---
 

@@ -1,9 +1,9 @@
-# 🛡️ OmniSafe: Project Specification & Concept
+# 🛡️ Jenseiroku: Project Specification & Concept
 
 ## Executive Summary
-OmniSafe is a privacy-first, zero-knowledge personal data dashboard. In an era where digital identities, communications, and personal records are scattered across dozens of vulnerable platforms, OmniSafe provides a single, unified interface to manage a user's entire digital life securely. 
+Jenseiroku is a privacy-first, zero-knowledge personal data dashboard. In an era where digital identities, communications, and personal records are scattered across dozens of vulnerable platforms, Jenseiroku provides a single, unified interface to manage a user's entire digital life securely. 
 
-The core philosophy of OmniSafe is **absolute data sovereignty**. It is designed to aggregate calendars, emails, and sensitive life documents while enforcing stringent access controls, ensuring that the user is the sole custodian of their data.
+The core philosophy of Jenseiroku is **absolute data sovereignty**. It is designed to aggregate calendars, emails, and sensitive life documents while enforcing stringent access controls, ensuring that the user is the sole custodian of their data.
 
 ## Core Modules & Functionality
 
@@ -39,4 +39,4 @@ The system relies on a stateless, token-based architecture:
 * **Compliance Ready:** Designed with a structural foundation that supports strict data privacy frameworks, ensuring clear policies around data retention, user deletion rights, and secure unmapping of third-party integrations.
 
 ## Target Audience
-OmniSafe is built for privacy-conscious individuals, professionals managing sensitive contracts, and anyone seeking to consolidate their digital footprint into a secure, verifiable, and private environment.
+Jenseiroku is built for privacy-conscious individuals, professionals managing sensitive contracts, and anyone seeking to consolidate their digital footprint into a secure, verifiable, and private environment.

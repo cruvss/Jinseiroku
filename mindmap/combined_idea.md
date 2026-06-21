@@ -1,10 +1,10 @@
-# 🛡️ VaultLife — Secure Personal Life Operating System (Refactored)
+# 🛡️ Jenseiroku — Secure Personal Life Operating System (Refactored)
 
 ## Executive Summary
 
-VaultLife is a **privacy-first personal life management platform** that combines encrypted document storage, a quick-capture inbox, and practical life admin tools. It solves two primary problems: your important documents are scattered and insecure, and your day-to-day life administration (subscriptions, renewals, appointments, bills) is hard to track.
+Jenseiroku is a **privacy-first personal life management platform** that combines encrypted document storage, a quick-capture inbox, and practical life admin tools. It solves two primary problems: your important documents are scattered and insecure, and your day-to-day life administration (subscriptions, renewals, appointments, bills) is hard to track.
 
-Unlike generic productivity apps, VaultLife treats your personal data with bank-grade security protocols (client-side zero-knowledge encryption) while offering an extremely friction-free entry point to dump data instantly and organize it later.
+Unlike generic productivity apps, Jenseiroku treats your personal data with bank-grade security protocols (client-side zero-knowledge encryption) while offering an extremely friction-free entry point to dump data instantly and organize it later.
 
 **One-line pitch:** *"Your entire adult life — captured instantly, organized securely, and automated dynamically."*
 
@@ -14,7 +14,7 @@ Unlike generic productivity apps, VaultLife treats your personal data with bank-
 
 1. **Documents are scattered and insecure.** Your passport scan is in Gmail, your lease is in Google Drive, and your insurance card is a photo in your camera roll. If any of those services are breached, your most sensitive data is exposed.
 2. **Life admin is invisible and relentless.** Your passport expires and you realize too late. You're paying for subscriptions you forgot to cancel. The dentist appointment you were supposed to book 6 months ago never happened.
-3. **No single app connects documents to deadlines.** Your passport is in one app, and the reminder to renew it is in another (or nowhere). VaultLife connects the document to its expiration date, and then to a smart, lead-time aware reminder.
+3. **No single app connects documents to deadlines.** Your passport is in one app, and the reminder to renew it is in another (or nowhere). Jenseiroku connects the document to its expiration date, and then to a smart, lead-time aware reminder.
 4. **Organizing data has high friction.** When a receipt, warranty, or idea comes up, you rarely have the time or energy to open a complex dashboard, choose the right folder, fill out a 10-field form, and catalog it. You need a way to capture it in 5 seconds and sort it later.
 
 ---
