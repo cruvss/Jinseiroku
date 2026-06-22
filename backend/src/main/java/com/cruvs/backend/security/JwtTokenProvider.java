@@ -25,6 +25,9 @@ public class JwtTokenProvider {
     @Value("${jwt.access-token-expiry}")
     private long accessTokenExpiry;
 
+    @Value("${jwt.refresh-token-expiry}")
+    private long refreshTokenExpiry;
+
     private SecretKey secretKey;
 
     @PostConstruct
@@ -44,8 +47,17 @@ public class JwtTokenProvider {
                 .signWith(secretKey)
                 .compact();
     }
-    public String generateRefreshToken(){
-        return UUID.randomUUID().toString();
+    public String generateRefreshToken(UUID userId, UUID sessionID){
+        Instant now = Instant.now();
+        Instant expiry = now.plus(refreshTokenExpiry, ChronoUnit.MILLIS);
+
+        return Jwts.builder()
+                .subject(userId.toString())
+                .id(sessionID.toString())
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(expiry))
+                .signWith(secretKey)
+                .compact();
     }
 
     public boolean validateToken(String token){
@@ -70,6 +82,15 @@ public class JwtTokenProvider {
 
         return UUID.fromString(claims.getSubject());
 
+    }
+
+    public UUID getSessionIdFromToken(String token){
+        Claims claims = Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        return UUID.fromString(claims.getId());
     }
 
 

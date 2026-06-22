@@ -9,6 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface UserSessionRepository extends JpaRepository<UserSession, UUID> {
-    Optional<UserSession> findByRefreshTokenHash(String refreshTokenHash);
     void deleteByUserId(UUID userId);
 }

@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,10 +32,6 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     private static final SecureRandom secureRandom = new SecureRandom();
-
-    public String refreshToken = jwtTokenProvider.generateRefreshToken(); //make this private later
-    public String refreshTokenHash = passwordEncoder.encode(refreshToken);
-
 
     private String generateRandomString(int length){
         byte[] bytes = new byte[length];
@@ -81,23 +78,23 @@ public class AuthService {
             throw new BadCredentialsException("Invalid email or password");
         }
 
-        String accessToken = jwtTokenProvider.generateAccessToken(user.getId());
-//        String refreshToken = jwtTokenProvider.generateRefreshToken();
-//        String refreshTokenHash = passwordEncoder.encode(refreshToken);
-
         UserSession session = UserSession.builder()
                 .user(user)
-                .refreshTokenHash(refreshTokenHash)
                 .expiresAt(LocalDateTime.now().plusDays(7))
                 .build();
+        session = userSessionRepository.save(session);
 
-        userSessionRepository.save(session);
-        log.info("User logged in {}: ",user.getEmail());
+        String accessToken = jwtTokenProvider.generateAccessToken(user.getId());
+        String refreshToken = jwtTokenProvider.generateRefreshToken(user.getId(), session.getId());
+
+        log.info("User logged in: {}",user.getEmail());
 
         return AuthResponse.builder()
                 .accessToken(accessToken)
+                .refreshToken(refreshToken)
                 .email(user.getEmail())
                 .build();
+
     }
 
     @Transactional
@@ -105,21 +102,17 @@ public class AuthService {
         if (refreshToken == null) {
             throw new IllegalArgumentException("Refresh token required");
         }
-
-        String refreshTokenHash = passwordEncoder.encode(refreshToken);
-        System.out.println("converted Hash");
-        System.out.println(refreshTokenHash);
-        UserSession session = userSessionRepository.findByRefreshTokenHash(refreshTokenHash)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid refresh token"));
-
+        if (!jwtTokenProvider.validateToken(refreshToken)) {
+            throw new IllegalArgumentException("Invalid refresh token");
+        }
+        UUID sessionId = jwtTokenProvider.getSessionIdFromToken(refreshToken);
+        UserSession session = userSessionRepository.findById(sessionId)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid session or session revoked"));
         if (session.getExpiresAt().isBefore(LocalDateTime.now())) {
             userSessionRepository.delete(session);
             throw new IllegalArgumentException("Refresh token expired");
         }
-
-
         String newAccessToken = jwtTokenProvider.generateAccessToken(session.getUser().getId());
-
         return AuthResponse.builder()
                 .accessToken(newAccessToken)
                 .email(session.getUser().getEmail())
@@ -127,19 +120,11 @@ public class AuthService {
     }
 
     @Transactional
-    public void logout(String refreshToken){
-        if (refreshToken !=null){
-            String refreshTokenHash = passwordEncoder.encode(refreshToken);
-            userSessionRepository.findByRefreshTokenHash(refreshTokenHash)
-                    .ifPresent(userSessionRepository::delete);
+    public void logout(String refreshToken) {
+        if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken)) {
+            UUID sessionId = jwtTokenProvider.getSessionIdFromToken(refreshToken);
+            userSessionRepository.deleteById(sessionId);
         }
     }
-
-    public String generateRefreshToken() {
-        return jwtTokenProvider.generateRefreshToken();
-    }
-
-
-
 
 }

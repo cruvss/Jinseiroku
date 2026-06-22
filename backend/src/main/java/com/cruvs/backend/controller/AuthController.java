@@ -37,10 +37,8 @@ public class AuthController {
 
         AuthResponse authResponse = authService.login(request,response);
 
-        String refreshToken = authService.refreshToken;
 
-//        Cookie refreshCookie = new Cookie("refreshToken", authService.generateRefreshToken());
-        Cookie refreshCookie = new Cookie("refreshToken", refreshToken);
+        Cookie refreshCookie = new Cookie("refreshToken", authResponse.getRefreshToken());
 
         refreshCookie.setHttpOnly(true);
         refreshCookie.setSecure(false);
@@ -49,6 +47,7 @@ public class AuthController {
         response.addCookie(refreshCookie);
 
         authResponse.setRecoveryKey(null);
+        authResponse.setRefreshToken(null);
         return ResponseEntity.ok(ApiResponseUtil.success("Login Sucessful",authResponse));
     }
 
