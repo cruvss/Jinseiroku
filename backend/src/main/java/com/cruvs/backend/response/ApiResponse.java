@@ -6,12 +6,14 @@ public class ApiResponse<T> {
 
     private LocalDateTime timestamp;
     private int statusCode;
+    private boolean success;
     private String message;
     private T data;
 
-    public ApiResponse(int statusCode, String message, T data) {
+    public ApiResponse(int statusCode, boolean success, String message, T data) {
         this.timestamp = LocalDateTime.now();
         this.statusCode = statusCode;
+        this.success = success;
         this.message = message;
         this.data = data;
     }
@@ -23,6 +25,8 @@ public class ApiResponse<T> {
     public int getStatusCode() {
         return statusCode;
     }
+
+    public boolean isSuccess(){ return success;}
 
     public String getMessage() {
         return message;
