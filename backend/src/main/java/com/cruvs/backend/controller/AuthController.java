@@ -69,7 +69,7 @@ public class AuthController {
 
         AuthResponse response = authService.refreshToken(refreshToken);
 
-        return ResponseEntity.ok(ApiResponseUtil.success("Token refreshed", null));
+        return ResponseEntity.ok(ApiResponseUtil.success("Token refreshed", response));
 
     }
 

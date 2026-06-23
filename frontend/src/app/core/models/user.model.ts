@@ -1,14 +1,21 @@
 export interface User {
-    id: string,
-    email: string,
-    encryptionSalt: string,
-    timezone: string
+    id?: string;
+    email: string;
+    encryptionSalt?: string;
+    timezone?: string;
 }
 
 export interface AuthResponse {
-    accessToken: string;
-    refreshToken: string;
+    accessToken?: string;
+    refreshToken?: string;
     email: string;
-    recoveryKey: string;
-    user: User;
+    recoveryKey?: string;
+}
+
+export interface ApiResponse<T> {
+    timestamp: string;
+    statusCode: number;
+    success: boolean;
+    message: string;
+    data: T;
 }
