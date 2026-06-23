@@ -1,0 +1,41 @@
+
+// ── Color Palette ─────────────────────────────
+$page:        #EBE0D2;
+$sidebar-bg:  #F4EAE0;
+$card-bg:     #FCF8F2;
+$dark:        #41372E;
+$muted:       #8A7A6A;
+$accent:      #CC6654;
+$accent-dark: #A04D3F;
+$btn-dark:    #2A231E;
+$border:      #D4C5B5;
+
+// ── Shadows ──────────────────────────────────
+$shadow-sm:   2px 2px 0px $border;
+$shadow-md:   3px 3px 0px $border;
+
+// ── Border Radii ─────────────────────────────
+$r-md:        0.375rem;
+$r-lg:        0.75rem;
+$r-xl:        1rem;
+
+// ── Sidebar Width ────────────────────────────
+$sidebar-w:   220px;
+
+// ── CSS Custom Properties for JS/Global fallback ──
+:root {
+  --color-page: #{$page};
+  --color-sidebar-bg: #{$sidebar-bg};
+  --color-card-bg: #{$card-bg};
+  --color-dark: #{$dark};
+  --color-muted: #{$muted};
+  --color-accent: #{$accent};
+  --color-accent-dark: #{$accent-dark};
+  --color-btn-dark: #{$btn-dark};
+  --color-border: #{$border};
+  --shadow-sm: #{$shadow-sm};
+  --shadow-md: #{$shadow-md};
+  --r-md: #{$r-md};
+  --r-lg: #{$r-lg};
+  --r-xl: #{$r-xl};
+}

@@ -1,18 +1,19 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import './styles-variables.scss';
 
-// ===== COLOR PALETTE =====
+// ===== COLOR PALETTE (CSS Custom Properties mapping for legacy compatibility) =====
 :root {
-  --primary-color: #8B7355;      // Warm beige-brown
-  --primary-light: #A8927A;      // Lighter beige
-  --primary-dark: #6D5B45;       // Darker brown
-  --accent-color: #D4C5A9;       // Cream/beige
-  --accent-light: #E8DDD0;       // Light cream
-  --background-color: #F5F0E8;   // Warm cream background
-  --card-background: #FAF8F5;    // Off-white/cream
-  --text-color: #4A3F35;         // Dark brown text
-  --text-light: #7A6B5A;         // Lighter brown text
-  --border-color: #E8DDD0;       // Cream border
-  --shadow-color: rgba(139, 115, 85, 0.15);
+  --primary-color: #{$accent};      // Coral/Accent
+  --primary-light: #{$accent-dark};  // Accent dark
+  --primary-dark: #{$btn-dark};      // Dark button color
+  --accent-color: #{$sidebar-bg};    // Sidebar background (softer beige)
+  --accent-light: #{$card-bg};       // Card background
+  --background-color: #{$page};      // Warm page background
+  --card-background: #{$card-bg};    // Off-white/cream
+  --text-color: #{$dark};            // Dark brown text
+  --text-light: #{$muted};           // Lighter brown text
+  --border-color: #{$border};        // Cream border
+  --shadow-color: rgba(65, 55, 46, 0.15);
 }
 
 // ===== GLOBAL STYLES =====
@@ -27,26 +28,29 @@ html, body {
 }
 
 body {
-  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-  background: var(--background-color);
-  color: var(--text-color);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background: $page;
+  color: $dark;
   margin: 0;
 }
 
-// ===== LIGHT THEME STYLES =====
+::selection {
+  background: $accent;
+  color: #fff;
+}
 
 // Card Style (replacing glass effect)
 .card-style {
-  background: var(--card-background);
-  border-radius: 16px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px var(--shadow-color);
+  background: $card-bg;
+  border-radius: $r-lg;
+  border: 1px solid $border;
+  box-shadow: $shadow-md;
   padding: 1.5rem;
 }
 
 // Gradient Text with warm colors
 .gradient-text {
-  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  background: linear-gradient(135deg, $accent, $accent-dark);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -55,79 +59,80 @@ body {
 // Scrollbar
 ::-webkit-scrollbar {
   width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--accent-light);
+  background: $sidebar-bg;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
+  background: $muted;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-light);
+  background: $dark;
 }
 
-// ===== DASHBOARD STYLES =====
+// ===== DASHBOARD STYLES (Overrides/Fallbacks) =====
 .sidebar {
-  background: var(--card-background) !important;
-  border-right: 1px solid var(--border-color) !important;
+  background: $sidebar-bg !important;
+  border-right: 1px solid $border !important;
 }
 
 .sidebar .user-email {
-  color: var(--text-light) !important;
+  color: $muted !important;
 }
 
 .sidebar mat-nav-list a {
-  color: var(--text-color) !important;
+  color: $dark !important;
 }
 
 .sidebar mat-nav-list a.active {
-  background: rgba(139, 115, 85, 0.12) !important;
-  color: var(--primary-color) !important;
+  background: rgba(204, 102, 84, 0.12) !important;
+  color: $accent !important;
 }
 
 .sidebar mat-nav-list a.active mat-icon {
-  color: var(--primary-color) !important;
+  color: $accent !important;
 }
 
 .sidebar mat-nav-list a:hover {
-  background: rgba(139, 115, 85, 0.08) !important;
+  background: rgba(65, 55, 46, 0.08) !important;
 }
 
 .sidebar-footer {
-  border-top: 1px solid var(--border-color) !important;
+  border-top: 1px solid $border !important;
 }
 
 .topbar {
-  background: var(--card-background) !important;
-  color: var(--text-color) !important;
-  border-bottom: 1px solid var(--border-color);
+  background: $sidebar-bg !important;
+  color: $dark !important;
+  border-bottom: 1px solid $border;
 }
 
 .topbar .user-info {
-  color: var(--text-light) !important;
+  color: $muted !important;
 }
 
 .content {
-  background: var(--background-color) !important;
+  background: $page !important;
 }
 
-// ===== LOGIN & REGISTER STYLES =====
+// ===== LOGIN & REGISTER STYLES (Fallback wrapper) =====
 .login-container,
 .register-container {
-  background: linear-gradient(135deg, var(--background-color) 0%, var(--accent-light) 100%) !important;
+  background: $page !important;
 }
 
 .login-card,
 .register-card {
-  background: var(--card-background) !important;
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  box-shadow: 0 8px 32px var(--shadow-color);
+  background: $card-bg !important;
+  border: 1px solid $border;
+  border-radius: $r-xl;
+  box-shadow: $shadow-md;
   padding: 2.5rem;
   max-width: 400px;
   width: 100%;
@@ -135,67 +140,67 @@ body {
 
 .login-card p,
 .register-card p {
-  color: var(--text-light) !important;
+  color: $muted !important;
 }
 
 .login-card h1,
 .register-card h1 {
-  color: var(--primary-color) !important;
+  color: $accent !important;
 }
 
 // ===== RECOVERY KEY DIALOG =====
 .recovery-key-box {
-  background: var(--accent-light) !important;
-  border: 2px solid var(--primary-color) !important;
-  border-radius: 8px;
+  background: $sidebar-bg !important;
+  border: 2px solid $border !important;
+  border-radius: $r-md;
   padding: 1.5rem;
 }
 
 .recovery-key-box code {
-  color: var(--primary-dark) !important;
+  color: $accent-dark !important;
 }
 
 // ===== MATERIAL OVERRIDES =====
 // Form fields
 .mat-mdc-form-field {
-  color: var(--text-color) !important;
+  color: $dark !important;
 }
 
 .mat-mdc-form-field .mat-mdc-form-field-flex {
-  background-color: var(--card-background) !important;
+  background-color: $card-bg !important;
 }
 
 .mat-mdc-form-field .mat-mdc-form-field-label {
-  color: var(--text-light) !important;
+  color: $muted !important;
 }
 
 // Buttons
 .mat-mdc-raised-button.mat-primary {
-  background-color: var(--primary-color) !important;
+  background-color: $accent !important;
   color: white !important;
 }
 
 .mat-mdc-raised-button.mat-primary:hover {
-  background-color: var(--primary-dark) !important;
+  background-color: $accent-dark !important;
 }
 
 .mat-mdc-raised-button.mat-accent {
-  background-color: var(--accent-color) !important;
-  color: var(--text-color) !important;
+  background-color: $sidebar-bg !important;
+  color: $dark !important;
 }
 
 .mat-mdc-raised-button.mat-warn {
-  background-color: #c0392b !important;
+  background-color: $accent-dark !important;
   color: white !important;
 }
 
 // Input focus
 .mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
-  color: var(--primary-color) !important;
+  color: $accent !important;
 }
 
 .mat-mdc-form-field.mat-focused .mat-mdc-form-field-ripple {
-  background-color: var(--primary-color) !important;
+  background-color: $accent !important;
 }
 
 // ===== UTILITY CLASSES =====
@@ -208,7 +213,6 @@ body {
 .p-2 { padding: 2rem; }
 .full-width { width: 100%; }
 
-
 .dark-icon {
-  color: #222;
+  color: $dark;
 }

@@ -79,28 +79,42 @@ import { MatButtonModule } from '@angular/material/button';
   `,
   styles: [`
     .recovery-dialog {
-      padding: 1rem;
+      padding: 1.5rem;
+      background: var(--color-card-bg);
+      color: var(--color-dark);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    h2.mat-mdc-dialog-title {
+      font-weight: 800;
+      color: var(--color-dark) !important;
+      margin: 0 0 1rem;
+      font-size: 1.5rem;
+      letter-spacing: -0.025em;
     }
 
     .warning {
-      color: #ff6b6b;
-      font-weight: 500;
+      color: var(--color-accent-dark);
+      font-weight: 700;
       margin: 1rem 0;
+      font-size: 0.875rem;
     }
 
     .recovery-key-box {
-      background: rgba(0, 0, 0, 0.3);
+      background: var(--color-sidebar-bg);
+      border: 1px solid var(--color-border);
+      border-radius: var(--r-md);
+      box-shadow: var(--shadow-sm);
       padding: 1.5rem;
-      border-radius: 8px;
       margin: 1.5rem 0;
       text-align: center;
-      border: 2px solid #3f51b5;
     }
 
     .recovery-key-box code {
       font-size: 1.2rem;
-      font-family: 'Courier New', monospace;
-      color: #00bcd4;
+      font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+      color: var(--color-accent);
+      font-weight: 800;
       letter-spacing: 2px;
       word-break: break-all;
     }
@@ -116,15 +130,19 @@ import { MatButtonModule } from '@angular/material/button';
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      font-weight: 700;
+      border-radius: var(--r-md);
     }
 
     mat-checkbox {
       display: block;
       margin-top: 1rem;
+      font-weight: 600;
+      color: var(--color-muted);
     }
 
     mat-dialog-actions {
-      padding-top: 1rem;
+      padding-top: 1.5rem;
     }
   `]
 })
