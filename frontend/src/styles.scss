@@ -1,39 +1,209 @@
-// Include theming for Angular Material with `mat.theme()`.
-// This Sass mixin will define CSS variables that are used for styling Angular Material
-// components according to the Material 3 design spec.
-// Learn more about theming and how to use it for your application's
-// custom components at https://material.angular.dev/guide/theming
-@use '@angular/material' as mat;
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
 
-html {
+// ===== COLOR PALETTE =====
+:root {
+  --primary-color: #8B7355;      // Warm beige-brown
+  --primary-light: #A8927A;      // Lighter beige
+  --primary-dark: #6D5B45;       // Darker brown
+  --accent-color: #D4C5A9;       // Cream/beige
+  --accent-light: #E8DDD0;       // Light cream
+  --background-color: #F5F0E8;   // Warm cream background
+  --card-background: #FAF8F5;    // Off-white/cream
+  --text-color: #4A3F35;         // Dark brown text
+  --text-light: #7A6B5A;         // Lighter brown text
+  --border-color: #E8DDD0;       // Cream border
+  --shadow-color: rgba(139, 115, 85, 0.15);
+}
+
+// ===== GLOBAL STYLES =====
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
   height: 100%;
-  @include mat.theme(
-    (
-      color: (
-        primary: mat.$cyan-palette,
-        tertiary: mat.$orange-palette,
-      ),
-      typography: Roboto,
-      density: 0,
-    )
-  );
 }
 
 body {
-  // Default the application to a light color theme. This can be changed to
-  // `dark` to enable the dark color theme, or to `light dark` to defer to the
-  // user's system settings.
-  color-scheme: light;
-
-  // Set a default background, font and text colors for the application using
-  // Angular Material's system-level CSS variables. Learn more about these
-  // variables at https://material.angular.dev/guide/system-variables
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
-
-  // Reset the user agent margin.
+  font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+  background: var(--background-color);
+  color: var(--text-color);
   margin: 0;
-  height: 100%;
 }
-/* You can add global styles to this file, and also import other style files */
+
+// ===== LIGHT THEME STYLES =====
+
+// Card Style (replacing glass effect)
+.card-style {
+  background: var(--card-background);
+  border-radius: 16px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 12px var(--shadow-color);
+  padding: 1.5rem;
+}
+
+// Gradient Text with warm colors
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--accent-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-light);
+}
+
+// ===== DASHBOARD STYLES =====
+.sidebar {
+  background: var(--card-background) !important;
+  border-right: 1px solid var(--border-color) !important;
+}
+
+.sidebar .user-email {
+  color: var(--text-light) !important;
+}
+
+.sidebar mat-nav-list a {
+  color: var(--text-color) !important;
+}
+
+.sidebar mat-nav-list a.active {
+  background: rgba(139, 115, 85, 0.12) !important;
+  color: var(--primary-color) !important;
+}
+
+.sidebar mat-nav-list a.active mat-icon {
+  color: var(--primary-color) !important;
+}
+
+.sidebar mat-nav-list a:hover {
+  background: rgba(139, 115, 85, 0.08) !important;
+}
+
+.sidebar-footer {
+  border-top: 1px solid var(--border-color) !important;
+}
+
+.topbar {
+  background: var(--card-background) !important;
+  color: var(--text-color) !important;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.topbar .user-info {
+  color: var(--text-light) !important;
+}
+
+.content {
+  background: var(--background-color) !important;
+}
+
+// ===== LOGIN & REGISTER STYLES =====
+.login-container,
+.register-container {
+  background: linear-gradient(135deg, var(--background-color) 0%, var(--accent-light) 100%) !important;
+}
+
+.login-card,
+.register-card {
+  background: var(--card-background) !important;
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px var(--shadow-color);
+  padding: 2.5rem;
+  max-width: 400px;
+  width: 100%;
+}
+
+.login-card p,
+.register-card p {
+  color: var(--text-light) !important;
+}
+
+.login-card h1,
+.register-card h1 {
+  color: var(--primary-color) !important;
+}
+
+// ===== RECOVERY KEY DIALOG =====
+.recovery-key-box {
+  background: var(--accent-light) !important;
+  border: 2px solid var(--primary-color) !important;
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.recovery-key-box code {
+  color: var(--primary-dark) !important;
+}
+
+// ===== MATERIAL OVERRIDES =====
+// Form fields
+.mat-mdc-form-field {
+  color: var(--text-color) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-flex {
+  background-color: var(--card-background) !important;
+}
+
+.mat-mdc-form-field .mat-mdc-form-field-label {
+  color: var(--text-light) !important;
+}
+
+// Buttons
+.mat-mdc-raised-button.mat-primary {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+.mat-mdc-raised-button.mat-primary:hover {
+  background-color: var(--primary-dark) !important;
+}
+
+.mat-mdc-raised-button.mat-accent {
+  background-color: var(--accent-color) !important;
+  color: var(--text-color) !important;
+}
+
+.mat-mdc-raised-button.mat-warn {
+  background-color: #c0392b !important;
+  color: white !important;
+}
+
+// Input focus
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
+  color: var(--primary-color) !important;
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-ripple {
+  background-color: var(--primary-color) !important;
+}
+
+// ===== UTILITY CLASSES =====
+.text-center { text-align: center; }
+.mt-1 { margin-top: 1rem; }
+.mt-2 { margin-top: 2rem; }
+.mb-1 { margin-bottom: 1rem; }
+.mb-2 { margin-bottom: 2rem; }
+.p-1 { padding: 1rem; }
+.p-2 { padding: 2rem; }
+.full-width { width: 100%; }
