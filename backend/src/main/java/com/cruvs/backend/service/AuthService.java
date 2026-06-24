@@ -93,6 +93,7 @@ public class AuthService {
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
                 .email(user.getEmail())
+                .encryptionSalt(user.getEncryptionSalt())
                 .build();
 
     }

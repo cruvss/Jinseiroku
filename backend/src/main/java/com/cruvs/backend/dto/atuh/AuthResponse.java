@@ -14,4 +14,5 @@ public class AuthResponse {
     private String refreshToken;
     private String recoveryKey;
     private String email;
+    private String encryptionSalt;
 }
