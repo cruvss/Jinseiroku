@@ -10,16 +10,15 @@ export const routes: Routes = [
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     
-    // Protected routes (authentication required)
+    // Protected routes wrapped in shell layout
     {
-        path: 'dashboard',
+        path: '',
         component: DashboardLayoutComponent,
-        canActivate: [authGuard]
-    },
-    {
-        path: 'vault',
-        component: VaultComponent,
-        canActivate: [authGuard]
+        canActivate: [authGuard],
+        children: [
+            { path: 'dashboard', children: [] },
+            { path: 'vault', component: VaultComponent }
+        ]
     },
     
     // Default route - redirect to dashboard

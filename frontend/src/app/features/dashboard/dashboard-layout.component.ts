@@ -1,15 +1,18 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { VaultComponent } from '../vault/vault.component';
 
 @Component({
   selector: 'app-dashboard-layout',
-  imports: [MatIconModule,VaultComponent],
+  imports: [MatIconModule, RouterOutlet, VaultComponent],
   templateUrl: './dashboard-layout.component.html',
   styleUrl: './dashboard-layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardLayoutComponent {
+  protected router = inject(Router);
   activeTab = signal('dashboard');
   captureText = signal('');
   inboxCount = signal(3);
@@ -22,6 +25,22 @@ export class DashboardLayoutComponent {
     { id: 'tasks',         icon: 'event_available',  label: 'Tasks' },
     { id: 'timeline',      icon: 'history',          label: 'Timeline' },
   ];
+
+  constructor() {
+    const initialTab = this.router.url.split('/')[1] || 'dashboard';
+    this.activeTab.set(initialTab);
+
+    this.router.events.pipe(
+      filter((event): event is NavigationEnd => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      const currentTab = this.router.url.split('/')[1] || 'dashboard';
+      this.activeTab.set(currentTab);
+    });
+  }
+
+  navigate(tabId: string) {
+    this.router.navigate([`/${tabId}`]);
+  }
 
   updateCapture(e: Event) {
     this.captureText.set((e.target as HTMLInputElement).value);

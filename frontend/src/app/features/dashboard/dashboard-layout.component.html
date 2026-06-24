@@ -12,7 +12,7 @@
         <button
           class="nav-link"
           [class.active]="activeTab() === link.id"
-          (click)="activeTab.set(link.id)">
+          (click)="navigate(link.id)">
           <span class="nav-link-left">
             <mat-icon>{{ link.icon }}</mat-icon>
             {{ link.label }}
@@ -75,21 +75,21 @@
 
           <!-- Stats -->
           <div class="stats">
-            <div class="card stat" (click)="activeTab.set('inbox')">
+            <div class="card stat" (click)="navigate('inbox')">
               <div class="stat-icon coral"><mat-icon>inbox</mat-icon></div>
               <div>
                 <div class="stat-val">{{ inboxCount() }}</div>
                 <div class="stat-lbl">Unprocessed<br/>Items</div>
               </div>
             </div>
-            <div class="card stat" (click)="activeTab.set('subscriptions')">
+            <div class="card stat" (click)="navigate('subscriptions')">
               <div class="stat-icon slate"><mat-icon>credit_card</mat-icon></div>
               <div>
                 <div class="stat-val">$116.37</div>
                 <div class="stat-lbl">Monthly Subs</div>
               </div>
             </div>
-            <div class="card stat" (click)="activeTab.set('tasks')">
+            <div class="card stat" (click)="navigate('tasks')">
               <div class="stat-icon pink"><mat-icon>error_outline</mat-icon></div>
               <div>
                 <div class="stat-val">1</div>
@@ -114,13 +114,11 @@
             </div>
           </section>
         </div>
+        }
 
-        } @else if (activeTab() === 'vault') {
-          <div class="view-enter">
-            <app-vault></app-vault>
-          </div>
-        } @else {
+        <router-outlet></router-outlet>
 
+        @if (activeTab() !== 'dashboard' && activeTab() !== 'vault') {
           <!-- Fallback -->
           <div class="card fallback view-enter">
             <mat-icon class="fallback-icon">enhanced_encryption</mat-icon>
