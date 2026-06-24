@@ -3,6 +3,7 @@ package com.cruvs.backend.service;
 import com.cruvs.backend.dto.atuh.AuthResponse;
 import com.cruvs.backend.dto.atuh.LoginRequest;
 import com.cruvs.backend.dto.atuh.RegisterRequest;
+import com.cruvs.backend.dto.atuh.VaultParamsResponse;
 import com.cruvs.backend.entity.User;
 import com.cruvs.backend.entity.UserSession;
 import com.cruvs.backend.repository.UserRepository;
@@ -94,6 +95,7 @@ public class AuthService {
                 .refreshToken(refreshToken)
                 .email(user.getEmail())
                 .encryptionSalt(user.getEncryptionSalt())
+                .encryptedKekVerification(user.getEncryptedKekVerification())
                 .build();
 
     }
@@ -124,6 +126,23 @@ public class AuthService {
         return userRepository.findByEmail(email)
                 .map(User::getEncryptionSalt)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
+
+    public VaultParamsResponse getVaultParamsByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(user -> VaultParamsResponse.builder()
+                        .encryptionSalt(user.getEncryptionSalt())
+                        .encryptedKekVerification(user.getEncryptedKekVerification())
+                        .build())
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
+
+    @Transactional
+    public void updateKekVerification(java.util.UUID userId, String verification) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+        user.setEncryptedKekVerification(verification);
+        userRepository.save(user);
     }
 
 

@@ -9,11 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AuthResponse {
-    private String accessToken;
-    private String refreshToken;
-    private String recoveryKey;
-    private String email;
+public class VaultParamsResponse {
     private String encryptionSalt;
     private String encryptedKekVerification;
 }

@@ -14,6 +14,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { CryptoService } from '../../core/services/crypto.service';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { AuthService } from '../../core/services/auth.service';
+import { ApiResponse, VaultParamsResponse } from '../../core/models/user.model';
 
 interface DocumentMetadata {
   id: string;
@@ -42,7 +45,8 @@ interface DocumentMetadata {
     MatDatepickerModule,
     MatNativeDateModule,
     MatTableModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatSnackBarModule
   ],
   templateUrl: 'vault.component.html',
   styleUrls: ['vault.component.scss']
@@ -51,6 +55,8 @@ export class VaultComponent implements OnInit {
   private http = inject(HttpClient);
   private fb = inject(FormBuilder);
   protected cryptoService = inject(CryptoService);
+  private authService = inject(AuthService);
+  private snackBar = inject(MatSnackBar);
 
   // Session Unlock Password Form
   unlockForm: FormGroup = this.fb.group({
@@ -81,22 +87,43 @@ export class VaultComponent implements OnInit {
     if (this.unlockForm.invalid) return;
     this.isLoading.set(true);
     try {
-      // For demo/simplicity, we pull the user salt from a profile or setting endpoint. 
-      // If we don't have it, we make an API call to fetch it.
-      // E.g., GET /v1/auth/salt
-      const email = localStorage.getItem('user_email') || ''; // or authState
-      this.http.get<{ data: string }>(`${environment.apiUrl}/auth/salt?email=${email}`).subscribe({
+      const email = localStorage.getItem('user_email') || ''; 
+      this.http.get<ApiResponse<VaultParamsResponse>>(`${environment.apiUrl}/auth/salt?email=${email}`).subscribe({
         next: async (res) => {
-          await this.cryptoService.initializeSession(this.unlockForm.value.password, res.data);
+          const params = res.data;
+          const password = this.unlockForm.value.password;
+          await this.cryptoService.initializeSession(password, params.encryptionSalt);
+          
+          if (params.encryptedKekVerification) {
+            const isCorrect = await this.cryptoService.verifyKek(params.encryptedKekVerification);
+            if (!isCorrect) {
+              this.cryptoService.clearSession();
+              this.isLoading.set(false);
+              this.snackBar.open('Incorrect master password.', 'Close', { duration: 5000 });
+              return;
+            }
+          } else {
+            // Legacy / first unlock: auto-generate and save the verification token
+            try {
+              const verification = await this.cryptoService.generateKekVerification();
+              this.authService.saveKekVerification(verification).subscribe({
+                next: () => console.log('KEK verification generated and saved successfully for legacy/first unlock'),
+                error: (err) => console.error('Failed to save KEK verification for legacy/first unlock', err)
+              });
+            } catch (e) {
+              console.error('Failed to auto-generate KEK verification', e);
+            }
+          }
+          
           this.loadDocuments();
         },
         error: () => {
           this.isLoading.set(false);
-          alert('Failed to retrieve security salt.');
+          this.snackBar.open('Failed to retrieve security credentials.', 'Close', { duration: 5000 });
         }
       });
     } catch (e) {
-      alert('Error deriving encryption keys.');
+      this.snackBar.open('Error deriving encryption keys.', 'Close', { duration: 5000 });
       this.isLoading.set(false);
     }
   }
@@ -132,8 +159,6 @@ export class VaultComponent implements OnInit {
       const formData = new FormData();
       const blob = new Blob([encryptedFile.ciphertext], { type: 'application/octet-stream' });
       
-      // We also prepend the file encryption IV to the file upload key or send it as part of file metadata.
-      // Prepending the 12-byte IV directly to the beginning of the encrypted file blob is a common standard.
       const ivBytes = encryptedFile.iv;
       const combinedBlob = new Blob([ivBytes as BufferSource, encryptedFile.ciphertext], { type: 'application/octet-stream' });
 

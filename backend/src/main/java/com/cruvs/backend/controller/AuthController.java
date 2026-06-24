@@ -3,6 +3,7 @@ package com.cruvs.backend.controller;
 import com.cruvs.backend.dto.atuh.AuthResponse;
 import com.cruvs.backend.dto.atuh.LoginRequest;
 import com.cruvs.backend.dto.atuh.RegisterRequest;
+import com.cruvs.backend.dto.atuh.VaultParamsResponse;
 import com.cruvs.backend.response.ApiResponse;
 import com.cruvs.backend.service.AuthService;
 import com.cruvs.backend.util.ApiResponseUtil;
@@ -14,7 +15,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import java.util.Objects;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/auth")
@@ -90,9 +94,16 @@ public class AuthController {
     }
 
     @GetMapping("/salt")
-    public ResponseEntity<ApiResponse<String>> getSalt(@RequestParam("email") String email) {
-        String salt = authService.getSaltByEmail(email);
-        return ResponseEntity.ok(ApiResponseUtil.success("Salt retrieved successfully", salt));
+    public ResponseEntity<ApiResponse<VaultParamsResponse>> getSalt(@RequestParam("email") String email) {
+        VaultParamsResponse params = authService.getVaultParamsByEmail(email);
+        return ResponseEntity.ok(ApiResponseUtil.success("Salt retrieved successfully", params));
+    }
+
+    @PutMapping("/kek-verification")
+    public ResponseEntity<ApiResponse<Void>> updateKekVerification(@RequestBody String verification) {
+        UUID userId = (UUID) Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
+        authService.updateKekVerification(userId, verification);
+        return ResponseEntity.ok(ApiResponseUtil.success("KEK verification token updated successfully", null));
     }
 
 }

@@ -10,8 +10,13 @@ export interface AuthResponse {
     refreshToken?: string;
     email: string;
     recoveryKey?: string;
-     encryptionSalt:string;
+    encryptionSalt: string;
+    encryptedKekVerification?: string;
+}
 
+export interface VaultParamsResponse {
+    encryptionSalt: string;
+    encryptedKekVerification?: string;
 }
 
 export interface ApiResponse<T> {

@@ -50,6 +50,22 @@ export class CryptoService {
     );
   }
 
+  // Generate a verification token by wrapping a dummy key with the KEK
+  async generateKekVerification(): Promise<string> {
+    const dummyKey = await this.generateDEK();
+    return this.wrapDEK(dummyKey);
+  }
+
+  // Verify KEK by attempting to unwrap the verification token
+  async verifyKek(verificationBase64: string): Promise<boolean> {
+    try {
+      await this.unwrapDEK(verificationBase64);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
   // Encrypt file bytes using the DEK with AES-GCM
   async encryptFile(file: BufferSource, dek: CryptoKey): Promise<{ ciphertext: ArrayBuffer; iv: Uint8Array }> {
     const iv = window.crypto.getRandomValues(new Uint8Array(12)); // 96-bit IV

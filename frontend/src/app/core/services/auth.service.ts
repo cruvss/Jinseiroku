@@ -3,7 +3,7 @@ import { inject, Injectable } from "@angular/core";
 import { environment } from "../../../environments/environment";
 import { BehaviorSubject, Observable, throwError } from "rxjs";
 import { map, catchError, tap } from 'rxjs/operators';
-import { ApiResponse, AuthResponse, User } from "../models/user.model";
+import { ApiResponse, AuthResponse, User, VaultParamsResponse } from "../models/user.model";
 import { CryptoService } from "./crypto.service";
 
 @Injectable({
@@ -40,7 +40,16 @@ export class AuthService {
                     }
 
                     if (res.encryptionSalt){
-                        this.cryptoService.initializeSession(credentials.password, res.encryptionSalt);
+                        this.cryptoService.initializeSession(credentials.password, res.encryptionSalt).then(() => {
+                            if (!res.encryptedKekVerification) {
+                                this.cryptoService.generateKekVerification().then(verification => {
+                                    this.saveKekVerification(verification).subscribe({
+                                        next: () => console.log('KEK verification saved successfully'),
+                                        error: (err) => console.error('Failed to save KEK verification', err)
+                                    });
+                                });
+                            }
+                        });
                     }
                 })
             );
@@ -89,6 +98,12 @@ export class AuthService {
     this.currentUserSubject$.next(null);
     localStorage.removeItem('user_email');
   }
+
+    saveKekVerification(verification: string): Observable<void> {
+        return this.http.put<ApiResponse<void>>(`${this.apiUrl}/kek-verification`, verification, {
+            headers: { 'Content-Type': 'text/plain' }
+        }).pipe(map(() => void 0));
+    }
 
 }
 
