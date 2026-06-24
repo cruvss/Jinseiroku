@@ -1,0 +1,125 @@
+<div class="vault-view">
+  <!-- ════════ UNLOCKED STATE ════════ -->
+  @if (cryptoService.hasActiveSession()) {
+    <div class="vault-panel">
+      <!-- Upload Card -->
+      <mat-card class="card-style upload-card mb-2">
+        <mat-card-header>
+          <mat-card-title class="gradient-text">🔒 Add Encrypted Document</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="mt-1">
+          <form [formGroup]="uploadForm" (ngSubmit)="onUpload()" class="upload-form">
+            <div class="file-input-wrapper">
+              <input type="file" (change)="onFileSelected($event)" id="file-picker" hidden />
+              <label for="file-picker" class="file-dropzone">
+                <mat-icon>cloud_upload</mat-icon>
+                <span>{{ selectedFile ? selectedFile.name : 'Select or drag a file here' }}</span>
+              </label>
+            </div>
+
+            <div class="meta-fields">
+              <mat-form-field appearance="outline">
+                <mat-label>Category</mat-label>
+                <mat-select formControlName="category">
+                  @for (cat of categories; track cat) {
+                    <mat-option [value]="cat">{{ cat }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Expiry Date</mat-label>
+                <input matInput [matDatepicker]="picker" formControlName="expiryDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <button mat-raised-button color="primary" class="full-width mt-1" type="submit" [disabled]="!selectedFile || isUploading()">
+              <mat-spinner diameter="20" *ngIf="isUploading()"></mat-spinner>
+              <span *ngIf="!isUploading()">Encrypt & Upload</span>
+            </button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Documents Table -->
+      <mat-card class="card-style">
+        <mat-card-header>
+          <mat-card-title class="gradient-text">Stored Safe Box</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="mt-2">
+          @if (isLoading()) {
+            <div class="text-center p-2">
+              <mat-spinner diameter="40" style="margin: 0 auto;"></mat-spinner>
+            </div>
+          } @else if (documents().length === 0) {
+            <div class="text-center p-2">
+              <mat-icon style="font-size: 3rem; height:3rem; width:3rem; color: var(--text-light)">folder_open</mat-icon>
+              <p>Your secure vault is empty.</p>
+            </div>
+          } @else {
+            <table mat-table [dataSource]="documents()" class="full-width">
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Name</th>
+                <td mat-cell *matCellDef="let doc">
+                  <mat-icon style="vertical-align: middle; margin-right: 8px;">insert_drive_file</mat-icon>
+                  {{ doc.decryptedName }}
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="category">
+                <th mat-header-cell *matHeaderCellDef>Category</th>
+                <td mat-cell *matCellDef="let doc">{{ doc.category }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="size">
+                <th mat-header-cell *matHeaderCellDef>Size</th>
+                <td mat-cell *matCellDef="let doc">{{ (doc.fileSizeBytes / 1024).toFixed(1) }} KB</td>
+              </ng-container>
+
+              <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td mat-cell *matCellDef="let doc">
+                  <button mat-icon-button color="primary" (click)="downloadFile(doc)" title="Download & Decrypt">
+                    <mat-icon>download</mat-icon>
+                  </button>
+                  <button mat-icon-button color="warn" (click)="deleteFile(doc)" title="Delete">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="['name', 'category', 'size', 'actions']"></tr>
+              <tr mat-row *matRowDef="let row; columns: ['name', 'category', 'size', 'actions'];"></tr>
+            </table>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+
+  <!-- ════════ LOCKED STATE (PROMPT FOR MASTER KEY) ════════ -->
+  @else {
+    <div class="unlock-panel">
+      <mat-card class="card-style max-width-card">
+        <mat-card-header>
+          <mat-card-title class="gradient-text text-center full-width">Unlock Vault</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="mt-2">
+          <p class="text-center mb-2">Please enter your master password to derive the decryption keys in memory.</p>
+          <form [formGroup]="unlockForm" (ngSubmit)="onUnlock()">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Master Password</mat-label>
+              <input matInput type="password" formControlName="password" />
+            </mat-form-field>
+            <button mat-raised-button color="primary" class="full-width mt-1" type="submit" [disabled]="unlockForm.invalid || isLoading()">
+              <mat-spinner diameter="20" *ngIf="isLoading()"></mat-spinner>
+              <span *ngIf="!isLoading()">Derive Keys & Unlock</span>
+            </button>
+          </form>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+</div>

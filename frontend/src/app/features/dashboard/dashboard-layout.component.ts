@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { VaultComponent } from '../vault/vault.component';
 
 @Component({
   selector: 'app-dashboard-layout',
-  imports: [MatIconModule],
+  imports: [MatIconModule,VaultComponent],
   templateUrl: './dashboard-layout.component.html',
   styleUrl: './dashboard-layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -10,6 +10,8 @@ export interface AuthResponse {
     refreshToken?: string;
     email: string;
     recoveryKey?: string;
+     encryptionSalt:string;
+
 }
 
 export interface ApiResponse<T> {
@@ -18,4 +20,5 @@ export interface ApiResponse<T> {
     success: boolean;
     message: string;
     data: T;
+
 }

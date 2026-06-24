@@ -115,14 +115,18 @@
           </section>
         </div>
 
+        } @else if (activeTab() === 'vault') {
+          <div class="view-enter">
+            <app-vault></app-vault>
+          </div>
         } @else {
 
-        <!-- Fallback -->
-        <div class="card fallback view-enter">
-          <mat-icon class="fallback-icon">enhanced_encryption</mat-icon>
-          <h2 class="fallback-title">View in Development</h2>
-          <p class="fallback-text">This module is currently being built for the Soft Creme theme.</p>
-        </div>
+          <!-- Fallback -->
+          <div class="card fallback view-enter">
+            <mat-icon class="fallback-icon">enhanced_encryption</mat-icon>
+            <h2 class="fallback-title">View in Development</h2>
+            <p class="fallback-text">This module is currently being built for the Soft Creme theme.</p>
+          </div>
         }
 
       </div>

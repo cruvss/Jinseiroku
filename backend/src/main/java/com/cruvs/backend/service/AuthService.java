@@ -120,6 +120,14 @@ public class AuthService {
                 .build();
     }
 
+    public String getSaltByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .map(User::getEncryptionSalt)
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+    }
+
+
+
     @Transactional
     public void logout(String refreshToken) {
         if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken)) {

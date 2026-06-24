@@ -3,6 +3,7 @@ package com.cruvs.backend.controller;
 
 import com.cruvs.backend.dto.minio.VaultDocumentResponse;
 import com.cruvs.backend.response.ApiResponse;
+import com.cruvs.backend.service.AuthService;
 import com.cruvs.backend.service.VaultService;
 import com.cruvs.backend.util.ApiResponseUtil;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.UUID;
 
 @RestController
@@ -27,7 +29,7 @@ public class VaultController {
     private final VaultService vaultService;
 
     private UUID getAuthenticatedUserId() {
-        return (UUID) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return (UUID) Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -43,7 +45,7 @@ public class VaultController {
 
 //        System.out.println(getAuthenticatedUserId());
         VaultDocumentResponse response = vaultService.upload(
-                UUID.fromString("2f1fd8ce-6493-4632-baa7-969421501f02"),
+                getAuthenticatedUserId(),
                 file.getBytes(),
                 fileNameEncrypted,
                 category,
@@ -63,7 +65,7 @@ public class VaultController {
             @RequestParam(value = "page", defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size
     ) {
-        Page<VaultDocumentResponse> documents = vaultService.list(UUID.fromString("2f1fd8ce-6493-4632-baa7-969421501f02"), category, PageRequest.of(page, size));
+        Page<VaultDocumentResponse> documents = vaultService.list(getAuthenticatedUserId(), category, PageRequest.of(page, size));
         return ResponseEntity.ok(ApiResponseUtil.success("Documents listed successfully", documents));
     }
 
@@ -87,4 +89,6 @@ public class VaultController {
         vaultService.delete(getAuthenticatedUserId(), documentId);
         return ResponseEntity.ok(ApiResponseUtil.success("Document deleted successfully", null));
     }
+
+
 }

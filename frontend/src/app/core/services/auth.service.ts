@@ -4,6 +4,7 @@ import { environment } from "../../../environments/environment";
 import { BehaviorSubject, Observable, throwError } from "rxjs";
 import { map, catchError, tap } from 'rxjs/operators';
 import { ApiResponse, AuthResponse, User } from "../models/user.model";
+import { CryptoService } from "./crypto.service";
 
 @Injectable({
     providedIn: 'root'
@@ -11,6 +12,8 @@ import { ApiResponse, AuthResponse, User } from "../models/user.model";
 export class AuthService {
     private http = inject(HttpClient)
     private apiUrl = `${environment.apiUrl}/auth`;
+
+    private cryptoService = inject(CryptoService);
 
     private accessToken$ = new BehaviorSubject<string | null>(null);
     private currentUserSubject$ = new BehaviorSubject<User | null>(null);
@@ -32,6 +35,13 @@ export class AuthService {
                 tap(res => {
                     this.accessToken$.next(res.accessToken || null);
                     this.currentUserSubject$.next({ email: res.email });
+                    if (res.email) {
+                        localStorage.setItem('user_email', res.email);
+                    }
+
+                    if (res.encryptionSalt){
+                        this.cryptoService.initializeSession(credentials.password, res.encryptionSalt);
+                    }
                 })
             );
     }
@@ -61,6 +71,10 @@ export class AuthService {
                     throw new Error('Refresh failed: access token missing from response.');
                 }
                 this.accessToken$.next(token);
+                if (res.data?.email) {
+                    this.currentUserSubject$.next({ email: res.data.email });
+                    localStorage.setItem('user_email', res.data.email);
+                }
                 return token;
             }),
             catchError(err => {
@@ -73,6 +87,7 @@ export class AuthService {
     clearSession(): void {
     this.accessToken$.next(null);
     this.currentUserSubject$.next(null);
+    localStorage.removeItem('user_email');
   }
 
 }

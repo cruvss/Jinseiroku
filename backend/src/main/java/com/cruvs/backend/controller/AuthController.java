@@ -89,4 +89,10 @@ public class AuthController {
 
     }
 
+    @GetMapping("/salt")
+    public ResponseEntity<ApiResponse<String>> getSalt(@RequestParam("email") String email) {
+        String salt = authService.getSaltByEmail(email);
+        return ResponseEntity.ok(ApiResponseUtil.success("Salt retrieved successfully", salt));
+    }
+
 }

@@ -3,6 +3,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { DashboardLayoutComponent } from './features/dashboard/dashboard-layout.component';
+import { VaultComponent } from './features/vault/vault.component';
 
 export const routes: Routes = [
     // Public routes (no authentication needed)
@@ -13,6 +14,11 @@ export const routes: Routes = [
     {
         path: 'dashboard',
         component: DashboardLayoutComponent,
+        canActivate: [authGuard]
+    },
+    {
+        path: 'vault',
+        component: VaultComponent,
         canActivate: [authGuard]
     },
     
