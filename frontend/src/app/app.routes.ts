@@ -4,6 +4,7 @@ import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { DashboardLayoutComponent } from './features/dashboard/dashboard-layout.component';
 import { VaultComponent } from './features/vault/vault.component';
+import { SubscriptionsComponent } from './features/subscription/subscription.component';
 
 export const routes: Routes = [
     // Public routes (no authentication needed)
@@ -17,7 +18,8 @@ export const routes: Routes = [
         canActivate: [authGuard],
         children: [
             { path: 'dashboard', children: [] },
-            { path: 'vault', component: VaultComponent }
+            { path: 'vault', component: VaultComponent },
+            { path: 'subscriptions', component: SubscriptionsComponent}
         ]
     },
     

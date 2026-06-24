@@ -118,7 +118,7 @@
 
         <router-outlet></router-outlet>
 
-        @if (activeTab() !== 'dashboard' && activeTab() !== 'vault') {
+        @if (activeTab() !== 'dashboard' && activeTab() !== 'vault' && activeTab() !== 'subscriptions') {
           <!-- Fallback -->
           <div class="card fallback view-enter">
             <mat-icon class="fallback-icon">enhanced_encryption</mat-icon>
