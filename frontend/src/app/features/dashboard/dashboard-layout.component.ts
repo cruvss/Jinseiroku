@@ -7,6 +7,7 @@ import { filter } from 'rxjs/operators';
 import { VaultComponent } from '../vault/vault.component';
 import { InboxService } from '../../core/services/inbox.service';
 import { CryptoService } from '../../core/services/crypto.service';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -20,6 +21,7 @@ export class DashboardLayoutComponent implements OnInit {
   private http = inject(HttpClient);
   private inboxService = inject(InboxService);
   private crypto = inject(CryptoService);
+  titleService = inject(Title);
   
   activeTab = signal('dashboard');
   captureText = signal('');
@@ -58,7 +60,16 @@ export class DashboardLayoutComponent implements OnInit {
   }
 
   navigate(tabId: string) {
-    this.router.navigate([`/${tabId}`]);
+     this.activeTab.set(tabId);
+    
+    const formattedTitle = tabId.charAt(0).toUpperCase() + tabId.slice(1);
+    this.titleService.setTitle(`${formattedTitle}`);
+    
+    if (tabId === 'dashboard') {
+      this.router.navigate(['/dashboard']);
+    } else {
+      this.router.navigate(['/dashboard', tabId]);
+    }
   }
 
   updateCapture(e: Event) {
@@ -97,4 +108,7 @@ export class DashboardLayoutComponent implements OnInit {
       this.isCapturing.set(false);
     }
   }
+
+
+
 }
