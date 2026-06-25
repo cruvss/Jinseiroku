@@ -5,6 +5,7 @@ import { RegisterComponent } from './features/auth/register/register.component';
 import { DashboardLayoutComponent } from './features/dashboard/dashboard-layout.component';
 import { VaultComponent } from './features/vault/vault.component';
 import { SubscriptionsComponent } from './features/subscription/subscription.component';
+import { InboxComponent } from './features/inbox/inbox.component';
 
 export const routes: Routes = [
     // Public routes (no authentication needed)
@@ -19,7 +20,8 @@ export const routes: Routes = [
         children: [
             { path: 'dashboard', children: [] },
             { path: 'vault', component: VaultComponent },
-            { path: 'subscriptions', component: SubscriptionsComponent}
+            { path: 'subscriptions', component: SubscriptionsComponent},
+            { path: 'inbox', component: InboxComponent}
         ]
     },
     
