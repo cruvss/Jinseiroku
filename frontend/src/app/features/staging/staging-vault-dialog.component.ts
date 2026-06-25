@@ -41,7 +41,11 @@ export class StagingVaultDialogComponent {
       formData.append('category', this.form.value.category!);
       formData.append('encryptedDek', wrappedDek);
 
-      const encName = await this.crypto.encryptText('Inbox_Triaged_File', dek);
+      const defaultName = this.item.contentType === 'TEXT' 
+         ? 'Inbox Note' 
+         : (this.item.decryptedText || 'Inbox_Triaged_File');
+         
+      const encName = await this.crypto.encryptText(defaultName, dek);
       formData.append('fileNameEncrypted', `${encName.iv}:${encName.ciphertext}`);
 
       if (this.form.value.notes) {

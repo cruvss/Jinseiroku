@@ -6,6 +6,8 @@ import { DashboardLayoutComponent } from './features/dashboard/dashboard-layout.
 import { VaultComponent } from './features/vault/vault.component';
 import { SubscriptionsComponent } from './features/subscription/subscription.component';
 import { InboxComponent } from './features/inbox/inbox.component';
+import { TaskComponent } from './features/tasks/task.component';
+import { TimelineComponent } from './features/timeline/timeline.component';
 
 export const routes: Routes = [
     // Public routes (no authentication needed)
@@ -21,7 +23,9 @@ export const routes: Routes = [
             { path: 'dashboard', children: [] },
             { path: 'vault', component: VaultComponent },
             { path: 'subscriptions', component: SubscriptionsComponent},
-            { path: 'inbox', component: InboxComponent}
+            { path: 'inbox', component: InboxComponent},
+            { path: 'tasks', component:TaskComponent},
+            { path: 'timeline', component:TimelineComponent}
         ]
     },
     
