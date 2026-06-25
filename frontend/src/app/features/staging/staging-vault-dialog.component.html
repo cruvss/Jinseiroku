@@ -1,0 +1,22 @@
+<h2 mat-dialog-title>Triage to Vault</h2>
+    <mat-dialog-content>
+      <form [formGroup]="form">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Category</mat-label>
+          <mat-select formControlName="category">
+            <mat-option value="Documents">Documents</mat-option>
+            <mat-option value="Finance">Finance</mat-option>
+            <mat-option value="Personal">Personal</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Notes (from Inbox text)</mat-label>
+          <textarea matInput formControlName="notes" rows="3"></textarea>
+        </mat-form-field>
+        <p *ngIf="item.contentType !== 'TEXT'"><em>File attachment will be transferred securely.</em></p>
+      </form>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-flat-button color="primary" [disabled]="isLoading()" (click)="submit()">Save to Vault</button>
+    </mat-dialog-actions>

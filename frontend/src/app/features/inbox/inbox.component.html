@@ -1,0 +1,37 @@
+<div class="inbox-container">
+      <form class="capture-bar card" [formGroup]="captureForm" (submit)="onCapture()">
+        <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
+        <button type="button" class="icon-btn" (click)="fileInput.click()"><mat-icon>attach_file</mat-icon></button>
+        <span *ngIf="selectedFile" class="file-badge">{{selectedFile.name}}</span>
+        <input type="text" formControlName="text" placeholder="Type a thought..." />
+        <button type="submit" [disabled]="isCapturing()">Capture</button>
+      </form>
+
+      <div class="triage-card">
+        <div class="triage-header">
+          <h2>Needs Triage</h2>
+          <p>Process these items into your Vault, Subscriptions, or Tasks.</p>
+        </div>
+
+        <div class="triage-list">
+          <div class="triage-item" *ngFor="let item of items()">
+            <div class="item-icon" [ngClass]="getIconClass(item)">
+              <mat-icon>{{ getIconName(item) }}</mat-icon>
+            </div>
+            
+            <div class="item-details">
+              <div class="item-title">{{ getItemTitle(item) }}</div>
+              <div class="item-meta">{{ item.capturedAt | date:'mediumDate' }}</div>
+            </div>
+
+            <div class="item-actions">
+              <button class="action-btn" (click)="triageVault(item)">Convert to Vault</button>
+              <button class="action-btn">To Sub</button>
+              <button class="icon-btn trash-btn" (click)="deleteItem(item.id)">
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

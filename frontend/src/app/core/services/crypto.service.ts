@@ -6,6 +6,29 @@ import { argon2id } from 'hash-wasm';
 })
 export class CryptoService {
   private kek: CryptoKey | null = null;
+  private restorePromise: Promise<void> | null = null;
+
+  constructor() {
+    this.restorePromise = this.tryRestoreSession();
+  }
+
+  private async tryRestoreSession(): Promise<void> {
+    const savedKek = sessionStorage.getItem('vault_kek');
+    if (savedKek) {
+      try {
+        const rawBuffer = this.base64ToArrayBuffer(savedKek);
+        this.kek = await window.crypto.subtle.importKey(
+          'raw',
+          rawBuffer,
+          { name: 'AES-KW' },
+          false,
+          ['wrapKey', 'unwrapKey']
+        );
+      } catch (e) {
+        sessionStorage.removeItem('vault_kek');
+      }
+    }
+  }
 
   // Derive KEK using Argon2id and import it as an AES-KW (AES Key Wrap) Key
   async initializeSession(password: string, saltHex: string): Promise<void> {
@@ -24,9 +47,13 @@ export class CryptoService {
     });
 
     // Import the resulting raw 32 bytes as a CryptoKey for Key Wrapping
+    const rawBuffer = rawKekBytes.buffer.slice(rawKekBytes.byteOffset, rawKekBytes.byteOffset + rawKekBytes.byteLength) as ArrayBuffer;
+    
+    sessionStorage.setItem('vault_kek', this.arrayBufferToBase64(rawBuffer));
+
     this.kek = await window.crypto.subtle.importKey(
       'raw',
-      rawKekBytes.buffer.slice(rawKekBytes.byteOffset, rawKekBytes.byteOffset + rawKekBytes.byteLength) as ArrayBuffer,
+      rawBuffer,
       { name: 'AES-KW' },
       false,
       ['wrapKey', 'unwrapKey']
@@ -39,6 +66,7 @@ export class CryptoService {
 
   clearSession(): void {
     this.kek = null;
+    sessionStorage.removeItem('vault_kek');
   }
 
   // Generate a random Data Encryption Key (DEK)
@@ -88,6 +116,7 @@ export class CryptoService {
 
   // Wrap DEK with the session KEK (using AES-KW)
   async wrapDEK(dek: CryptoKey): Promise<string> {
+    if (this.restorePromise) await this.restorePromise;
     if (!this.kek) {
       throw new Error('No active vault session (KEK not derived)');
     }
@@ -102,6 +131,7 @@ export class CryptoService {
 
   // Unwrap DEK with the session KEK (using AES-KW)
   async unwrapDEK(wrappedDekBase64: string): Promise<CryptoKey> {
+    if (this.restorePromise) await this.restorePromise;
     if (!this.kek) {
       throw new Error('No active vault session (KEK not derived)');
     }

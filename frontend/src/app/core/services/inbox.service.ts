@@ -1,5 +1,5 @@
 import { HttpClient } from "@angular/common/http";
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, signal } from "@angular/core";
 import { environment } from "../../../environments/environment";
 import { InboxItem } from "../models/inbox.model";
 
@@ -8,6 +8,7 @@ import { InboxItem } from "../models/inbox.model";
 export class InboxService {
     private http = inject(HttpClient);
     private url = `${environment.apiUrl}/inbox`;
+    public unreadCount = signal(0);
 
     capture(data: FormData){
         return this.http.post(this.url,data);
@@ -26,7 +27,7 @@ export class InboxService {
     }
 
     markStaged(id:string, type:string, targetId:string){
-        return this.http.put(`${this.url}/${id}/stage?type=${type}&targetId=${targetId}`,{});
+        return this.http.put(`${this.url}/${id}/staging?type=${type}&targetId=${targetId}`,{});
     }
 
 }

@@ -12,39 +12,8 @@ import { StagingVaultDialogComponent } from '../staging/staging-vault-dialog.com
   selector: 'app-inbox',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatIconModule],
-  template: `
-    <div class="inbox-container">
-      <form class="capture-bar card" [formGroup]="captureForm" (submit)="onCapture()">
-        <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
-        <button type="button" class="icon-btn" (click)="fileInput.click()"><mat-icon>attach_file</mat-icon></button>
-        <span *ngIf="selectedFile" class="file-badge">{{selectedFile.name}}</span>
-        <input type="text" formControlName="text" placeholder="Type a thought..." />
-        <button type="submit" [disabled]="isCapturing()">Capture</button>
-      </form>
-
-      <div class="inbox-list">
-        <div class="card item-card" *ngFor="let item of items()">
-          <div class="item-content">
-            <mat-icon *ngIf="item.contentType !== 'TEXT'">insert_drive_file</mat-icon>
-            <p>{{ item.decryptedText || 'No text attached' }}</p>
-            <small>Captured {{ item.capturedAt | date:'short' }}</small>
-          </div>
-          <div class="item-actions">
-            <button (click)="triageVault(item)">→ Vault</button>
-            <button (click)="deleteItem(item.id)">🗑️</button>
-          </div>
-        </div>
-      </div>
-    </div>
-  `,
-  styles: [`
-    .inbox-container { max-width: 800px; margin: 0 auto; display: flex; flex-direction: column; gap: 20px; }
-    .capture-bar { display: flex; align-items: center; gap: 10px; padding: 10px 20px; border-radius: 50px; }
-    .capture-bar input[type="text"] { flex: 1; border: none; outline: none; background: transparent; font-size: 16px; }
-    .item-card { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
-    .item-actions button { margin-left: 10px; border: none; background: #eee; padding: 5px 15px; border-radius: 20px; cursor: pointer; }
-    .item-actions button:hover { background: #e0e0e0; }
-  `]
+  templateUrl:'inbox.component.html',
+  styleUrl: 'inbox.component.scss'
 })
 export class InboxComponent implements OnInit {
   inboxService = inject(InboxService);
@@ -71,20 +40,28 @@ export class InboxComponent implements OnInit {
       const fd = new FormData();
       fd.append('encryptedDek', await this.crypto.wrapDEK(dek));
 
-      if (text) {
-        const encText = await this.crypto.encryptText(text, dek);
+      let contentText = text;
+      if (!contentText && this.selectedFile) {
+        contentText = this.selectedFile.name;
+      }
+
+      if (contentText) {
+        const encText = await this.crypto.encryptText(contentText, dek);
         fd.append('textContentEncrypted', `${encText.iv}:${encText.ciphertext}`);
       }
       if (this.selectedFile) {
         const fileBytes = await this.selectedFile.arrayBuffer();
         const encFile = await this.crypto.encryptFile(fileBytes, dek);
-        fd.append('file', new Blob([encFile.iv as BufferSource, encFile.ciphertext]), 'file.bin');
+        // Pass original MIME type so backend can store it instead of octet-stream
+        const encryptedBlob = new Blob([encFile.iv as BufferSource, encFile.ciphertext], { type: this.selectedFile.type || 'application/octet-stream' });
+        fd.append('file', encryptedBlob, 'file.bin');
       }
 
       this.inboxService.capture(fd).subscribe(() => {
         this.captureForm.reset();
         this.selectedFile = null;
         this.isCapturing.set(false);
+        this.inboxService.unreadCount.update(n => n + 1);
         this.load();
       });
     } catch (e) { this.isCapturing.set(false); }
@@ -106,9 +83,40 @@ export class InboxComponent implements OnInit {
     });
   }
 
-  deleteItem(id: string) { this.inboxService.delete(id).subscribe(() => this.load()); }
+  deleteItem(id: string) { 
+    this.inboxService.delete(id).subscribe(() => {
+      this.inboxService.unreadCount.update(n => Math.max(0, n - 1));
+      this.load();
+    }); 
+  }
+  
   triageVault(item: InboxItem) {
     this.dialog.open(StagingVaultDialogComponent, { data: item, width: '400px' })
-      .afterClosed().subscribe(res => { if (res) this.load(); });
+      .afterClosed().subscribe(res => { 
+        if (res) {
+          this.inboxService.unreadCount.update(n => Math.max(0, n - 1));
+          this.load();
+        }
+      });
+  }
+
+  getIconName(item: InboxItem): string {
+    if (item.contentType === 'TEXT') return 'description';
+    if (item.mimeType?.startsWith('image/')) return 'image';
+    if (item.mimeType === 'application/pdf') return 'picture_as_pdf';
+    return 'insert_drive_file';
+  }
+
+  getIconClass(item: InboxItem): string {
+    if (item.contentType === 'TEXT') return 'icon-text';
+    if (item.mimeType?.startsWith('image/')) return 'icon-image';
+    if (item.mimeType === 'application/pdf') return 'icon-pdf';
+    return 'icon-default';
+  }
+
+  getItemTitle(item: InboxItem): string {
+    if (item.decryptedText) return item.decryptedText;
+    if (item.mimeType) return `File attachment (${item.mimeType.split('/')[1] || item.mimeType})`;
+    return 'Encrypted Item';
   }
 }

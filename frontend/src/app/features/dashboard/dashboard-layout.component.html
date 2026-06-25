@@ -68,7 +68,9 @@
                 (input)="updateCapture($event)" />
               <div class="capture-btns">
                 <button type="button" class="img-btn"><mat-icon>image</mat-icon></button>
-                <button type="submit" class="submit-btn">Capture</button>
+                <button type="submit" class="submit-btn" [disabled]="isCapturing()">
+                  {{ isCapturing() ? 'Capturing...' : 'Capture' }}
+                </button>
               </div>
             </form>
           </section>
