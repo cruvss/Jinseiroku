@@ -13,4 +13,5 @@ import java.util.UUID;
 public interface VaultDocumentRepository extends JpaRepository<VaultDocument, UUID> {
     Page<VaultDocument> findByUserAndCategory(User user, String category, Pageable pageable);
     Page<VaultDocument> findByUser(User user, Pageable pageable);
+    long countByUser(User user);
 }
