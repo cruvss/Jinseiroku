@@ -38,14 +38,21 @@ export class DashboardLayoutComponent implements OnInit {
   ];
 
   constructor() {
-    const initialTab = this.router.url.split('/')[1] || 'dashboard';
+    const path = window.location.pathname;
+    const initialTab = path.split('/')[1] || 'dashboard';
     this.activeTab.set(initialTab);
+    const formattedTitle = initialTab.charAt(0).toUpperCase() + initialTab.slice(1);
+    this.titleService.setTitle(`${formattedTitle}`);
 
     this.router.events.pipe(
       filter((event): event is NavigationEnd => event instanceof NavigationEnd)
     ).subscribe(() => {
-      const currentTab = this.router.url.split('/')[1] || 'dashboard';
+      const urlPath = this.router.url.split('?')[0].split('#')[0];
+      const currentTab = urlPath.split('/')[1] || 'dashboard';
       this.activeTab.set(currentTab);
+      
+      const formattedTitle = currentTab.charAt(0).toUpperCase() + currentTab.slice(1);
+      this.titleService.setTitle(`${formattedTitle}`);
     });
   }
 
@@ -60,16 +67,7 @@ export class DashboardLayoutComponent implements OnInit {
   }
 
   navigate(tabId: string) {
-     this.activeTab.set(tabId);
-    
-    const formattedTitle = tabId.charAt(0).toUpperCase() + tabId.slice(1);
-    this.titleService.setTitle(`${formattedTitle}`);
-    
-    if (tabId === 'dashboard') {
-      this.router.navigate(['/dashboard']);
-    } else {
-      this.router.navigate(['/dashboard', tabId]);
-    }
+    this.router.navigate([`/${tabId}`]);
   }
 
   updateCapture(e: Event) {
