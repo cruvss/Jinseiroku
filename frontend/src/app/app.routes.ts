@@ -4,7 +4,7 @@ import { LoginComponent } from './features/auth/login/login.component';
 import { RegisterComponent } from './features/auth/register/register.component';
 import { DashboardLayoutComponent } from './features/dashboard/dashboard-layout.component';
 import { VaultComponent } from './features/vault/vault.component';
-import { SubscriptionsComponent } from './features/subscription/subscription.component';
+import { SubscriptionComponent } from './features/subscription/subscription.component';
 import { InboxComponent } from './features/inbox/inbox.component';
 import { TaskComponent } from './features/tasks/task.component';
 import { TimelineComponent } from './features/timeline/timeline.component';
@@ -22,7 +22,7 @@ export const routes: Routes = [
         children: [
             { path: 'dashboard', children: [] },
             { path: 'vault', component: VaultComponent },
-            { path: 'subscriptions', component: SubscriptionsComponent},
+            { path: 'subscriptions', component: SubscriptionComponent},
             { path: 'inbox', component: InboxComponent},
             { path: 'tasks', component:TaskComponent},
             { path: 'timeline', component:TimelineComponent}

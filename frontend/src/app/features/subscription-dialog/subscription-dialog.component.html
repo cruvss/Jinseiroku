@@ -1,0 +1,69 @@
+<h2 mat-dialog-title>{{ data?.subscription ? 'Edit' : 'Add' }} Subscription</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="flex flex-col gap-4 mt-2">
+    
+    <mat-form-field appearance="outline">
+      <mat-label>Name</mat-label>
+      <input matInput formControlName="name" placeholder="e.g. Netflix">
+    </mat-form-field>
+    
+    <div class="flex gap-4">
+      <mat-form-field appearance="outline" class="flex-1">
+        <mat-label>Cost (e.g. 15.99)</mat-label>
+        <input matInput type="number" formControlName="cost" step="0.01">
+      </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-32">
+    <mat-label>Currency</mat-label>
+    <mat-select formControlName="currency">
+        @for (code of currencies; track code.code) {
+        <mat-option [value]="code.code">{{code.code}} ({{code.symbol}})</mat-option>
+        }
+    </mat-select>
+
+    </mat-form-field>
+
+    </div>
+    
+    <div class="flex gap-4">
+      <mat-form-field appearance="outline" class="flex-1">
+        <mat-label>Billing Cycle</mat-label>
+        <mat-select formControlName="billingCycle">
+          <mat-option value="WEEKLY">Weekly</mat-option>
+          <mat-option value="FORTNIGHTLY">Fortnightly</mat-option>
+          <mat-option value="MONTHLY">Monthly</mat-option>
+          <mat-option value="QUARTERLY">Quarterly</mat-option>
+          <mat-option value="SEMI-YEARLY">Semi-Yearly</mat-option>
+          <mat-option value="YEARLY">Yearly</mat-option>
+        </mat-select>
+      </mat-form-field>
+      
+    <mat-form-field appearance="outline" class="flex-1">
+    <mat-label>Next Billing Date</mat-label>
+    <input 
+        matInput 
+        [matDatepicker]="picker" 
+        formControlName="nextBillingDate"
+        placeholder="MM/DD/YYYY"
+    >
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    </div>
+    
+    <mat-form-field appearance="outline">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="ACTIVE">Active</mat-option>
+        <mat-option value="PAUSED">Paused</mat-option>
+        <mat-option value="CANCELLED">Cancelled</mat-option>
+      </mat-select>
+    </mat-form-field>
+    
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-flat-button color="primary" [disabled]="form.invalid" (click)="submit()">Save</button>
+</mat-dialog-actions>

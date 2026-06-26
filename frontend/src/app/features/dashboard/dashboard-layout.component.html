@@ -87,7 +87,7 @@
             <div class="card stat" (click)="navigate('subscriptions')">
               <div class="stat-icon slate"><mat-icon>credit_card</mat-icon></div>
               <div>
-                <div class="stat-val">$116.37</div>
+                <div class="stat-val">{{subscriptionService.totalMonthly() | currency:'NPR ':'symbol'}}</div>
                 <div class="stat-lbl">Monthly Subs</div>
               </div>
             </div>
@@ -120,14 +120,7 @@
 
         <router-outlet></router-outlet>
 
-        @if (activeTab() !== 'dashboard' && activeTab() !== 'vault' && activeTab() !== 'subscriptions' && activeTab() !== 'inbox' && activeTab() !=='tasks' && activeTab() !=='timeline') {
-          <!-- Fallback -->
-          <div class="card fallback view-enter">
-            <mat-icon class="fallback-icon">enhanced_encryption</mat-icon>
-            <h2 class="fallback-title">View in Development</h2>
-            <p class="fallback-text">This module is currently being built for the Soft Creme theme.</p>
-          </div>
-        }
+
 
       </div>
     </div>

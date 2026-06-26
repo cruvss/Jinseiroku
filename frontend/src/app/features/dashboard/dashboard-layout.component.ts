@@ -8,10 +8,11 @@ import { VaultComponent } from '../vault/vault.component';
 import { InboxService } from '../../core/services/inbox.service';
 import { CryptoService } from '../../core/services/crypto.service';
 import { Title } from '@angular/platform-browser';
-
+import { SubscriptionService } from '../../core/services/subscription.service';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-dashboard-layout',
-  imports: [MatIconModule, RouterOutlet, VaultComponent],
+  imports: [MatIconModule, RouterOutlet, CommonModule],
   templateUrl: './dashboard-layout.component.html',
   styleUrl: './dashboard-layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -21,6 +22,7 @@ export class DashboardLayoutComponent implements OnInit {
   private http = inject(HttpClient);
   private inboxService = inject(InboxService);
   private crypto = inject(CryptoService);
+  subscriptionService = inject(SubscriptionService);
   titleService = inject(Title);
   
   activeTab = signal('dashboard');

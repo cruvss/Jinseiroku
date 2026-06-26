@@ -1,5 +1,5 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
-@import './styles-variables.scss';
+@import 'styles-variables.scss';
 
 // ===== COLOR PALETTE (CSS Custom Properties mapping for legacy compatibility) =====
 :root {
@@ -215,4 +215,8 @@ body {
 
 .dark-icon {
   color: $dark;
+}
+
+.rounded-dialog .mat-mdc-dialog-surface {
+  border-radius: 20px;
 }

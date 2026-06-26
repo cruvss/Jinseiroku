@@ -1,2 +1,63 @@
-<mat-icon>home</mat-icon>
-<p>subscription works!</p>
+<div class="subscription-container">
+  
+  <!-- Header -->
+  <div class="subscription-header">
+    <div class="header-text">
+      <h1>Active Subscriptions</h1>
+      <p>
+        You are spending approx. <span>{{subscriptionService.totalMonthly() | currency:'NPR ':'symbol'}}/mo</span>
+      </p>
+    </div>
+    <button class="add-btn" (click)="openDialog()">
+      + Add Subscription
+    </button>
+  </div>
+
+  <!-- Grid -->
+  <div class="sub-grid">
+    @for (sub of subscriptions(); track sub.id) {
+      <div class="sub-card group" (click)="openDialog(sub)">
+        
+        <!-- Delete Button (shows only on hover) -->
+        <button class="delete-btn" 
+                (click)="$event.stopPropagation(); deleteSubscription(sub.id!)"
+                matTooltip="Delete">
+          <mat-icon>close</mat-icon>
+        </button>
+
+        <!-- Top Row (Avatar and Status Badge) -->
+        <div class="card-top">
+          <div class="avatar">{{ sub.name.charAt(0) | uppercase }}</div>
+          <div class="status-badge" [class]="sub.status.toLowerCase()">
+            {{ sub.status | titlecase }}
+          </div>
+        </div>
+
+        <!-- Middle Row (Name and Cost/Cycle) -->
+        <div class="card-middle">
+          <h3 class="sub-title">{{ sub.name }}</h3>
+          <div class="sub-cost-container">
+            <span class="sub-price">{{ currencySymbols[sub.currency] }} {{ sub.cost | number:'1.2-2' }}</span>
+            <span class="sub-interval">/{{ sub.billingCycle.toLowerCase() === 'yearly' ? 'annual' : sub.billingCycle.toLowerCase() }}</span>
+          </div>
+        </div>
+
+        <!-- Bottom Row (Next Bill and Date) -->
+        <div class="card-bottom">
+          <div class="next-bill-label">
+            <mat-icon>schedule</mat-icon>
+            <span>Next Bill</span>
+          </div>
+          <div class="next-bill-date">
+            {{ sub.nextBillingDate }}
+          </div>
+        </div>
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <mat-icon>credit_card_off</mat-icon>
+        <span>No active subscriptions found.</span>
+      </div>
+    }
+  </div>
+</div>
