@@ -33,7 +33,7 @@ public class AuthController {
         AuthResponse response = authService.register(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ApiResponseUtil.created("User registered sucessfully",response));
+                .body(ApiResponseUtil.created("User registered successfully",response));
     }
 
     @PostMapping("/login")
@@ -52,7 +52,7 @@ public class AuthController {
 
         authResponse.setRecoveryKey(null);
         authResponse.setRefreshToken(null);
-        return ResponseEntity.ok(ApiResponseUtil.success("Login Sucessful",authResponse));
+        return ResponseEntity.ok(ApiResponseUtil.success("Login Successful",authResponse));
     }
 
     @PostMapping("/refresh")

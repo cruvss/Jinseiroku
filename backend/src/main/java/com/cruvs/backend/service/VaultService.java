@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -21,6 +22,7 @@ public class VaultService {
     private final VaultDocumentRepository documentRepository;
     private final UserRepository userRepository;
     private final StorageService storageService;
+    private final ReminderService reminderService;
 
     @Transactional
     public VaultDocumentResponse upload(UUID userId, byte[] fileBytes, String fileNameEncrypted,
@@ -46,6 +48,19 @@ public class VaultService {
                 .build();
 
         doc = documentRepository.save(doc);
+        if (doc.getExpiryDate() !=null){
+            reminderService.createOrUpdateReminders(
+                    userId,
+                    "VAULT",
+                    doc.getId(),
+                    doc.getExpiryDate(),
+                    null,
+                    List.of(-90,-30,-7,-1),
+                    "Document Expiring Soon",
+                    "Your secure document will expire on "+ doc.getExpiryDate()+ ". Please renew it."
+            );
+        }
+
         return mapToResponse(doc);
     }
 
@@ -86,6 +101,8 @@ public class VaultService {
             throw new SecurityException("Access denied");
         }
         storageService.deleteFile(doc.getBlobStorageKey());
+
+        reminderService.deleteRemindersForSource("VAULT", doc.getId());
         documentRepository.delete(doc);
     }
 

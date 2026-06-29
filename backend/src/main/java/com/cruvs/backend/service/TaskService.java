@@ -23,6 +23,7 @@ public class TaskService {
     private final TaskRepository taskRepo;
     private final TaskCompletionRepository completionRepo;
     private final VaultDocumentRepository vaultRepo;
+    private final ReminderService reminderService;
 
     public List<TaskDto> getTasksByUserId(UUID userId) {
         return taskRepo.findByUserIdOrderByDueDateAsc(userId)
@@ -63,6 +64,19 @@ public class TaskService {
                 .build();
 
         task = taskRepo.save(task);
+        if (task.getDueDate() != null) {
+            int leadDays = task.getLeadTimeDays() != null ? task.getLeadTimeDays() : 7;
+            reminderService.createOrUpdateReminders(
+                    userId,
+                    "TASK",
+                    task.getId(),
+                    task.getDueDate(),
+                    leadDays,
+                    List.of(-leadDays),
+                    "Task Due Soon",
+                    "Your task is due on " + task.getDueDate()
+            );
+        }
         return mapToDto(task);
     }
 
@@ -92,6 +106,19 @@ public class TaskService {
         task.setLinkedDocument(document);
 
         task = taskRepo.save(task);
+        if (task.getDueDate() != null) {
+            int leadDays = task.getLeadTimeDays() != null ? task.getLeadTimeDays() : 7;
+            reminderService.createOrUpdateReminders(
+                    userId,
+                    "TASK",
+                    task.getId(),
+                    task.getDueDate(),
+                    leadDays,
+                    List.of(-leadDays),
+                    "Task Due Soon",
+                    "Your task is due on " + task.getDueDate()
+            );
+        }
         return mapToDto(task);
     }
 
@@ -102,6 +129,7 @@ public class TaskService {
         if (!task.getUserId().equals(userId)) {
             throw new SecurityException("Access denied");
         }
+        reminderService.deleteRemindersForSource("TASK", task.getId());
         taskRepo.delete(task);
     }
 
@@ -125,6 +153,19 @@ public class TaskService {
             LocalDate nextDue = calculateNextDueDate(task.getDueDate(), task.getCycleType(), task.getCycleInterval());
             task.setDueDate(nextDue);
             task.setStatus("pending");
+            if (task.getDueDate() != null) {
+                int leadDays = task.getLeadTimeDays() != null ? task.getLeadTimeDays() : 7;
+                reminderService.createOrUpdateReminders(
+                        userId,
+                        "TASK",
+                        task.getId(),
+                        task.getDueDate(),
+                        leadDays,
+                        List.of(-leadDays),
+                        "Task Due Soon",
+                        "Your recurring task is due on " + task.getDueDate()
+                );
+            }
         } else {
             task.setStatus("completed");
         }

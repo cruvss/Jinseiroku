@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 public class SubscriptionService {
 
     private final SubscriptionRepository subscriptionRepository;
+    private final ReminderService reminderService;
 
     public List<Sub> getSubscriptionsByUserId(UUID userId) {
         return subscriptionRepository.findAllByUserIdOrderByNextBillingDateAsc(userId)
@@ -38,6 +39,18 @@ public class SubscriptionService {
                 .build();
 
         entity = subscriptionRepository.save(entity);
+        if (entity.getNextBillingDate() != null) {
+            reminderService.createOrUpdateReminders(
+                    userId,
+                    "SUBSCRIPTION",
+                    entity.getId(),
+                    entity.getNextBillingDate(),
+                    null,
+                    List.of(-7, -3, -1),
+                    "Subscription Renewal",
+                    "Subscription " + entity.getName() + " is renewing soon on " + entity.getNextBillingDate()
+            );
+        }
         return mapToDto(entity);
     }
 
@@ -59,6 +72,19 @@ public class SubscriptionService {
         entity.setLinkedDocumentId(dto.getLinkedDocumentId());
 
         entity = subscriptionRepository.save(entity);
+
+        if (entity.getNextBillingDate() != null) {
+            reminderService.createOrUpdateReminders(
+                    userId,
+                    "SUBSCRIPTION",
+                    entity.getId(),
+                    entity.getNextBillingDate(),
+                    null,
+                    List.of(-7, -3, -1),
+                    "Subscription Renewal",
+                    "Subscription " + entity.getName() + " is renewing soon on " + entity.getNextBillingDate()
+            );
+        }
         return mapToDto(entity);
     }
 
@@ -70,7 +96,7 @@ public class SubscriptionService {
         if (!entity.getUserId().equals(userId)) {
             throw new SecurityException("Access denied");
         }
-
+        reminderService.deleteRemindersForSource("SUBSCRIPTION", entity.getId());
         subscriptionRepository.delete(entity);
     }
 

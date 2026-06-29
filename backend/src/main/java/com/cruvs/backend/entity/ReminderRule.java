@@ -3,6 +3,9 @@ package com.cruvs.backend.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -34,6 +37,7 @@ public class ReminderRule {
     private Integer leadTimeDays;
 
     @Column(name = "reminder_offsets", columnDefinition = "jsonb")
+    @JdbcTypeCode(SqlTypes.JSON)
     private String reminderOffsets;
 
     @Column(length = 20)

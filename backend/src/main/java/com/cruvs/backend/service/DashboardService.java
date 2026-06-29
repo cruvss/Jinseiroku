@@ -1,22 +1,26 @@
 package com.cruvs.backend.service;
 
 import com.cruvs.backend.dto.dashboard.DashboardStatsResponse;
+import com.cruvs.backend.dto.minio.VaultDocumentResponse;
+import com.cruvs.backend.dto.reminder.ScheduledNotificationDto;
+import com.cruvs.backend.dto.timeline.TimelineEventDto;
 import com.cruvs.backend.entity.Subscription;
 import com.cruvs.backend.entity.Task;
 import com.cruvs.backend.entity.User;
-import com.cruvs.backend.repository.InboxItemRepository;
-import com.cruvs.backend.repository.SubscriptionRepository;
-import com.cruvs.backend.repository.TaskRepository;
-import com.cruvs.backend.repository.UserRepository;
-import com.cruvs.backend.repository.VaultDocumentRepository;
+import com.cruvs.backend.entity.VaultDocument;
+import com.cruvs.backend.entity.TimelineEvent;
+import com.cruvs.backend.entity.ScheduledNotification;
+import com.cruvs.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -26,9 +30,13 @@ public class DashboardService {
     private final SubscriptionRepository subscriptionRepo;
     private final TaskRepository taskRepo;
     private final UserRepository userRepo;
+    private final TimelineEventRepository timelineRepo;
+    private final ScheduledNotificationRepository notificationRepo;
+    private final ReminderService reminderService;
 
     public DashboardStatsResponse getStats(UUID userId){
         User user = userRepo.findById(userId).orElseThrow();
+        LocalDate today = LocalDate.now();
 
         // 1. Subscriptions Calc
         List<Subscription> subs = subscriptionRepo.findAllByUserIdOrderByNextBillingDateAsc(userId);
@@ -40,7 +48,6 @@ public class DashboardService {
                 .orElse(null);
 
         // 2. Tasks Calc
-        LocalDate today = LocalDate.now();
         long overdueTasks = taskRepo.countByUserIdAndStatusAndDueDateBefore(userId, "pending", today);
         long pendingToDos = taskRepo.countByUserIdAndIsRecurringAndStatus(userId, false, "pending");
 
@@ -50,14 +57,73 @@ public class DashboardService {
                 .findFirst()
                 .orElse(null);
 
+        // 3. Next Expiring Vault Doc
+        VaultDocumentResponse nextExpiring = vaultRepo.findFirstByUserAndExpiryDateIsNotNullAndExpiryDateGreaterThanEqualOrderByExpiryDateAsc(user, today)
+                .map(this::mapToVaultResponse)
+                .orElse(null);
+
+        // 4. Recent Timeline Event
+        TimelineEventDto recentEvent = timelineRepo.findAllByUserIdOrderByEventDateDesc(userId)
+                .stream()
+                .findFirst()
+                .map(this::mapToTimelineDto)
+                .orElse(null);
+
+        // 5. Reminders: Upcoming (next 7 days) and Overdue
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime endOfNext7Days = now.plusDays(7);
+        // Fetch sent alerts
+        List<ScheduledNotification> reminders = notificationRepo.findByUserIdAndStatusOrderByScheduledForAsc(userId, "sent");
+
+        List<ScheduledNotificationDto> upcomingReminders = reminders.stream()
+                .filter(r -> r.getScheduledFor().isAfter(now) && r.getScheduledFor().isBefore(endOfNext7Days))
+                .map(reminderService::mapToDto)
+                .collect(Collectors.toList());
+        List<ScheduledNotificationDto> overdueReminders = reminders.stream()
+                .filter(r -> r.getScheduledFor().isBefore(now))
+                .map(reminderService::mapToDto)
+                .collect(Collectors.toList());
+
         return DashboardStatsResponse.builder()
                 .unprocessedInboxCount(inboxRepo.countByUserAndStatus(user,"unprocessed"))
                 .vaultDocumentCount(vaultRepo.countByUser(user))
+                .nextExpiringDocument(nextExpiring)
                 .totalMonthlySubscriptionCost(monthlyCost)
                 .nextSubscriptionRenewalDate(nextRenewal)
                 .overdueTasksCount(overdueTasks)
                 .pendingToDosCount(pendingToDos)
                 .nextRecurringTaskDueDate(nextRecurringDue)
+                .recentTimelineEvent(recentEvent)
+                .upcomingReminders(upcomingReminders)
+                .overdueReminders(overdueReminders)
+                .build();
+    }
+
+    private VaultDocumentResponse mapToVaultResponse(VaultDocument doc) {
+        return VaultDocumentResponse.builder()
+                .id(doc.getId())
+                .fileNameEncrypted(doc.getFileNameEncrypted())
+                .category(doc.getCategory())
+                .tagsEncrypted(doc.getTagsEncrypted())
+                .notesEncrypted(doc.getNotesEncrypted())
+                .encryptedDek(doc.getEncryptedDek())
+                .fileSizeBytes(doc.getFileSizeBytes())
+                .mimeType(doc.getMimeType())
+                .expiryDate(doc.getExpiryDate())
+                .build();
+    }
+
+    private TimelineEventDto mapToTimelineDto(TimelineEvent entity) {
+        return TimelineEventDto.builder()
+                .id(entity.getId())
+                .titleEncrypted(entity.getTitleEncrypted())
+                .descriptionEncrypted(entity.getDescriptionEncrypted())
+                .eventDate(entity.getEventDate())
+                .endDate(entity.getEndDate())
+                .category(entity.getCategory())
+                .linkedDocumentIds(entity.getLinkedDocumentIds())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 

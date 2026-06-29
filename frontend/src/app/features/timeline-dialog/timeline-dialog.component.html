@@ -1,0 +1,58 @@
+<h2 mat-dialog-title class="dialog-header">{{ isEdit ? 'Edit Timeline Event' : 'Add Timeline Event' }}</h2>
+
+<mat-dialog-content class="dialog-content">
+  <form [formGroup]="form">
+    <div class="field-row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Event Title</mat-label>
+        <input matInput formControlName="title" placeholder="Title of the life event" />
+      </mat-form-field>
+    </div>
+
+    <div class="field-row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description" rows="3" placeholder="Describe this event..."></textarea>
+      </mat-form-field>
+    </div>
+
+    <div class="field-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Event Date</mat-label>
+        <input matInput [matDatepicker]="datePicker" formControlName="eventDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+        <mat-datepicker #datePicker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>End Date (Optional)</mat-label>
+        <input matInput [matDatepicker]="endDatePicker" formControlName="endDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+        <mat-datepicker #endDatePicker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <div class="field-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Link Documents</mat-label>
+        <mat-select formControlName="linkedDocumentIds" multiple>
+          <mat-option *ngFor="let doc of vaultDocuments" [value]="doc.id">{{ doc.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="submit()">
+    {{ isEdit ? 'Save Changes' : 'Add Event' }}
+  </button>
+</mat-dialog-actions>

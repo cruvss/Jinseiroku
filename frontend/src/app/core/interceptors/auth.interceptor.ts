@@ -18,7 +18,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: any) => {
       if (
         error instanceof HttpErrorResponse &&
-        error.status === 401 &&
+        error.status === 401 ||
+        error.status === 403 &&
         !req.url.includes('/auth/refresh') &&
         !req.url.includes('/auth/login')
       ) {

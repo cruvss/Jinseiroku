@@ -7,6 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+
+import java.time.LocalDate;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -14,4 +17,5 @@ public interface VaultDocumentRepository extends JpaRepository<VaultDocument, UU
     Page<VaultDocument> findByUserAndCategory(User user, String category, Pageable pageable);
     Page<VaultDocument> findByUser(User user, Pageable pageable);
     long countByUser(User user);
+    Optional<VaultDocument> findFirstByUserAndExpiryDateIsNotNullAndExpiryDateGreaterThanEqualOrderByExpiryDateAsc(User user, LocalDate date);
 }

@@ -1,1 +1,93 @@
-<p> timeline works</p>
+<div class="container view-enter">
+  @if (!cryptoService.hasActiveSession()) {
+    <div class="unlock-panel card">
+      <mat-icon class="lock-icon">lock</mat-icon>
+      <h2>Unlock Your Life Record</h2>
+      <p>Enter your master password to decrypt your personal timeline.</p>
+      
+      <form [formGroup]="unlockForm" (submit)="onUnlock()" class="unlock-form">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Master Password</mat-label>
+          <input matInput type="password" formControlName="password" placeholder="Enter password" />
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" [disabled]="unlockForm.invalid || isLoading()">
+          {{ isLoading() ? 'Decrypting...' : 'Unlock Timeline' }}
+        </button>
+      </form>
+    </div>
+  } @else {
+    <div class="timeline-header">
+      <h2>Personal Timeline</h2>
+      <button mat-raised-button color="primary" (click)="addEvent()">
+        <mat-icon>add</mat-icon> Add Event
+      </button>
+    </div>
+
+    @if (isLoading()) {
+      <div class="spinner-container">
+        <mat-icon class="spin-icon">hourglass_empty</mat-icon>
+        <p>Decrypting your memories...</p>
+      </div>
+    } @else if (groupedEvents().length === 0) {
+      <div class="empty-state card">
+        <mat-icon class="empty-icon">history</mat-icon>
+        <h3>No timeline events yet</h3>
+        <p>Start documenting key life events, milestones, and record details here.</p>
+        <button mat-stroked-button (click)="addEvent()">Create First Event</button>
+      </div>
+    } @else {
+      <div class="timeline-tree">
+        @for (yearGroup of groupedEvents(); track yearGroup.year) {
+          <div class="year-group">
+            <div class="year-header">{{ yearGroup.year }}</div>
+
+            @for (monthGroup of yearGroup.months; track monthGroup.month) {
+              <div class="month-group">
+                <div class="month-header">{{ monthGroup.month }}</div>
+
+                <div class="events-list">
+                  @for (event of monthGroup.events; track event.id) {
+                    <div class="timeline-event-card card">
+                      <div class="event-left">
+                        <div class="category-badge" [ngClass]="getBadgeClass(event.category)">
+                          {{ event.category }}
+                        </div>
+                        <div class="event-date">
+                          {{ event.eventDate | date:'MMM dd' }}
+                          @if (event.endDate) {
+                            - {{ event.endDate | date:'MMM dd' }}
+                          }
+                        </div>
+                      </div>
+
+                      <div class="event-center">
+                        <h4 class="event-title">{{ event.decryptedTitle }}</h4>
+                        @if (event.decryptedDescription) {
+                          <p class="event-desc">{{ event.decryptedDescription }}</p>
+                        }
+                        @if (event.linkedDocumentIds && event.linkedDocumentIds.length > 0) {
+                          <div class="linked-docs">
+                            <span class="linked-lbl"><mat-icon>attachment</mat-icon> {{ event.linkedDocumentIds.length }} Linked Document(s)</span>
+                          </div>
+                        }
+                      </div>
+
+                      <div class="event-right">
+                        <button class="icon-btn" (click)="editEvent(event)">
+                          <mat-icon>edit</mat-icon>
+                        </button>
+                        <button class="icon-btn delete-btn" (click)="deleteEvent(event.id!)">
+                          <mat-icon>delete</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+  }
+</div>
