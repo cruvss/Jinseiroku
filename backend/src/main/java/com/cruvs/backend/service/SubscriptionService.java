@@ -74,16 +74,16 @@ public class SubscriptionService {
         subscriptionRepository.delete(entity);
     }
 
-    private Sub mapToDto(Subscription entity) {
-        Sub dto = new Sub();
-        dto.setId(entity.getId());
-        dto.setName(entity.getName());
-        dto.setCost(entity.getCost());
-        dto.setCurrency(entity.getCurrency());
-        dto.setBillingCycle(entity.getBillingCycle());
-        dto.setNextBillingDate(entity.getNextBillingDate());
-        dto.setStatus(entity.getStatus());
-        dto.setLinkedDocumentId(entity.getLinkedDocumentId());
-        return dto;
+    private Sub mapToDto(Subscription sub){
+        return Sub.builder()
+                .id(sub.getId())
+                .name(sub.getName())
+                .cost(sub.getCost())
+                .currency(sub.getCurrency())
+                .billingCycle(sub.getBillingCycle())
+                .status(sub.getStatus())
+                .nextBillingDate(sub.getNextBillingDate())
+                .linkedDocumentId(sub.getLinkedDocumentId())
+                .build();
     }
 }
