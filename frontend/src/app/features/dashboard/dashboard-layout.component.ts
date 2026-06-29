@@ -58,10 +58,23 @@ export class DashboardLayoutComponent implements OnInit {
     });
   }
 
+    dashboardStats = signal<any>({
+    unprocessedInboxCount: 0,
+    vaultDocumentCount: 0,
+    totalMonthlySubscriptionCost: 0,
+    nextSubscriptionRenewalDate: null,
+    overdueTasksCount: 0,
+    pendingToDosCount: 0,
+    nextRecurringTaskDueDate: null
+  });
+
   ngOnInit() {
-    this.http.get<{data: {unprocessedInboxCount: number, vaultDocumentCount: number}}>(`${environment.apiUrl}/dashboard`)
+    this.subscriptionService.loadSubscriptions();
+    
+    this.http.get<{ data: any }>(`${environment.apiUrl}/dashboard`)
       .subscribe({
         next: (res) => {
+          this.dashboardStats.set(res.data);
           this.inboxCount.set(res.data.unprocessedInboxCount);
         },
         error: (err) => console.error('Failed to load dashboard stats', err)

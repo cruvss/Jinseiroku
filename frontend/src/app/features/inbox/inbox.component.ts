@@ -7,11 +7,15 @@ import { InboxService } from '../../core/services/inbox.service';
 import { CryptoService } from '../../core/services/crypto.service';
 import { InboxItem } from '../../core/models/inbox.model';
 import { StagingVaultDialogComponent } from '../staging/staging-vault-dialog.component';
+import { SubscriptionService } from '../../core/services/subscription.service';
+import { SubscriptionDialogComponent } from '../subscription-dialog/subscription-dialog.component';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { StagingTaskDialogComponent } from '../staging/staging-task-dialog.component';
 
 @Component({
   selector: 'app-inbox',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatIconModule],
+  imports: [CommonModule, ReactiveFormsModule, MatIconModule, MatSnackBarModule],
   templateUrl:'inbox.component.html',
   styleUrl: 'inbox.component.scss'
 })
@@ -20,6 +24,8 @@ export class InboxComponent implements OnInit {
   crypto = inject(CryptoService);
   dialog = inject(MatDialog);
   fb = inject(FormBuilder);
+  subscriptionService = inject(SubscriptionService);
+  snackBar = inject(MatSnackBar);
 
   items = signal<InboxItem[]>([]);
   selectedFile: File | null = null;
@@ -98,6 +104,41 @@ export class InboxComponent implements OnInit {
           this.load();
         }
       });
+  }
+    triageTask(item: InboxItem) {
+    this.dialog.open(StagingTaskDialogComponent, { data: item, width: '400px' })
+      .afterClosed().subscribe(res => {
+        if (res) {
+          this.inboxService.unreadCount.update(n => Math.max(0, n - 1));
+          this.load();
+        }
+      });
+  }
+
+  triageSubscription(item: InboxItem) {
+    this.dialog.open(SubscriptionDialogComponent, {
+      data: { inboxText: item.decryptedText || '' },
+      width: '400px'
+    }).afterClosed().subscribe(res => {
+      if (res) {
+        this.subscriptionService.createSubscription(res).subscribe({
+          next: () => {
+            this.inboxService.delete(item.id).subscribe({
+              next: () => {
+                this.inboxService.unreadCount.update(n => Math.max(0, n - 1));
+                this.load();
+                this.snackBar.open('Converted to subscription successfully!', 'Close', { duration: 3000 });
+              },
+              error: (err) => console.error('Failed to delete inbox item after triage', err)
+            });
+          },
+          error: (err) => {
+            console.error('Failed to create subscription', err);
+            this.snackBar.open('Failed to convert to subscription.', 'Close', { duration: 5000 });
+          }
+        });
+      }
+    });
   }
 
   getIconName(item: InboxItem): string {

@@ -1,1 +1,91 @@
-<p> task works</p>
+<div class="tasks-container">
+  <div class="tasks-header">
+    <div>
+      <h1>Tasks & Life Maintenance</h1>
+      <p class="subtitle">Manage one-off to-dos and automate recurring life events.</p>
+    </div>
+    <button class="add-task-btn" (click)="openAddTaskDialog()">
+      <mat-icon>add</mat-icon> New Task
+    </button>
+  </div>
+
+  <div class="tasks-layout">
+    <!-- COLUMN 1: ONE-OFF TO-DOS -->
+    <div class="task-column-card">
+      <div class="column-header">
+        <mat-icon class="todo-icon">playlist_add_check</mat-icon>
+        <h2>One-off To-Dos</h2>
+      </div>
+
+      <div class="task-list">
+        <div class="task-item" *ngFor="let item of taskService.oneOffTodos()" [class.overdue-border]="isOverdue(item)">
+          <div class="todo-row">
+            <button class="checkbox-btn" (click)="toggleTodoComplete(item)">
+              <mat-icon>check_box_outline_blank</mat-icon>
+            </button>
+
+            <div class="task-details">
+              <div class="task-title" [class.overdue-text]="isOverdue(item)" (click)="openEditTaskDialog(item)">
+                {{ item.decryptedTitle }}
+              </div>
+              <div class="task-meta">
+                <mat-icon>schedule</mat-icon> Due: {{ item.dueDate | date:'yyyy-MM-dd' }}
+              </div>
+            </div>
+
+            <span class="overdue-badge" *ngIf="isOverdue(item)">Overdue</span>
+            <button class="delete-btn" (click)="deleteTask(item)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="empty-state" *ngIf="taskService.oneOffTodos().length === 0">
+          <mat-icon>done_all</mat-icon>
+          <p>No pending to-dos!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMN 2: RECURRING MAINTENANCE -->
+    <div class="task-column-card">
+      <div class="column-header">
+        <mat-icon class="recurring-icon">autorenew</mat-icon>
+        <h2>Recurring Maintenance</h2>
+      </div>
+
+      <div class="task-list">
+        <div class="task-item recurring-item" *ngFor="let item of taskService.recurringTasks()">
+          <div class="recurring-row">
+            <button class="mark-done-btn" (click)="markRecurringDone(item)">
+              <mat-icon>check_circle_outline</mat-icon>
+            </button>
+
+            <div class="task-details">
+              <div class="task-title" [class.overdue-text]="isOverdue(item)" (click)="openEditTaskDialog(item)">
+                {{ item.decryptedTitle }}
+              </div>
+              <div class="cycle-info">
+                <mat-icon>sync</mat-icon> Every {{ item.cycleInterval }} {{ item.cycleType | lowercase }}
+              </div>
+            </div>
+
+            <div class="due-box">
+              <span class="due-label">NEXT DUE</span>
+              <span class="due-date-badge" [class.overdue-bg]="isOverdue(item)">
+                {{ item.dueDate | date:'yyyy-MM-dd' }}
+              </span>
+            </div>
+            
+            <button class="delete-btn" (click)="deleteTask(item)">
+              <mat-icon>delete_outline</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="empty-state" *ngIf="taskService.recurringTasks().length === 0">
+          <mat-icon>event_note</mat-icon>
+          <p>No recurring maintenance set up.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -27,7 +27,8 @@
 
             <div class="item-actions">
               <button class="action-btn" (click)="triageVault(item)">Convert to Vault</button>
-              <button class="action-btn">To Sub</button>
+              <button class="action-btn" (click)="triageSubscription(item)">To Sub</button>
+              <button class="action-btn" (click)="triageTask(item)">→ Task</button>
               <button class="icon-btn trash-btn" (click)="deleteItem(item.id)">
                 <mat-icon>delete_outline</mat-icon>
               </button>

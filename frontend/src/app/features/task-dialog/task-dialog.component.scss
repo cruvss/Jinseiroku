@@ -1,0 +1,33 @@
+.dialog-header {
+  font-weight: 800 !important;
+  color: var(--color-dark);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  letter-spacing: -0.02em;
+}
+
+.dialog-content {
+  padding-top: 1rem !important;
+}
+
+.field-row {
+  margin-bottom: 0.5rem;
+}
+
+.field-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.slide-toggle-row {
+  margin: 1.25rem 0;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.dialog-actions {
+  padding: 1.5rem 1rem !important;
+}

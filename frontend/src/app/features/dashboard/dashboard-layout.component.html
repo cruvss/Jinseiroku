@@ -75,27 +75,47 @@
             </form>
           </section>
 
-          <!-- Stats -->
+                    <!-- Updated Stats Grid -->
           <div class="stats">
+            <!-- Staging Inbox -->
             <div class="card stat" (click)="navigate('inbox')">
               <div class="stat-icon coral"><mat-icon>inbox</mat-icon></div>
               <div>
-                <div class="stat-val">{{ inboxCount() }}</div>
-                <div class="stat-lbl">Unprocessed<br/>Items</div>
+                <div class="stat-val">{{ dashboardStats().unprocessedInboxCount }}</div>
+                <div class="stat-lbl">Staging<br/>Unprocessed</div>
               </div>
             </div>
+
+            <!-- Subscriptions Card (Total + Next Renewal) -->
             <div class="card stat" (click)="navigate('subscriptions')">
               <div class="stat-icon slate"><mat-icon>credit_card</mat-icon></div>
               <div>
-                <div class="stat-val">{{subscriptionService.totalMonthly() | currency:'NPR ':'symbol'}}</div>
-                <div class="stat-lbl">Monthly Subs</div>
+                <div class="stat-val">{{ dashboardStats().totalMonthlySubscriptionCost | currency:'NPR ':'symbol' }}</div>
+                <div class="stat-lbl">
+                  Monthly Total
+                  <div class="stat-sub" *ngIf="dashboardStats().nextSubscriptionRenewalDate">
+                    Renewal: {{ dashboardStats().nextSubscriptionRenewalDate | date:'MM-dd' }}
+                  </div>
+                </div>
               </div>
             </div>
+
+            <!-- Tasks Card (Overdue & Next Recurring) -->
             <div class="card stat" (click)="navigate('tasks')">
-              <div class="stat-icon pink"><mat-icon>error_outline</mat-icon></div>
+              <div class="stat-icon pink"><mat-icon>event_available</mat-icon></div>
               <div>
-                <div class="stat-val">1</div>
-                <div class="stat-lbl">Overdue Tasks</div>
+                <div class="stat-val">
+                  <span [class.overdue-text]="dashboardStats().overdueTasksCount > 0">
+                    {{ dashboardStats().overdueTasksCount }}
+                  </span>
+                  <span class="stat-meta">/{{ dashboardStats().pendingToDosCount }}</span>
+                </div>
+                <div class="stat-lbl">
+                  Overdue / Total To-Dos
+                  <div class="stat-sub" *ngIf="dashboardStats().nextRecurringTaskDueDate">
+                    Next Due: {{ dashboardStats().nextRecurringTaskDueDate | date:'MM-dd' }}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

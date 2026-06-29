@@ -1,0 +1,78 @@
+<h2 mat-dialog-title class="dialog-header">{{ data.task ? 'Edit' : 'New' }} Task</h2>
+
+<mat-dialog-content class="dialog-content">
+  <form [formGroup]="form">
+    <!-- Template Selector -->
+    <div class="field-row" *ngIf="!data.task">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Start from Template</mat-label>
+        <mat-select (selectionChange)="applyTemplate($event.value)">
+          <mat-option [value]="null">-- None --</mat-option>
+          <mat-option *ngFor="let tpl of templates" [value]="tpl">{{ tpl.label }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- Title Input -->
+    <div class="field-row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Task Name</mat-label>
+        <input matInput formControlName="title" placeholder="What needs to be done?" />
+      </mat-form-field>
+    </div>
+
+    <!-- Description Input -->
+    <div class="field-row">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Description (Optional & Encrypted)</mat-label>
+        <textarea matInput formControlName="description" rows="3" placeholder="Context details..."></textarea>
+      </mat-form-field>
+    </div>
+
+    <!-- Category + Due Date row -->
+    <div class="field-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>Category</mat-label>
+        <mat-select formControlName="category">
+          <mat-option *ngFor="let cat of categories" [value]="cat">{{ cat }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Due Date</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="dueDate" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+
+    <!-- Recurring toggler -->
+    <div class="slide-toggle-row">
+      <mat-slide-toggle formControlName="isRecurring" color="primary">
+        Is this a Recurring Task?
+      </mat-slide-toggle>
+    </div>
+
+    <!-- Cycle Setup (Conditionally shown) -->
+    <div class="field-grid view-enter" *ngIf="form.get('isRecurring')?.value">
+      <mat-form-field appearance="outline">
+        <mat-label>Interval</mat-label>
+        <input matInput type="number" formControlName="cycleInterval" min="1" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Frequency Unit</mat-label>
+        <mat-select formControlName="cycleType">
+          <mat-option *ngFor="let type of cycleTypes" [value]="type">{{ type | titlecase }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-raised-button color="primary" [disabled]="form.invalid" (click)="submit()">
+    Save Task
+  </button>
+</mat-dialog-actions>
