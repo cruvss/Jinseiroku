@@ -59,6 +59,7 @@ public class ReminderService {
 
             System.out.println("scheduled Date " +scheduledDate);
             System.out.println("Current Date " + LocalDate.now());
+
             if (offset == 0 && scheduledDate.equals(LocalDate.now())) {
                 scheduledFor = LocalDateTime.now().plusMinutes(1);
                 System.out.println("Scheduled Date"+scheduledDate);

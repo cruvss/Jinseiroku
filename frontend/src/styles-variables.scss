@@ -1,27 +1,41 @@
 
 // ── Color Palette 
-$page:        #EBE0D2;
-$sidebar-bg:  #F4EAE0;
-$color-accent: #F4EAE0;
-$card-bg:     #FCF8F2;
-$dark:        #41372E;
-$muted:       #8A7A6A;
-$accent:      #CC6654;
-$accent-dark: #A04D3F;
-$btn-dark:    #2A231E;
-$border:      #D4C5B5;
+// $page:        #EBE0D2;
+// $sidebar-bg:  #F4EAE0;
+// $color-accent: #F4EAE0;
+// $card-bg:     #FCF8F2;
+// $dark:        #41372E;
+// $muted:       #8A7A6A;
+// $accent:      #CC6654;
+// $accent-dark: #A04D3F;
+// $btn-dark:    #2A231E;
+// $border:      #D4C5B5;
 
-// $page:         url('/red.png') center / cover no-repeat;   // Main page background
-// // $sidebar-bg:   #FFFFFF;   // Sidebar background
-// // $color-accent: #3390EC;   // Telegram blue
-// // $card-bg:      #FFFFFF;   // Cards
-// // $dark:         #17212B;   // Primary text
-// // $muted:        #707579;   // Secondary text
-// // $accent:       #3390EC;   // Primary accent
-// // $accent-dark:  #2A7FD4;   // Hover state
-// // $btn-dark:     #17212B;   // Dark buttons (optional)
-// // $border:       #E6ECF0;   // Borders/dividers
+//arcane luxyri
+// $page:         #121826;
+// $sidebar-bg:   #0A101A;
+// $color-accent: #1E293B;
+// $card-bg:      #1B2433;
+// $dark:         #F6E9D4;
+// $muted:        #98A7B8;
+// $accent:       #D4AF37;  // Rich gold
+// $accent-dark:  #2F7E78;  // Emerald teal
+// $btn-dark:     #151E2B;
+// $border:       #334155;
 
+//coffee theme
+$page:         #171717;  // Dark stone countertop
+$sidebar-bg:   #0F0F10;  // Matte black
+$color-accent: #252525;  // Elevated surfaces
+$card-bg:      #1E1E1E;  // Dark cards
+$dark:         #F2E7D5;  // Warm cream text
+$muted:        #9A8F82;  // Muted coffee gray
+$accent:       #A66A2C;  // Roasted coffee
+$accent-dark:  #D7A54A;  // Espresso crema
+$btn-dark:     #121212;  // Buttons
+$border:       #343434;  // Soft charcoal border
+
+$page:         url('/background.jpg') center / cover no-repeat;   // Main page background
 // ── Shadows 
 $shadow-sm:   2px 2px 0px $border;
 $shadow-md:   3px 3px 0px $border;

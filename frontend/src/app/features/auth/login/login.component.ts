@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component } from "@angular/core";
+import { Component, signal } from "@angular/core";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
@@ -31,7 +31,7 @@ import { MatIconModule } from "@angular/material/icon";
 })
 export class LoginComponent {
   loginForm: FormGroup;
-  isLoading = false;
+  isLoading = signal(false);
   hidePassword = true;
 
   
@@ -52,19 +52,19 @@ export class LoginComponent {
       return;
     }
 
-    this.isLoading = true;
+    this.isLoading.set(true);
     const { email, password } = this.loginForm.value;
 
     this.authService.login({ email, password }).subscribe({
       next: () => {
-        this.isLoading = false;
+        this.isLoading.set(false);
         this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
         this.router.navigate(['/dashboard']);
       },
       error: (error) => {
-        this.isLoading = false;
+        this.isLoading.set(false);
         const message = error.error?.error?.message || 'Login failed. Please try again.';
-        this.snackBar.open(message, 'Close', { duration: 5000 });
+        this.snackBar.open(message, 'Close', { duration: 2000 });
       }
     });
   }

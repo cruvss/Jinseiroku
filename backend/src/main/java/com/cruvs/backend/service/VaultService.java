@@ -55,7 +55,7 @@ public class VaultService {
                     doc.getId(),
                     doc.getExpiryDate(),
                     null,
-                    List.of(-90,-30,-7,-1),
+                    List.of(0),
                     "Document Expiring Soon",
                     "Your secure document will expire on "+ doc.getExpiryDate()+ ". Please renew it."
             );

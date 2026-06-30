@@ -9,20 +9,17 @@
 
     <div class="nav-links">
       @for (link of navLinks; track link.id) {
-        <button
-          class="nav-link"
-          [class.active]="activeTab() === link.id"
-          (click)="navigate(link.id)">
-          <span class="nav-link-left">
-            <mat-icon>{{ link.icon }}</mat-icon>
-            {{ link.label }}
-          </span>
-          @if (link.hasBadge) {
-            <span class="badge" [class.active]="activeTab() === link.id">
-              {{ inboxCount() }}
-            </span>
-          }
-        </button>
+      <button class="nav-link" [class.active]="activeTab() === link.id" (click)="navigate(link.id)">
+        <span class="nav-link-left">
+          <mat-icon>{{ link.icon }}</mat-icon>
+          {{ link.label }}
+        </span>
+        @if (link.hasBadge) {
+        <span class="badge" [class.active]="activeTab() === link.id">
+          {{ inboxCount() }}
+        </span>
+        }
+      </button>
       }
     </div>
 
@@ -43,9 +40,30 @@
     <header class="topbar">
       <h1 class="topbar-title">{{ activeTab() }}</h1>
       <div class="topbar-right">
-        <div class="search">
+        <div class="search" style="position: relative;">
           <mat-icon class="search-icon">search</mat-icon>
-          <input type="text" class="search-input" placeholder="Search..." />
+          <input type="text" class="search-input" placeholder="Search anywhere"
+            [value]="searchQuery()" (input)="onSearchInput($event)" (focus)="onSearchFocus()" (blur)="onSearchBlur()" />
+          <!-- Spotlight Search Dropdown -->
+          @if (showResults() && searchResults().length > 0) {
+          <div class="search-results-dropdown card">
+            @for (res of searchResults(); track res.title) {
+            <div class="search-result-item" (mousedown)="goToResult(res)">
+              <mat-icon class="result-icon">{{ res.icon }}</mat-icon>
+              <div class="result-details">
+                <div class="result-title">{{ res.title }}</div>
+                <div class="result-subtitle">
+                  <span class="result-type">{{ res.type }}</span> · {{ res.subtitle }}
+                </div>
+              </div>
+            </div>
+            }
+          </div>
+          } @else if (showResults() && searchQuery().trim().length > 0) {
+          <div class="search-results-dropdown card empty-results">
+            No matches found.
+          </div>
+          }
         </div>
         <button class="avatar" (click)="openProfile()">{{ userInitials() }}</button>
       </div>
@@ -63,15 +81,14 @@
               <mat-icon>drive_file_move</mat-icon>
               Dump it here, organize it later.
             </h2>
-            <form class="capture-form" (submit)="capture($event)">
-              <input
-                class="capture-input"
-                type="text"
-                placeholder="Type a thought, paste a link, or drag a file here..."
-                [value]="captureText()"
-                (input)="updateCapture($event)" />
+            <form class="capture-form" (submit)="capture($event, captureInput)">
+              <input #captureInput class="capture-input" type="text"
+                placeholder="Type a thought, paste a link, or upload a file here..." />
               <div class="capture-btns">
-                <button type="button" class="img-btn"><mat-icon>image</mat-icon></button>
+                <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
+                <button type="button" class="icon-btn"
+                  (click)="fileInput.click()"><mat-icon>attach_file</mat-icon></button>
+                <span *ngIf="selectedFile" class="file-badge">{{selectedFile.name}}</span>
                 <button type="submit" class="submit-btn" [disabled]="isCapturing()">
                   {{ isCapturing() ? 'Capturing...' : 'Capture' }}
                 </button>
@@ -79,14 +96,19 @@
             </form>
           </section>
 
-                    <!-- Updated Stats Grid -->
+          <!-- Updated Stats Grid -->
           <div class="stats">
             <!-- Staging Inbox -->
             <div class="card stat" (click)="navigate('inbox')">
               <div class="stat-icon coral"><mat-icon>inbox</mat-icon></div>
               <div>
+                @if(dashboardStats().unprocessedInboxCount > 1){
                 <div class="stat-val">{{ dashboardStats().unprocessedInboxCount }}</div>
-                <div class="stat-lbl">Staging<br/>Unprocessed</div>
+                <div class="stat-lbl">Unprocessed<br />Items</div>
+                }@else {
+                <div class="stat-val">{{ dashboardStats().unprocessedInboxCount }}</div>
+                <div class="stat-lbl">Unprocessed<br />Item</div>
+                }
               </div>
             </div>
 
@@ -94,12 +116,13 @@
             <div class="card stat" (click)="navigate('subscriptions')">
               <div class="stat-icon slate"><mat-icon>credit_card</mat-icon></div>
               <div>
-                <div class="stat-val">{{ dashboardStats().totalMonthlySubscriptionCost | currency:'NPR ':'symbol' }}</div>
+                <div class="stat-val">{{ dashboardStats().totalMonthlySubscriptionCost | currency:'NPR ':'symbol' }}
+                </div>
                 <div class="stat-lbl">
-                  Monthly Total
-                  <div class="stat-sub" *ngIf="dashboardStats().nextSubscriptionRenewalDate">
+                  Monthly Subscriptions
+                  <!-- <div class="stat-sub" *ngIf="dashboardStats().nextSubscriptionRenewalDate">
                     Renewal: {{ dashboardStats().nextSubscriptionRenewalDate | date:'MM-dd' }}
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -112,13 +135,13 @@
                   <span [class.overdue-text]="dashboardStats().overdueTasksCount > 0">
                     {{ dashboardStats().overdueTasksCount }}
                   </span>
-                  <span class="stat-meta">/{{ dashboardStats().pendingToDosCount }}</span>
+                  <!-- <span class="stat-meta">/{{ dashboardStats().pendingToDosCount }}</span> -->
                 </div>
                 <div class="stat-lbl">
-                  Overdue / Total To-Dos
-                  <div class="stat-sub" *ngIf="dashboardStats().nextRecurringTaskDueDate">
+                  Overdue 
+                  <!-- <div class="stat-sub" *ngIf="dashboardStats().nextRecurringTaskDueDate">
                     Next Due: {{ dashboardStats().nextRecurringTaskDueDate | date:'MM-dd' }}
-                  </div>
+                  </div> -->
 
                 </div>
               </div>
