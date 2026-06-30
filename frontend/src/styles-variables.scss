@@ -7,15 +7,17 @@ $card-bg:      #1E1E1E;
 $dark:         #F2E7D5;  
 $muted:        #9A8F82;  
 // $accent:       #A66A2C;  
-$accent:       #f99e20;
+$accent:       #eaab55;
 $accent-dark:  #D7A54A;  
 $btn-dark:     #121212;  
 $border:       #3B3B3B;  
 
 
-$page: url('/homeBackground.png') center / cover no-repeat;   // Main page background
+$page: url('/image.webp') center / cover no-repeat;   // Main page background
 
-$login-page: url('/loginBackground.jpeg') center / cover no-repeat;
+$login-page: $page;
+
+
 
 
 

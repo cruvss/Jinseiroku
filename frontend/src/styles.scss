@@ -35,6 +35,7 @@ body {
   margin: 0;
 }
 
+
 ::selection {
   background: $accent;
   color: $btn-dark;
@@ -491,3 +492,4 @@ textarea.mat-mdc-input-element {
 .mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
   border-color: $border !important;
 }
+

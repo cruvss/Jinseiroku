@@ -37,15 +37,20 @@ export class TaskDialogComponent implements OnInit {
   private taskService = inject(TaskService);
   public data: { task?: Task } = inject(MAT_DIALOG_DATA) || {};
 
-  categories = ['Home', 'Health', 'Finance', 'Work', 'Auto', 'Personal', 'Others'];
+  categories = ['Home', 'Health', 'Finance', 'Work', 'Auto', 'Personal', 'Government','Utilities','Others'];
   cycleTypes = ['DAYS', 'WEEKS', 'MONTHS', 'YEARS'];
 
-  // Hardcoded templates configuration
+
   templates = [
-    { label: 'Dentist Checkup (6 Months)', title: 'Dentist Checkup', category: 'Health', isRecurring: true, cycleInterval: 6, cycleType: 'MONTHS' },
-    { label: 'HVAC Filter Change (3 Months)', title: 'Change HVAC Air Filter', category: 'Home', isRecurring: true, cycleInterval: 3, cycleType: 'MONTHS' },
-    { label: 'Car Service (6 Months)', title: 'Car General Service & Oil Change', category: 'Auto', isRecurring: true, cycleInterval: 6, cycleType: 'MONTHS' },
-    { label: 'Smoke Detector Test (6 Months)', title: 'Test Smoke Alarms', category: 'Home', isRecurring: true, cycleInterval: 6, cycleType: 'MONTHS' }
+{ label: 'Health Checkup (6 Months)', title: 'General Health Checkup', category: 'Health', isRecurring: true, cycleInterval: 6, cycleType: 'MONTHS' },
+{ label: 'Vehicle Servicing (6 Months)', title: 'Motorcycle/Car Servicing & Oil Change', category: 'Auto', isRecurring: true, cycleInterval: 6, cycleType: 'MONTHS' },
+{ label: 'Vehicle Blue Book Renewal', title: 'Renew Vehicle Blue Book', category: 'Government', isRecurring: true, cycleInterval: 1, cycleType: 'YEARS' },
+{ label: 'Vehicle Insurance Renewal', title: 'Renew Vehicle Insurance', category: 'Finance', isRecurring: true, cycleInterval: 1, cycleType: 'YEARS' },
+{ label: 'Water Tank Cleaning (6 Months)', title: 'Clean Household Water Tank', category: 'Home', isRecurring: true, cycleInterval: 6, cycleType: 'MONTHS' },
+{ label: 'Gas Cylinder Refill Reminder', title: 'Check LPG Gas Cylinder Level', category: 'Home', isRecurring: true, cycleInterval: 2, cycleType: 'MONTHS' },
+{ label: 'Internet Bill Payment', title: 'Pay Internet Bill', category: 'Utilities', isRecurring: true, cycleInterval: 1, cycleType: 'MONTHS' },
+{ label: 'Electricity Bill Payment', title: 'Pay NEA Electricity Bill', category: 'Utilities', isRecurring: true, cycleInterval: 1, cycleType: 'MONTHS' },
+{ label: 'Drinking Water Bill', title: 'Pay Water Supply Bill', category: 'Utilities', isRecurring: true, cycleInterval: 1, cycleType: 'MONTHS' },
   ];
 
   form = this.fb.group({
