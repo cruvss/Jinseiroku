@@ -85,7 +85,7 @@
     height: 18px !important; 
   }
 
-  &:hover { background: $page; }
+  &:hover { background: $accent; }
 
   &.active {
     background: $accent;
@@ -123,7 +123,7 @@
   align-items: center;
   gap: 0.5rem; // REDUCED from 0.75rem
   padding: 0.75rem; // REDUCED from 1rem
-  background: $page;
+  background: $accent;
   border: 1px solid $border;
   border-radius: $r-lg;
   color: $dark;
