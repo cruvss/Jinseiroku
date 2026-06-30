@@ -1,4 +1,5 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
 @import 'styles-variables.scss';
 
 // ===== COLOR PALETTE (CSS Custom Properties mapping for legacy compatibility) =====
@@ -28,7 +29,8 @@ html, body {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  // font-family: -apple-system, BlinkMacSystemFont, 'JetBrains Mono','Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-family: 'JetBrains Mono', monospace !important;
   background: $page;
   color: $dark;
   margin: 0;
@@ -50,12 +52,20 @@ body {
 
 // Gradient Text with warm colors
 .gradient-text {
-  background: linear-gradient(135deg, $accent, $accent-dark);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+
+  background: none;
+  -webkit-background-clip: border-box;
+  -webkit-text-fill-color: unset;
+  background-clip: border-box;
+  color: $accent;
 }
 
+.vault-upload{
+
+  position: absolute;
+  top: 37px;
+  margin-left: 10px;
+}
 // Scrollbar
 ::-webkit-scrollbar {
   width: 8px;
@@ -91,7 +101,7 @@ body {
 }
 
 .sidebar mat-nav-list a.active {
-  background: rgba(204, 102, 84, 0.12) !important;
+  background: rgba($accent, 0.12) !important;
   color: $accent !important;
 }
 
@@ -100,7 +110,7 @@ body {
 }
 
 .sidebar mat-nav-list a:hover {
-  background: rgba(65, 55, 46, 0.08) !important;
+  background: rgba($dark, 0.08) !important;
 }
 
 .sidebar-footer {
@@ -161,6 +171,73 @@ body {
 }
 
 // ===== MATERIAL OVERRIDES =====
+// Cards
+.mat-mdc-card {
+  background-color: $card-bg !important;
+  color: $dark !important;
+  border: 1px solid $border !important;
+}
+
+// Dialogs
+.mdc-dialog__surface {
+  background-color: $card-bg !important;
+  color: $dark !important;
+  border: 1px solid $border !important;
+  box-shadow: $shadow-md !important;
+}
+
+// Select Panel
+.mat-mdc-select-panel {
+  background-color: $card-bg !important;
+  color: $dark !important;
+  border: 1px solid $border !important;
+}
+
+.mat-mdc-option {
+  color: $dark !important;
+  
+  &:hover:not(.mdc-list-item--disabled) {
+    background-color: rgba($dark, 0.08) !important;
+  }
+  
+  &.mdc-list-item--selected:not(.mdc-list-item--disabled) {
+    background-color: rgba($accent, 0.15) !important;
+    .mdc-list-item__primary-text {
+      color: $accent !important;
+    }
+  }
+}
+
+// Datepicker
+.mat-datepicker-content {
+  background-color: $card-bg !important;
+  color: $dark !important;
+  border: 1px solid $border !important;
+  box-shadow: $shadow-md !important;
+  
+  .mat-calendar-body-cell-content {
+    color: $dark !important;
+    
+    &:hover {
+      background-color: rgba($dark, 0.08) !important;
+    }
+  }
+  
+  .mat-calendar-body-selected {
+    background-color: $accent !important;
+    color: $btn-dark !important;
+  }
+  
+  .mat-calendar-arrow {
+    fill: $dark !important;
+  }
+  
+  .mat-calendar-next-button,
+  .mat-calendar-previous-button {
+    color: $dark !important;
+  }
+}
+
 // Form fields
 .mat-mdc-form-field {
   color: $dark !important;
@@ -170,14 +247,69 @@ body {
   background-color: $card-bg !important;
 }
 
+// Input text and placeholder
+.mat-mdc-input-element {
+  color: $dark !important;
+  caret-color: $accent !important;
+  
+  &::placeholder {
+    color: $muted !important;
+  }
+}
+
+// Outline segments (idle state)
+.mdc-notched-outline__leading,
+.mdc-notched-outline__notch,
+.mdc-notched-outline__trailing {
+  border-color: $border !important;
+  border-width: 1px !important;
+}
+
+// Outline segments (hover state)
+.mat-mdc-form-field:hover .mdc-notched-outline__leading,
+.mat-mdc-form-field:hover .mdc-notched-outline__notch,
+.mat-mdc-form-field:hover .mdc-notched-outline__trailing {
+  border-color: $muted !important;
+}
+
+// Outline segments (focused state)
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: $accent !important;
+  border-width: 2px !important;
+}
+
 .mat-mdc-form-field .mat-mdc-form-field-label {
   color: $muted !important;
+}
+
+// Label coloring on focus
+.mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
+  color: $accent !important;
+}
+
+// Tables
+.mat-mdc-table {
+  background-color: transparent !important;
+}
+
+.mat-mdc-header-cell {
+  color: $muted !important;
+  font-weight: 700 !important;
+  border-bottom: 2px solid $border !important;
+}
+
+.mat-mdc-cell {
+  color: $dark !important;
+  border-bottom: 1px solid $border !important;
 }
 
 // Buttons
 .mat-mdc-raised-button.mat-primary {
   background-color: $accent !important;
-  color: white !important;
+  color: $btn-dark !important;
+  font-weight: 700 !important;
 }
 
 .mat-mdc-raised-button.mat-primary:hover {
@@ -191,16 +323,7 @@ body {
 
 .mat-mdc-raised-button.mat-warn {
   background-color: $accent-dark !important;
-  color: white !important;
-}
-
-// Input focus
-.mat-mdc-form-field.mat-focused .mat-mdc-form-field-label {
-  color: $accent !important;
-}
-
-.mat-mdc-form-field.mat-focused .mat-mdc-form-field-ripple {
-  background-color: $accent !important;
+  color: $dark !important;
 }
 
 // ===== UTILITY CLASSES =====
@@ -224,3 +347,55 @@ body {
 .profile-dialog-panel .mdc-dialog__surface {
   border-radius: 16px !important;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+/* Default label color */
+.mdc-floating-label {
+  color: white !important;
+}
+
+/* Focused label color */
+.mat-mdc-form-field.mat-focused .mdc-floating-label {
+  color: white !important;
+}
+
+
+
+/* Selected value / placeholder in mat-select */
+.mat-mdc-select-placeholder {
+  color: white !important;
+}
+
+.mat-mdc-select-value-text {
+  color: white !important;
+}
+
+.mat-mdc-select-trigger {
+  color: white !important;
+}
+
+/* Calendar toggle icon */
+.mat-datepicker-toggle {
+  color: white !important;
+}
+
+/* Calendar SVG icon */
+.mat-datepicker-toggle svg {
+  fill: white !important;
+}
+
+/* Icon button */
+.mat-mdc-icon-button {
+  color: white !important;
+}
+

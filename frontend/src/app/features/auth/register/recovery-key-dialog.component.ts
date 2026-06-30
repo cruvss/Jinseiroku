@@ -82,7 +82,7 @@ import { MatButtonModule } from '@angular/material/button';
       padding: 1.5rem;
       background: var(--color-card-bg);
       color: var(--color-dark);
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      // font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     h2.mat-mdc-dialog-title {
@@ -112,7 +112,7 @@ import { MatButtonModule } from '@angular/material/button';
 
     .recovery-key-box code {
       font-size: 1.2rem;
-      font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+      // font-family: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
       color: var(--color-accent);
       font-weight: 800;
       letter-spacing: 2px;

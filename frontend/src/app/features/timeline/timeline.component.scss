@@ -275,13 +275,13 @@
 }
 
 /* Category Badges colors */
-.badge-blue { background-color: #e0f2fe; color: #0369a1; }
-.badge-purple { background-color: #f3e8ff; color: #7e22ce; }
-.badge-green { background-color: #dcfce7; color: #15803d; }
-.badge-gold { background-color: #fef9c3; color: #a16207; }
-.badge-teal { background-color: #ccfbf1; color: #0f766e; }
-.badge-coral { background-color: #ffe4e6; color: #b91c1c; }
-.badge-grey { background-color: #f3f4f6; color: #374151; }
+.badge-blue { background-color: rgba(#0369a1, 0.15); color: #38bdf8; border-color: rgba(#0369a1, 0.3); }
+.badge-purple { background-color: rgba(#7e22ce, 0.15); color: #c084fc; border-color: rgba(#7e22ce, 0.3); }
+.badge-green { background-color: rgba(#15803d, 0.15); color: #4ade80; border-color: rgba(#15803d, 0.3); }
+.badge-gold { background-color: rgba(#a16207, 0.15); color: #facc15; border-color: rgba(#a16207, 0.3); }
+.badge-teal { background-color: rgba(#0f766e, 0.15); color: #2dd4bf; border-color: rgba(#0f766e, 0.3); }
+.badge-coral { background-color: rgba(#b91c1c, 0.15); color: #fca5a5; border-color: rgba(#b91c1c, 0.3); }
+.badge-grey { background-color: rgba(#374151, 0.15); color: #d1d5db; border-color: rgba(#374151, 0.3); }
 
 /* Dialog Styles */
 .dialog-header {
