@@ -2,18 +2,17 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
 @import 'styles-variables.scss';
 
-// ===== COLOR PALETTE (CSS Custom Properties mapping for legacy compatibility) =====
 :root {
-  --primary-color: #{$accent};      // Coral/Accent
-  --primary-light: #{$accent-dark};  // Accent dark
-  --primary-dark: #{$btn-dark};      // Dark button color
-  --accent-color: #{$sidebar-bg};    // Sidebar background (softer beige)
-  --accent-light: #{$card-bg};       // Card background
-  --background-color: #{$page};      // Warm page background
-  --card-background: #{$card-bg};    // Off-white/cream
-  --text-color: #{$dark};            // Dark brown text
-  --text-light: #{$muted};           // Lighter brown text
-  --border-color: #{$border};        // Cream border
+  --primary-color: #{$accent};      
+  --primary-light: #{$accent-dark};  
+  --primary-dark: #{$btn-dark};      
+  --accent-color: #{$sidebar-bg};    
+  --accent-light: #{$card-bg};     
+  --background-color: #{$page};     
+  --card-background: #{$card-bg};    
+  --text-color: #{$dark};           
+  --text-light: #{$muted};           
+  --border-color: #{$border};        
   --shadow-color: rgba(65, 55, 46, 0.15);
 }
 
@@ -38,7 +37,7 @@ body {
 
 ::selection {
   background: $accent;
-  color: #fff;
+  color: $btn-dark;
 }
 
 // Card Style (replacing glass effect)
@@ -50,7 +49,7 @@ body {
   padding: 1.5rem;
 }
 
-// Gradient Text with warm colors
+// Gradient Text enabled theo aile chaina
 .gradient-text {
 
   background: none;
@@ -86,7 +85,7 @@ body {
   background: $dark;
 }
 
-// ===== DASHBOARD STYLES (Overrides/Fallbacks) =====
+// ===== DASHBOARD STYLES =====
 .sidebar {
   background: $sidebar-bg !important;
   border-right: 1px solid $border !important;
@@ -355,47 +354,140 @@ body {
 
 
 
-
-
-
+/* ===== DARK THEME — Material Component Overrides ===== */
 
 /* Default label color */
 .mdc-floating-label {
-  color: white !important;
+  color: $dark !important;
 }
 
 /* Focused label color */
 .mat-mdc-form-field.mat-focused .mdc-floating-label {
-  color: white !important;
+  color: $accent !important;
 }
-
-
 
 /* Selected value / placeholder in mat-select */
 .mat-mdc-select-placeholder {
-  color: white !important;
+  color: $muted !important;
 }
 
 .mat-mdc-select-value-text {
-  color: white !important;
+  color: $dark !important;
 }
 
 .mat-mdc-select-trigger {
-  color: white !important;
+  color: $dark !important;
+}
+
+/* Select dropdown arrow */
+.mat-mdc-select-arrow {
+  color: $muted !important;
 }
 
 /* Calendar toggle icon */
 .mat-datepicker-toggle {
-  color: white !important;
+  color: $muted !important;
 }
 
-/* Calendar SVG icon */
 .mat-datepicker-toggle svg {
-  fill: white !important;
+  fill: $muted !important;
 }
 
 /* Icon button */
 .mat-mdc-icon-button {
+  color: $dark !important;
+}
+
+/* ===== Flat & Stroked Button Overrides ===== */
+.mat-mdc-unelevated-button.mat-primary,
+.mat-mdc-flat-button.mat-primary {
+  background-color: $accent !important;
+  color: $btn-dark !important;
+  font-weight: 700 !important;
+
+  &:hover {
+    background-color: $accent-dark !important;
+  }
+}
+
+/* Plain mat-button (text button) */
+.mat-mdc-button {
+  color: $dark !important;
+
+  &:hover {
+    background-color: rgba($dark, 0.08) !important;
+  }
+}
+
+/* ===== Slide Toggle ===== */
+.mat-mdc-slide-toggle {
+  --mdc-switch-selected-track-color: #{$accent} !important;
+  --mdc-switch-selected-handle-color: #{$accent-dark} !important;
+  --mdc-switch-selected-hover-track-color: #{$accent} !important;
+  --mdc-switch-selected-focus-track-color: #{$accent} !important;
+  --mdc-switch-selected-pressed-track-color: #{$accent} !important;
+  --mdc-switch-unselected-track-color: #{$border} !important;
+  --mdc-switch-unselected-handle-color: #{$muted} !important;
+
+  .mdc-label {
+    color: $dark !important;
+  }
+}
+
+/* ===== Dialog Title ===== */
+.mat-mdc-dialog-title {
+  color: $dark !important;
+}
+
+/* ===== Dialog Actions ===== */
+.mat-mdc-dialog-actions {
+  border-top: 1px solid $border !important;
+}
+
+/* ===== Textarea ===== */
+textarea.mat-mdc-input-element {
+  color: $dark !important;
+}
+
+/* ===== Checkbox ===== */
+.mat-mdc-checkbox {
+  --mdc-checkbox-selected-checkmark-color: #{$btn-dark} !important;
+  --mdc-checkbox-selected-focus-icon-color: #{$accent} !important;
+  --mdc-checkbox-selected-hover-icon-color: #{$accent} !important;
+  --mdc-checkbox-selected-icon-color: #{$accent} !important;
+  --mdc-checkbox-selected-pressed-icon-color: #{$accent} !important;
+  --mdc-checkbox-unselected-icon-color: #{$muted} !important;
+
+  .mdc-label {
+    color: $dark !important;
+  }
+}
+
+/* ===== Snackbar ===== */
+.mat-mdc-snack-bar-container {
+  --mdc-snackbar-container-color: #{$card-bg} !important;
+  --mdc-snackbar-supporting-text-color: #{$dark} !important;
+
+  .mat-mdc-button {
+    color: $accent !important;
+  }
+}
+
+
+
+.mat-calendar-table-header th {
   color: white !important;
 }
 
+/* Month and year (e.g. JUN) */
+.mat-calendar-body-label {
+  color: white !important;
+}
+
+
+
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: $border !important;
+}

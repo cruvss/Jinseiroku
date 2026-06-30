@@ -31,7 +31,7 @@ import { Task } from '../../core/models/task.model';
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: 'staging-task-dialog.component.html',
-  styleUrl: '../tasks/task.component.scss'
+  styleUrl: 'staging-task-dialog.component.scss'
 })
 export class StagingTaskDialogComponent implements OnInit {
   private fb = inject(FormBuilder);

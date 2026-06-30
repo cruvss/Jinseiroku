@@ -358,9 +358,9 @@
 
   mat-icon { font-size: 18px !important; width: 18px !important; height: 18px !important; }
   
-  &.coral { background: #F4E3D7; mat-icon { color: $accent; } }
-  &.slate { background: #DCE6ED; mat-icon { color: #5B82A1; } }
-  &.pink  { background: #F4D7D7; mat-icon { color: $accent; } }
+  &.coral { background: rgba($accent, 0.15); mat-icon { color: $accent; } }
+  &.slate { background: rgba($accent-dark, 0.15); mat-icon { color: $accent-dark; } }
+  &.pink  { background: rgba($accent, 0.10); mat-icon { color: $accent; } }
 }
 .stat-val {
   font-size: 1.5rem; // REDUCED from 1.875rem

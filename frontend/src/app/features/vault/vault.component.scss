@@ -1,3 +1,5 @@
+@import '../../../styles-variables.scss';
+
 .vault-view {
   padding: 1rem;
 }
@@ -25,13 +27,13 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border: 2px dashed var(--border-color);
+      border: 2px dashed $border;
       border-radius: 12px;
       padding: 2.5rem;
       cursor: pointer;
-      background: rgba(255, 255, 255, 0.02);
+      background: rgba($dark, 0.02);
       transition: all 0.3s ease;
-      color: var(--text-light);
+      color: $muted;
       
 
       mat-icon {
@@ -42,8 +44,8 @@
       }
 
       &:hover {
-        background: rgba(255, 255, 255, 0.05);
-        border-color: var(--primary-color);
+        background: rgba($dark, 0.05);
+        border-color: $accent;
       }
     }
   }
@@ -57,14 +59,14 @@
 
 table {
   background: transparent !important;
-  color: var(--text-color) !important;
+  color: $dark !important;
 
   th {
-    color: var(--text-light) !important;
+    color: $muted !important;
     font-weight: 600;
   }
 
   td {
-    color: var(--text-color) !important;
+    color: $dark !important;
   }
 }

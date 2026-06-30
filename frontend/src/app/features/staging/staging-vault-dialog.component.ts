@@ -16,7 +16,8 @@ import { InboxService } from '../../core/services/inbox.service';
   selector: 'app-triage-vault',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, MatDialogModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatSelectModule],
-  templateUrl: 'staging-vault-dialog.component.html'
+  templateUrl: 'staging-vault-dialog.component.html',
+  styleUrl: 'staging-vault-dialog.component.scss'
 })
 export class StagingVaultDialogComponent {
   item: InboxItem = inject(MAT_DIALOG_DATA);
@@ -55,9 +56,7 @@ export class StagingVaultDialogComponent {
 
       if (this.item.contentType !== 'TEXT') {
         const buffer = await this.inboxService.download(this.item.id).toPromise();
-        // The inbox file is ALREADY encrypted! 
-        // For standard simplicity without re-encryption overhead in the browser:
-        // Decrypt with inbox DEK, re-encrypt with Vault DEK.
+
         const inboxDek = await this.crypto.unwrapDEK(this.item.encryptedDek!);
         const iv = new Uint8Array(buffer!.slice(0, 12));
         const cipher = buffer!.slice(12);
@@ -67,7 +66,6 @@ export class StagingVaultDialogComponent {
         const combined = new Blob([newEncFile.iv as BufferSource, newEncFile.ciphertext], { type: 'application/octet-stream' });
         formData.append('file', combined, 'encrypted.bin');
       } else {
-        // Mock file for vault if only text was captured
         const dummy = new Blob(['no-file'], {type: 'text/plain'});
         formData.append('file', dummy, 'dummy.txt'); 
       }

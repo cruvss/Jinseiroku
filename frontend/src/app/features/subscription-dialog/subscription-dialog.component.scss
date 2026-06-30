@@ -1,6 +1,9 @@
-    .flex { display: flex; }
-    .flex-col { flex-direction: column; }
-    .gap-4 { gap: 1rem; }
-    .mt-2 { margin-top: 0.5rem; }
-    .flex-1 { flex: 1; }
-    .w-32 { width: 8rem; }
+@import '../../../styles-variables.scss';
+
+.flex { display: flex; }
+.flex-col { flex-direction: column; }
+.gap-4 { gap: 1rem; }
+.mt-2 { margin-top: 0.5rem; }
+.flex-1 { flex: 1; }
+.w-32 { width: 8rem; }
+

@@ -32,7 +32,7 @@
   gap: 0.5rem;
   padding: 0.75rem 1.25rem;
   background-color: var(--color-accent);
-  color: #fff;
+  color: $btn-dark;
   border: 1px solid var(--color-accent-dark);
   border-radius: var(--r-md);
   font-weight: 700;
@@ -153,7 +153,7 @@
 
 .mark-done-btn {
   &:hover {
-    color: #4c4bf2;
+    color: $accent-dark;
   }
 }
 
@@ -195,7 +195,7 @@
   font-size: 0.75rem;
   font-weight: 700;
   color: var(--color-accent-dark);
-  background-color: #ffd6d0;
+  background-color: rgba($accent-dark, 0.15);
   padding: 0.25rem 0.5rem;
   border-radius: var(--r-md);
 }
@@ -227,7 +227,7 @@
 }
 
 .overdue-bg {
-  background-color: #ffd6d0 !important;
+  background-color: rgba($accent-dark, 0.15) !important;
   color: var(--color-accent-dark) !important;
   border-color: var(--color-accent-dark) !important;
 }

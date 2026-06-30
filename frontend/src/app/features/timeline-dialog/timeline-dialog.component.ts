@@ -30,7 +30,7 @@ import { TimelineEvent, TimelineDialogData } from '../../core/models/timeline.mo
   ],
   providers: [provideNativeDateAdapter()],
   templateUrl: './timeline-dialog.component.html',
-  styleUrl: '../timeline/timeline.component.scss'
+  styleUrl: './timeline-dialog.component.scss'
 })
 export class TimelineDialogComponent implements OnInit {
   private fb = inject(FormBuilder);

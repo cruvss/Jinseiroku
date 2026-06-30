@@ -1,31 +1,24 @@
 
 //coffee theme
-$sidebar-bg:   #0F0F10;  // Matte black
-$color-accent: #252525;  // Elevated surfaces
-$card-bg:      #1E1E1E;  // Dark cards
-$dark:         #F2E7D5;  // Warm cream text
-$muted:        #9A8F82;  // Muted coffee gray
-// $accent:       #A66A2C;  // Roasted coffee
-$accent: #f99e20;
-$accent-dark:  #D7A54A;  // Espresso crema
-$btn-dark:     #121212;  // Buttons
-$border:       #3B3B3B;  // Soft charcoal border
+$page: #171717;
+$sidebar-bg:   #0F0F10;  
+$color-accent: #252525;  
+$card-bg:      #1E1E1E;  
+$dark:         #F2E7D5;  
+$muted:        #9A8F82;  
+// $accent:       #A66A2C;  
+$accent:       #f99e20;
+$accent-dark:  #D7A54A;  
+$btn-dark:     #121212;  
+$border:       #3B3B3B;  
+
+
+$page: url('/homeBackground.png') center / cover no-repeat;   // Main page background
+
+$login-page: url('/loginBackground.jpeg') center / cover no-repeat;
 
 
 
-
-// $page:         #1E1E1E;
-// $sidebar-bg:   #252526;
-// $color-accent: #2D2D30;
-// $card-bg:      #2A2A2A;
-// $dark:         #F3F3F3;
-// $muted:        #A0A0A0;
-// $accent:       #F89820;  // Java orange
-// $accent-dark:  #5382A1;  // Java blue
-// $btn-dark:     #1A1A1A;
-// $border:       #3B3B3B;
-
-$page: url('/background.jpg') center / cover no-repeat;   // Main page background
 // ── Shadows 
 // $shadow-sm:   2px 2px 0px $border;
 $shadow-sm:   0px 0px 0px $border;
@@ -37,7 +30,7 @@ $r-md:        0.375rem;
 $r-lg:        0.75rem;
 $r-xl:        1rem;
 
-// ── Sidebar Width ────────────────────────────
+// ── Sidebar Width 
 $sidebar-w:   220px;
 
 // ── CSS Custom Properties for JS/Global fallback ──

@@ -1,0 +1,16 @@
+@import '../../../styles-variables.scss';
+
+.w-100 {
+  width: 100%;
+}
+
+h2[mat-dialog-title] {
+  color: $dark;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+p {
+  color: $muted;
+  font-size: 0.9rem;
+}
