@@ -31,6 +31,10 @@
         <mat-icon>lock</mat-icon>
         <span>Encryption</span>
       </div>
+      <button class="logout-btn" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        <span>Logout</span>
+      </button>
     </div>
   </nav>
 
@@ -115,26 +119,11 @@
                   <div class="stat-sub" *ngIf="dashboardStats().nextRecurringTaskDueDate">
                     Next Due: {{ dashboardStats().nextRecurringTaskDueDate | date:'MM-dd' }}
                   </div>
+
                 </div>
               </div>
             </div>
           </div>
-
-          <!-- Action Required -->
-          <section>
-            <h3 class="section-heading">Action Required</h3>
-            <div class="card action-list">
-              <div class="action-row">
-                <span class="dot"></span>
-                <mat-icon class="row-icon">error_outline</mat-icon>
-                <div class="row-text">
-                  <p class="row-title">Dentist Checkup is overdue</p>
-                  <p class="row-meta">Life Task · Due 2026-06-15</p>
-                </div>
-                <button class="resolve-btn">Resolve</button>
-              </div>
-            </div>
-          </section>
         </div>
         }
 

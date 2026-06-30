@@ -69,7 +69,7 @@ export class AuthService {
                 this.clearSession();
                 return throwError(() => err);
             })
-        );
+        );;
     }
 
     refreshToken(): Observable<string> {
@@ -97,6 +97,9 @@ export class AuthService {
     this.accessToken$.next(null);
     this.currentUserSubject$.next(null);
     localStorage.removeItem('user_email');
+    cookieStore.delete("refreshToken");
+    sessionStorage.clear();
+    
   }
 
     saveKekVerification(verification: string): Observable<void> {

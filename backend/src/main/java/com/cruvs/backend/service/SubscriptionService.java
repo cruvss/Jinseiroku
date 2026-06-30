@@ -39,6 +39,7 @@ public class SubscriptionService {
                 .build();
 
         entity = subscriptionRepository.save(entity);
+        System.out.println(entity.getNextBillingDate());
         if (entity.getNextBillingDate() != null) {
             reminderService.createOrUpdateReminders(
                     userId,
@@ -46,7 +47,8 @@ public class SubscriptionService {
                     entity.getId(),
                     entity.getNextBillingDate(),
                     null,
-                    List.of(-7, -3, -1),
+//                    List.of(-7, -3, -1),
+                    List.of(0),
                     "Subscription Renewal",
                     "Subscription " + entity.getName() + " is renewing soon on " + entity.getNextBillingDate()
             );

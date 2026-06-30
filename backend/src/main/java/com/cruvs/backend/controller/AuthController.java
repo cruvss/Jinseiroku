@@ -4,6 +4,7 @@ import com.cruvs.backend.dto.atuh.AuthResponse;
 import com.cruvs.backend.dto.atuh.LoginRequest;
 import com.cruvs.backend.dto.atuh.RegisterRequest;
 import com.cruvs.backend.dto.atuh.VaultParamsResponse;
+import com.cruvs.backend.repository.UserSessionRepository;
 import com.cruvs.backend.response.ApiResponse;
 import com.cruvs.backend.service.AuthService;
 import com.cruvs.backend.util.ApiResponseUtil;
@@ -17,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -27,6 +30,7 @@ import java.util.UUID;
 public class AuthController {
 
     private final AuthService authService;
+    private final UserSessionRepository userSessionRepository;
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<AuthResponse>> register(@Valid @RequestBody RegisterRequest request) {
@@ -46,7 +50,8 @@ public class AuthController {
 
         refreshCookie.setHttpOnly(true);
         refreshCookie.setSecure(false);
-        refreshCookie.setPath("/v1/auth/refresh");
+        refreshCookie.setPath("/");
+//        refreshCookie.setPath("/v1/auth/logout");
         refreshCookie.setMaxAge(7*24*60*60);
         response.addCookie(refreshCookie);
 
@@ -64,8 +69,6 @@ public class AuthController {
             for (Cookie cookie : cookies) {
                 if ("refreshToken".equals(cookie.getName())) {
                     refreshToken = cookie.getValue();
-//                    System.out.println("refreshtoken from cookie");
-//                    System.out.println(refreshToken);
                     break;
                 }
             }
@@ -78,19 +81,24 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<ApiResponse<Void>> logout(HttpServletRequest request) {
+    public ResponseEntity<ApiResponse<Void>> logout(HttpServletRequest request, HttpServletResponse response) {
 
         Cookie[] cookies = request.getCookies();
+        log.info(Arrays.toString(cookies));
         if (cookies!=null){
             for (Cookie cookie: cookies){
                 if ("refreshToken".equals(cookie.getName())){
+                    log.info(cookie.getName());
                     authService.logout(cookie.getValue());
+                    Cookie refreshTokenCookie = new Cookie("refreshToken", null);
+                    refreshTokenCookie.setPath("/");
+                    refreshTokenCookie.setMaxAge(0); // This deletes the cookie
+                    response.addCookie(refreshTokenCookie);
                     break;
                 }
             }
         }
         return ResponseEntity.ok(ApiResponseUtil.success("Logout Successful",null));
-
     }
 
     @GetMapping("/salt")

@@ -10,6 +10,7 @@ import { CryptoService } from '../../core/services/crypto.service';
 import { Title } from '@angular/platform-browser';
 import { SubscriptionService } from '../../core/services/subscription.service';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../core/services/auth.service';
 @Component({
   selector: 'app-dashboard-layout',
   imports: [MatIconModule, RouterOutlet, CommonModule],
@@ -22,6 +23,7 @@ export class DashboardLayoutComponent implements OnInit {
   private http = inject(HttpClient);
   private inboxService = inject(InboxService);
   private crypto = inject(CryptoService);
+  private authService = inject(AuthService);
   subscriptionService = inject(SubscriptionService);
   titleService = inject(Title);
   
@@ -84,6 +86,14 @@ export class DashboardLayoutComponent implements OnInit {
   navigate(tabId: string) {
     this.router.navigate([`/${tabId}`]);
   }
+
+  logout(){
+    this.authService.logout().subscribe({
+      next: () => this.router.navigate(['/login']),
+      error: () => this.router.navigate(['/login'])
+    });
+  }
+  
 
   updateCapture(e: Event) {
     this.captureText.set((e.target as HTMLInputElement).value);

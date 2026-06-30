@@ -53,15 +53,26 @@ public class ReminderService {
 
         List<ScheduledNotification> notifications = new ArrayList<>();
         for (Integer offset : offsets) {
+            System.out.println("offset "+offset);
             LocalDate scheduledDate = targetDate.plusDays(offset);
             LocalDateTime scheduledFor = scheduledDate.atTime(9, 0);
+
+            System.out.println("scheduled Date " +scheduledDate);
+            System.out.println("Current Date " + LocalDate.now());
+            if (offset == 0 && scheduledDate.equals(LocalDate.now())) {
+                scheduledFor = LocalDateTime.now().plusMinutes(1);
+                System.out.println("Scheduled Date"+scheduledDate);
+                System.out.println("Scheduled For"+scheduledFor);
+
+
+            }
 
             if (scheduledFor.isAfter(LocalDateTime.now())) {
                 ScheduledNotification notification = ScheduledNotification.builder()
                         .reminderRuleId(rule.getId())
                         .userId(userId)
                         .scheduledFor(scheduledFor)
-                        .channel("in_app")
+                        .channel("email")
                         .title(title)
                         .body(body)
                         .status("pending")

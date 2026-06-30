@@ -149,6 +149,7 @@ public class AuthService {
 
     @Transactional
     public void logout(String refreshToken) {
+        log.info(refreshToken);
         if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken)) {
             UUID sessionId = jwtTokenProvider.getSessionIdFromToken(refreshToken);
             userSessionRepository.deleteById(sessionId);
