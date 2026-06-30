@@ -11,9 +11,11 @@ import { Title } from '@angular/platform-browser';
 import { SubscriptionService } from '../../core/services/subscription.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { ProfileDialogComponent } from '../profile-dialog/profile-dialog.component';
 @Component({
   selector: 'app-dashboard-layout',
-  imports: [MatIconModule, RouterOutlet, CommonModule],
+  imports: [MatIconModule, RouterOutlet, CommonModule, MatDialogModule],
   templateUrl: './dashboard-layout.component.html',
   styleUrl: './dashboard-layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,6 +26,7 @@ export class DashboardLayoutComponent implements OnInit {
   private inboxService = inject(InboxService);
   private crypto = inject(CryptoService);
   private authService = inject(AuthService);
+  private dialog = inject(MatDialog);
   subscriptionService = inject(SubscriptionService);
   titleService = inject(Title);
   
@@ -31,6 +34,7 @@ export class DashboardLayoutComponent implements OnInit {
   captureText = signal('');
   inboxCount = this.inboxService.unreadCount;
   isCapturing = signal(false);
+  userInitials = signal('U');
 
   readonly navLinks = [
     { id: 'dashboard',     icon: 'show_chart',      label: 'Dashboard' },
@@ -73,6 +77,14 @@ export class DashboardLayoutComponent implements OnInit {
   ngOnInit() {
     this.subscriptionService.loadSubscriptions();
     
+    this.authService.currentUser$.subscribe(user => {
+      if (user && user.email) {
+        const usernamePart = user.email.split('@')[0];
+        const initials = usernamePart.substring(0, 2).toUpperCase();
+        this.userInitials.set(initials);
+      }
+    });
+
     this.http.get<{ data: any }>(`${environment.apiUrl}/dashboard`)
       .subscribe({
         next: (res) => {
@@ -93,7 +105,14 @@ export class DashboardLayoutComponent implements OnInit {
       error: () => this.router.navigate(['/login'])
     });
   }
-  
+
+  openProfile() {
+    this.dialog.open(ProfileDialogComponent,{
+      width:'450px',
+      panelClass: 'profile-dialog-panel'
+    });
+  }
+
 
   updateCapture(e: Event) {
     this.captureText.set((e.target as HTMLInputElement).value);

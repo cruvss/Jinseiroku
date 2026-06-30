@@ -1,0 +1,35 @@
+<div class="profile-dialog">
+  <h2 mat-dialog-title class="dialog-title">
+    <mat-icon>account_circle</mat-icon>
+    User Profile
+  </h2>
+
+  <div mat-dialog-content class="dialog-content">
+    <div class="info-card">
+      <div class="label">Email Address</div>
+      <div class="value">{{ profileData()?.email }}</div>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="label">Timezone</div>
+        <div class="value">
+          {{ profileData()?.timezone || 'UTC' }}
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="label">Member Since</div>
+        <div class="value">
+          {{ profileData()?.createdAt | date:'yyyy-MM-dd' }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div mat-dialog-actions class="dialog-actions">
+    <button mat-dialog-close class="close-btn">
+      Close
+    </button>
+  </div>
+</div>

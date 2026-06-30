@@ -220,3 +220,7 @@ body {
 .rounded-dialog .mat-mdc-dialog-surface {
   border-radius: 20px;
 }
+
+.profile-dialog-panel .mdc-dialog__surface {
+  border-radius: 16px !important;
+}

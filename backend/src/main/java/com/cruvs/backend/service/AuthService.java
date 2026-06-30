@@ -1,9 +1,6 @@
 package com.cruvs.backend.service;
 
-import com.cruvs.backend.dto.atuh.AuthResponse;
-import com.cruvs.backend.dto.atuh.LoginRequest;
-import com.cruvs.backend.dto.atuh.RegisterRequest;
-import com.cruvs.backend.dto.atuh.VaultParamsResponse;
+import com.cruvs.backend.dto.atuh.*;
 import com.cruvs.backend.entity.User;
 import com.cruvs.backend.entity.UserSession;
 import com.cruvs.backend.repository.UserRepository;
@@ -154,6 +151,18 @@ public class AuthService {
             UUID sessionId = jwtTokenProvider.getSessionIdFromToken(refreshToken);
             userSessionRepository.deleteById(sessionId);
         }
+    }
+
+    public UserDto getUserProfile(UUID userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow();
+
+        return UserDto.builder()
+                .id(user.getId())
+                .email(user.getEmail())
+                .timezone(user.getTimezone())
+                .createdAt(user.getCreatedAt())
+                .build();
     }
 
 }

@@ -73,7 +73,7 @@ public class DashboardService {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime endOfNext7Days = now.plusDays(7);
         // Fetch sent alerts
-        List<ScheduledNotification> reminders = notificationRepo.findByUserIdAndStatusOrderByScheduledForAsc(userId, "sent");
+        List<ScheduledNotification> reminders = notificationRepo.findByUserIdAndStatusOrderByScheduledForAsc(userId, "pending");
 
         List<ScheduledNotificationDto> upcomingReminders = reminders.stream()
                 .filter(r -> r.getScheduledFor().isAfter(now) && r.getScheduledFor().isBefore(endOfNext7Days))

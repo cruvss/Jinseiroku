@@ -1,0 +1,91 @@
+.profile-dialog {
+  padding: 1.5rem;
+  background-color: #FCF8F2;
+  font-family: sans-serif;
+  color: #41372E;
+}
+
+.dialog-title {
+  margin: 0 0 1.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #41372E;
+
+  mat-icon {
+    color: #CC6654;
+  }
+}
+
+.dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.info-card {
+  padding: 1rem;
+  background-color: #EBE0D2;
+  border: 1px solid #D4C5B5;
+  border-radius: 0.5rem;
+  box-shadow: 2px 2px 0 #D4C5B5;
+}
+
+.label {
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #8A7A6A;
+}
+
+.value {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #41372E;
+  word-break: break-word;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.close-btn {
+  all: unset;
+  box-sizing: border-box;
+  padding: 0.5rem 1.25rem;
+  background-color: #2A231E;
+  color: #FCF8F2;
+  font-weight: 700;
+  border-radius: 0.375rem;
+  cursor: pointer;
+  box-shadow: 2px 2px 0 #D4C5B5;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 #D4C5B5;
+  }
+
+  &:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 #D4C5B5;
+  }
+}
+
+@media (max-width: 600px) {
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+}

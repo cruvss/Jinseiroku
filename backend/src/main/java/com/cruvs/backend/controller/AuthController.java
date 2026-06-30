@@ -1,13 +1,11 @@
 package com.cruvs.backend.controller;
 
-import com.cruvs.backend.dto.atuh.AuthResponse;
-import com.cruvs.backend.dto.atuh.LoginRequest;
-import com.cruvs.backend.dto.atuh.RegisterRequest;
-import com.cruvs.backend.dto.atuh.VaultParamsResponse;
+import com.cruvs.backend.dto.atuh.*;
 import com.cruvs.backend.repository.UserSessionRepository;
 import com.cruvs.backend.response.ApiResponse;
 import com.cruvs.backend.service.AuthService;
 import com.cruvs.backend.util.ApiResponseUtil;
+import com.cruvs.backend.util.GetAuthUser;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -31,6 +29,7 @@ public class AuthController {
 
     private final AuthService authService;
     private final UserSessionRepository userSessionRepository;
+    private final GetAuthUser authUser;
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<AuthResponse>> register(@Valid @RequestBody RegisterRequest request) {
@@ -112,6 +111,13 @@ public class AuthController {
         UUID userId = (UUID) Objects.requireNonNull(SecurityContextHolder.getContext().getAuthentication()).getPrincipal();
         authService.updateKekVerification(userId, verification);
         return ResponseEntity.ok(ApiResponseUtil.success("KEK verification token updated successfully", null));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<UserDto>> getCurrentUser(){
+        UserDto userDto = authService.getUserProfile(authUser.getAuthenticatedUserId());
+
+        return ResponseEntity.ok(ApiResponseUtil.success("User profile retrieved", userDto));
     }
 
 }
