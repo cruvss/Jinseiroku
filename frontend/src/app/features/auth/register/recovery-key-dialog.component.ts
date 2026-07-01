@@ -69,7 +69,7 @@ import { MatButtonModule } from '@angular/material/button';
       <mat-dialog-actions align="end">
         <button
           mat-raised-button
-          color="warn"
+          color="primary"
           [disabled]="!confirmed"
           (click)="close()">
           I Understand, Continue
@@ -98,6 +98,10 @@ import { MatButtonModule } from '@angular/material/button';
       font-weight: 700;
       margin: 1rem 0;
       font-size: 0.875rem;
+    }
+
+    p{
+      color: white;
     }
 
     .recovery-key-box {

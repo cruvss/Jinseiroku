@@ -91,7 +91,7 @@ public class AuthController {
                     authService.logout(cookie.getValue());
                     Cookie refreshTokenCookie = new Cookie("refreshToken", null);
                     refreshTokenCookie.setPath("/");
-                    refreshTokenCookie.setMaxAge(0); // This deletes the cookie
+                    refreshTokenCookie.setMaxAge(0);
                     response.addCookie(refreshTokenCookie);
                     break;
                 }

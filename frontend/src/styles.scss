@@ -1,10 +1,11 @@
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lavishly+Yours&family=Noto+Sans+Nushu&family=Patrick+Hand&display=swap');
 @import 'styles-variables.scss';
 
 :root {
-  --primary-color: #{$accent};      
-  --primary-light: #{$accent-dark};  
+  --primary-color: #{$accent};
+  --primary-light: #{$accent-dark};
   --primary-dark: #{$btn-dark};      
   --accent-color: #{$sidebar-bg};    
   --accent-light: #{$card-bg};     
@@ -29,7 +30,8 @@ html, body {
 
 body {
   // font-family: -apple-system, BlinkMacSystemFont, 'JetBrains Mono','Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-family: 'JetBrains Mono', monospace !important;
+  // font-family: 'JetBrains Mono', monospace !important;
+  font-family:   "Noto Sans Nushu" !important;
   background: $page;
   color: $dark;
   margin: 0;

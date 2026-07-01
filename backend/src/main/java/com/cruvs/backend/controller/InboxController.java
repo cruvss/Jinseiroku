@@ -32,12 +32,15 @@ public class InboxController {
         return ResponseEntity.ok(ApiResponseUtil.success("Captured",
                 inboxService.capture(getUserId(), bytes, textContentEncrypted, encryptedDek, size, mime)));
     }
+
     @GetMapping
     public ResponseEntity<ApiResponse<List<InboxItemResponse>>> list() {
         return ResponseEntity.ok(ApiResponseUtil.success("List", inboxService.listUnprocessed(getUserId())));
     }
+
     @GetMapping(value = "/{id}/download", produces = "application/octet-stream")
     public byte[] download(@PathVariable UUID id) { return inboxService.downloadFile(getUserId(), id); }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<Void>> delete(@PathVariable UUID id) {
         inboxService.delete(getUserId(), id);

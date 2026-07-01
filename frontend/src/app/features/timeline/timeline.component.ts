@@ -154,13 +154,13 @@ export class TimelineComponent implements OnInit {
   getBadgeClass(cat: string): string {
     const c = cat.toLowerCase();
     switch (c) {
-      case 'career': return 'badge-blue';
-      case 'education': return 'badge-purple';
-      case 'health': return 'badge-green';
-      case 'finance': return 'badge-gold';
-      case 'travel': return 'badge-teal';
-      case 'personal': return 'badge-coral';
-      default: return 'badge-grey';
+      case 'career': return 'badge-career';
+      case 'education': return 'badge-education';
+      case 'health': return 'badge-health';
+      case 'finance': return 'badge-finance';
+      case 'travel': return 'badge-travel';
+      case 'personal': return 'badge-personal';
+      default: return 'badge-other';
     }
   }
 }
