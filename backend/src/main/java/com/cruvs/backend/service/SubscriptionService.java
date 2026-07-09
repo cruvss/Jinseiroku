@@ -27,6 +27,7 @@ public class SubscriptionService {
 
     @Transactional
     public Sub createSubscription(UUID userId, Sub dto) {
+        System.out.println("Next Billing Date: "+ dto.getNextBillingDate());
         Subscription entity = Subscription.builder()
                 .userId(userId)
                 .name(dto.getName())

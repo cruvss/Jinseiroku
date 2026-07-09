@@ -59,3 +59,20 @@ minio:
   secret-key: ${MINIO_SECRET_KEY}
   bucket: ${MINIO_BUCKET}
 
+stripe:
+  secret-key: ${STRIPE_KEY}
+
+
+
+
+
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health,info,metrics,prometheus
+#
+#  endpoint:
+#    health:
+#      show-details: always
+

@@ -128,6 +128,7 @@
   border-radius: $r-lg;
   color: $card-bg;
   box-shadow: $shadow-sm;
+  outline: none;
 
   mat-icon { 
     color: black; 
@@ -140,6 +141,11 @@
     font-weight: 700; 
     text-transform: uppercase; 
     letter-spacing: 0.05em; 
+  }
+  &:hover{
+    background-color: $accent-dark;
+    cursor: pointer;
+    
   }
 }
 

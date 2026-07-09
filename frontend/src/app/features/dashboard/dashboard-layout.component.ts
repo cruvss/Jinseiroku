@@ -18,10 +18,11 @@ import { Title } from '@angular/platform-browser';
 import { SubscriptionService } from '../../core/services/subscription.service';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { ProfileDialogComponent } from '../profile-dialog/profile-dialog.component';
 import { TaskService } from '../../core/services/task.service';
 import { TimelineService } from '../../core/services/timeline.service';
+import { PaymentComponent } from '../payment/payment.component';
 
 @Component({
   selector: 'app-dashboard-layout',
@@ -118,6 +119,7 @@ export class DashboardLayoutComponent implements OnInit {
   });
 
   constructor() {
+    
     const path = window.location.pathname;
     const initialTab = path.split('/')[1] || 'dashboard';
     this.activeTab.set(initialTab);
@@ -210,6 +212,16 @@ export class DashboardLayoutComponent implements OnInit {
     this.searchQuery.set('');
     this.router.navigate([`/${result.tab}`]);
   }
+
+  openDialog(){
+    const dialogRef = this.dialog.open(PaymentComponent,{
+      width:'1500px',
+      panelClass: 'rounded-dialog'
+    });
+
+  }
+
+
 
   async capture(e: Event, inputEl: HTMLInputElement) {
     e.preventDefault();
