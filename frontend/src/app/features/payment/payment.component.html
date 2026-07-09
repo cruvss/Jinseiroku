@@ -1,86 +1,71 @@
-
 <head>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 
-
 <div class="upgrade-container">
-<div class="section-title">Upgrade your plan</div>
+  <div class="section-title">Upgrade your plan</div>
 
-<button class="close-btn" (click)="closeDialog()">
+  <button class="close-btn" (click)="closeDialog()">
     <i class="fas fa-times"></i>
   </button>
 
-
   <div class="plan-grid">
-    <!-- FREE plan -->
-    <div class="plan-card current">
-      <div class="plan-name">Free</div>
-      <div class="plan-price">
-        <span class="currency">$</span><span class="amount">0</span><span class="period">USD / month</span>
-      </div>
-      <div class="plan-sub">Begin documenting your life journey securely.</div>
-      <ul class="plan-features">
-        <li><i class="fas fa-paperclip"></i> Up to 1 MB attachments</li>
-        <li><i class="fas fa-box-archive"></i> 250 MB Encrypted Vault</li>
-      </ul>
-      <div class="plan-footer">
-        <button class="btn-upgrade disabled" disabled><i class="fas fa-lock"></i> Current plan</button>
-      </div>
-    </div>
+    @for (plan of plans(); track plan.id) {
+      <div class="plan-card" 
+           [class.current]="plan.price === 0" 
+           [class.go-plan]="plan.planClass === 'go-plan'"
+           [class.popular]="plan.isPopular">
+        
+        @if (plan.isPopular) {
+          <div class="popular-badge">
+            <i class="fas fa-star"></i> Popular
+          </div>
+        }
 
-    <!-- ECO plan -->
-    <div class="plan-card go-plan">
-      <div class="plan-name">Eco</div>
-      <div class="plan-price">
-        <span class="currency">$</span><span class="amount">5</span><span class="period">USD / month</span>
-      </div>
-      <div class="plan-sub">Keep uploading with expanded access</div>
-      <ul class="plan-features">
-        <li><i class="fas fa-circle-check"></i> Everything in Free Plan</li>
-        <li><i class="fas fa-paperclip"></i> Up to 25 MB attachments</li>
-        <li><i class="fas fa-box-archive"></i> 1 GB Encrypted Vault</li>
-      </ul>
-      <div class="plan-footer">
-        <button class="btn-upgrade primary" (click)="pay()"><i class="fas fa-arrow-right"></i> Upgrade to Eco</button>
-      </div>
-    </div>
+        <div class="plan-name">{{ plan.name }}</div>
+        
+        <div class="plan-price">
+          <span class="currency">$</span>
+          <span class="amount">{{ plan.price }}</span>
+          <span class="period">{{ plan.currency }} / {{ plan.billingCycle }}</span>
+        </div>
 
-    <!-- PLUS plan (popular) -->
-    <div class="plan-card">
-      <div class="plan-name">Plus</div>
-      <div class="plan-price">
-        <span class="currency">$</span><span class="amount">20</span><span class="period">USD / month</span>
-      </div>
-      <div class="plan-sub">Unlock the full experience</div>
-      <ul class="plan-features">
-        <li><i class="fas fa-box-archive"></i> Everything in ECO Plan</li>
-        <li><i class="fas fa-box-archive"></i> 5 GB Encrypted Vault</li>
-        <li><i class="fas fa-paperclip"></i> Up to 100 MB attachments</li>
+        <div class="plan-sub">{{ plan.subtitle }}</div>
 
-      </ul>
-      <div class="plan-footer">
-        <button class="btn-upgrade primary" (click)="pay()"><i class="fas fa-rocket"></i> Upgrade to Plus</button>
-      </div>
-    </div>
+        <ul class="plan-features">
+          @for (feature of plan.features; track feature) {
+            <li>
+              @if (feature.toLowerCase().includes('vault')) {
+                <i class="fas fa-box-archive"></i>
+              } @else if (feature.toLowerCase().includes('attachment')) {
+                <i class="fas fa-paperclip"></i>
+              } @else {
+                <i class="fas fa-circle-check"></i>
+              }
+              {{ feature }}
+            </li>
+          }
+        </ul>
 
-    <!-- PRO plan -->
-    <div class="plan-card">
-      <div class="plan-name">Pro</div>
-      <div class="plan-price">
-        <span class="currency">$</span><span class="amount">113</span><span class="period">USD / month</span>
+        <div class="plan-footer">
+          @if (plan.price === 0) {
+            <button class="btn-upgrade disabled" disabled>
+              <i class="fas fa-lock"></i> Current plan
+            </button>
+          } @else {
+            <button class="btn-upgrade primary" (click)="pay(plan)">
+              @if (plan.name === 'Eco') {
+                <i class="fas fa-arrow-right"></i>
+              } @else if (plan.name === 'Plus') {
+                <i class="fas fa-rocket"></i>
+              } @else {
+                <i class="fas fa-bolt"></i>
+              }
+              Upgrade to {{ plan.name }}
+            </button>
+          }
+        </div>
       </div>
-      <div class="plan-sub">Maximize your productivity</div>
-      <ul class="plan-features">
-        <li><i class="fas fa-circle-check"></i> Everything in Plus Plan</li>
-        <li><i class="fas fa-box-archive"></i> 500 GB Encrypted Vault</li>
-        <li><i class="fas fa-paperclip"></i> Up to 1 GB attachments</li>
-
-      </ul>
-      <div class="plan-footer">
-        <button class="btn-upgrade primary" (click)="pay()"><i class="fas fa-bolt"></i> Upgrade to Pro</button>
-      </div>
-    </div>
+    }
   </div>
-  
 </div>
