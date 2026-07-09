@@ -23,7 +23,7 @@ public class StripeService {
                 .setName(request.getName())
                 .build();
         SessionCreateParams.LineItem.PriceData priceData  = SessionCreateParams.LineItem.PriceData.builder()
-                .setCurrency(request.getCurrency() == null ? "NPR" : request.getCurrency())
+                .setCurrency(request.getCurrency() == null ? "USD" : request.getCurrency())
                 .setUnitAmount(request.getAmount())
                 .setProductData(productData)
                 .build();
