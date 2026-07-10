@@ -3,5 +3,6 @@ export interface PaymentRequest {
     quantity: number;
     name: string;
     currency: string;
+    planId: string;
     
 }

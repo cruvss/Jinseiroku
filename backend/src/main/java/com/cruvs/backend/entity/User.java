@@ -41,6 +41,10 @@ public class User {
     @Column(length = 50)
     private String timezone;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "subscription_plan_id")
+    private SubscriptionPlan subscriptionPlan;
+
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

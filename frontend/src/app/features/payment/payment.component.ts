@@ -42,14 +42,15 @@ export class PaymentComponent implements OnInit {
     }
 
     pay(plan: SubscriptionPlan){
-        // Convert to cents for Stripe (e.g., $5.00 -> 500)
+        // Convert to cents for Stripe 
         const amountInCents = Math.round(plan.price * 100);
 
         const request: PaymentRequest = {
             "name": plan.name + " Plan",
             "amount": amountInCents,
             "quantity": 1,
-            "currency": plan.currency || "USD"
+            "currency": plan.currency || "USD",
+            "planId": plan.id
         };
 
         this.paymentService.checkout(request).subscribe({

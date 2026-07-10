@@ -47,6 +47,12 @@ public class SubscriptionPlan {
     @Column(name = "feature")
     private List<String> features;
 
+    @Column(name = "max_attachment_size_bytes")
+    private Long maxAttachmentSizeBytes;
+
+    @Column(name = "max_vault_size_bytes")
+    private Long maxVaultSizeBytes;
+
     @CreationTimestamp
     @Column(name="created_at", updatable = false)
     private LocalDateTime createdAt;

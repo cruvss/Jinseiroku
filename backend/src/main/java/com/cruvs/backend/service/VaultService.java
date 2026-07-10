@@ -1,11 +1,14 @@
 package com.cruvs.backend.service;
 
 import com.cruvs.backend.dto.minio.VaultDocumentResponse;
+import com.cruvs.backend.entity.SubscriptionPlan;
 import com.cruvs.backend.entity.User;
 import com.cruvs.backend.entity.VaultDocument;
+import com.cruvs.backend.repository.SubscriptionPlanRepository;
 import com.cruvs.backend.repository.UserRepository;
 import com.cruvs.backend.repository.VaultDocumentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -17,12 +20,14 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class VaultService {
 
     private final VaultDocumentRepository documentRepository;
     private final UserRepository userRepository;
     private final StorageService storageService;
     private final ReminderService reminderService;
+    private final SubscriptionPlanRepository subscriptionPlanRepository;
 
     @Transactional
     public VaultDocumentResponse upload(UUID userId, byte[] fileBytes, String fileNameEncrypted,
@@ -30,6 +35,28 @@ public class VaultService {
                                         String tagsEncrypted, String notesEncrypted, LocalDate expiryDate) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
+
+        SubscriptionPlan plan = user.getSubscriptionPlan();
+        if (plan ==null){
+            plan = subscriptionPlanRepository.findById(UUID.fromString("b199d750-a9cf-4bc1-9f93-4a6c8e310001"))
+                    .orElseThrow();
+        }
+
+        if (plan.getMaxAttachmentSizeBytes() !=null && size > plan.getMaxAttachmentSizeBytes()){
+            throw new IllegalArgumentException("File size exceeds your plan limit of "+
+                    (plan.getMaxAttachmentSizeBytes() / (1024 * 1024)) + " MB.");
+        }
+
+        long totalUsedBytes = documentRepository.sumFileSizeBytesByUser(user);
+//        log.info("Total size used:{} MB.",totalUsedBytes/(1024*1024));
+
+        long newTotalBytes = totalUsedBytes + size;
+
+        if (plan.getMaxAttachmentSizeBytes() !=null && size > plan.getMaxVaultSizeBytes()){
+            throw new IllegalArgumentException("Uploading this file will exceed your plan's total vault storage limit of "+
+                    (plan.getMaxVaultSizeBytes()/(1024*1024)) + "MB. Currently used: "+
+                    String.format("%.2f", (double) totalUsedBytes/(1024*1024)) + "MB.");
+        }
 
         String storageKey = "vault/" + userId + "/" + UUID.randomUUID();
         storageService.uploadFile(storageKey, fileBytes, "application/octet-stream");
