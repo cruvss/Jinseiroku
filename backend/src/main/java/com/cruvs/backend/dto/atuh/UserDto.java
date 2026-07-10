@@ -11,5 +11,7 @@ public class UserDto {
     private UUID id;
     private String email;
     private String timezone;
+    private UUID subscriptionPlanId;
+    private String subscriptionName;
     private LocalDateTime createdAt;
 }

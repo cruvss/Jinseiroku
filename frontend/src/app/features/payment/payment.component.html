@@ -11,8 +11,9 @@
 
   <div class="plan-grid">
     @for (plan of plans(); track plan.id) {
+      <!-- Style card with .current if it matches currentPlanId() -->
       <div class="plan-card" 
-           [class.current]="plan.price === 0" 
+           [class.current]="plan.id === currentPlanId()" 
            [class.go-plan]="plan.planClass === 'go-plan'"
            [class.popular]="plan.isPopular">
         
@@ -48,7 +49,8 @@
         </ul>
 
         <div class="plan-footer">
-          @if (plan.price === 0) {
+          <!-- Toggle footer button based on active plan ID -->
+          @if (plan.id === currentPlanId()) {
             <button class="btn-upgrade disabled" disabled>
               <i class="fas fa-lock"></i> Current plan
             </button>

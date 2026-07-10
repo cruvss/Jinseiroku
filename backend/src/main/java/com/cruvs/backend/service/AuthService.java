@@ -28,6 +28,7 @@ public class AuthService {
     private final UserSessionRepository userSessionRepository;
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
+    private final SubscriptionPlanService subscriptionPlanService;
 
     private static final SecureRandom secureRandom = new SecureRandom();
 
@@ -161,6 +162,9 @@ public class AuthService {
                 .id(user.getId())
                 .email(user.getEmail())
                 .timezone(user.getTimezone())
+                .subscriptionPlanId(user.getSubscriptionPlan() !=null ?
+                        user.getSubscriptionPlan().getId() : null)
+                .subscriptionName(subscriptionPlanService.getPlanName(user.getSubscriptionPlan().getId()))
                 .createdAt(user.getCreatedAt())
                 .build();
     }

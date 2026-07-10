@@ -8,4 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface SubscriptionPlanRepository extends JpaRepository<SubscriptionPlan, UUID> {
+
+
 }

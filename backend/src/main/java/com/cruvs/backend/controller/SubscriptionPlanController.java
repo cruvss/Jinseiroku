@@ -6,11 +6,10 @@ import com.cruvs.backend.service.SubscriptionPlanService;
 import com.cruvs.backend.util.ApiResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/v1/subscription-plans")
@@ -22,5 +21,14 @@ public class SubscriptionPlanController {
     public ResponseEntity<ApiResponse<List<SubscriptionPlan>>> getPlans(){
         List<SubscriptionPlan> plans = subscriptionPlanService.getAllPlans();
         return ResponseEntity.ok(ApiResponseUtil.success("Subscription plans retrived sucessfully", plans));
+    }
+    @GetMapping("/{planId}/name")
+    public ResponseEntity<ApiResponse<String>> getPlanName(@PathVariable UUID planId) {
+
+        String planName = subscriptionPlanService.getPlanName(planId);
+
+        return ResponseEntity.ok(
+                ApiResponseUtil.success("Retrieved plan name", planName)
+        );
     }
 }
