@@ -1,8 +1,10 @@
 package com.cruvs.backend.service;
 
 import com.cruvs.backend.dto.atuh.*;
+import com.cruvs.backend.entity.SubscriptionPlan;
 import com.cruvs.backend.entity.User;
 import com.cruvs.backend.entity.UserSession;
+import com.cruvs.backend.repository.SubscriptionPlanRepository;
 import com.cruvs.backend.repository.UserRepository;
 import com.cruvs.backend.repository.UserSessionRepository;
 import com.cruvs.backend.security.JwtTokenProvider;
@@ -29,6 +31,7 @@ public class AuthService {
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
     private final SubscriptionPlanService subscriptionPlanService;
+    private final SubscriptionPlanRepository subscriptionPlanRepository;
 
     private static final SecureRandom secureRandom = new SecureRandom();
 
@@ -50,11 +53,15 @@ public class AuthService {
         String recoveryKey = generateRandomString(32);
         String recoveryKeyHash = passwordEncoder.encode(recoveryKey);
 
+        SubscriptionPlan freePlan = subscriptionPlanRepository.findById(UUID.fromString("b199d750-a9cf-4bc1-9f93-4a6c8e310001"))
+                .orElseThrow();
+
         User user = User.builder()
                 .email(request.getEmail())
                 .passwordHash(passwordHash)
                 .encryptionSalt(encryptionSalt)
                 .recoveryKeyHash(recoveryKeyHash)
+                .subscriptionPlan(freePlan)
                 .timezone("UTC")
                 .build();
 

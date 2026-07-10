@@ -36,6 +36,11 @@ export class PaymentComponent implements OnInit {
         });
     }
 
+    getCurrentPlanPrice(): number {
+        const activePlan = this.plans().find(p => p.id === this.currentPlanId());
+        return activePlan ? activePlan.price : 0; 
+    }
+
     loadUserProfile(): void {
         this.http.get<any>(`${environment.apiUrl}/auth/me`).subscribe({
             next: (response: any) => {

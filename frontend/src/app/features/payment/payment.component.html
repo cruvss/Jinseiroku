@@ -11,11 +11,9 @@
 
   <div class="plan-grid">
     @for (plan of plans(); track plan.id) {
-      <!-- Style card with .current if it matches currentPlanId() -->
+      
       <div class="plan-card" 
-           [class.current]="plan.id === currentPlanId()" 
-           [class.go-plan]="plan.planClass === 'go-plan'"
-           [class.popular]="plan.isPopular">
+           [class.current]="plan.id === currentPlanId()">
         
         @if (plan.isPopular) {
           <!-- <div class="popular-badge">
@@ -49,12 +47,20 @@
         </ul>
 
         <div class="plan-footer">
-          <!-- Toggle footer button based on active plan ID -->
+          <!-- 1. Current Plan -->
           @if (plan.id === currentPlanId()) {
             <button class="btn-upgrade disabled" disabled>
               <i class="fas fa-lock"></i> Current plan
             </button>
-          } @else {
+          } 
+          <!-- 2. Lower/Cheaper Plan -->
+          @else if (plan.price < getCurrentPlanPrice()) {
+            <button class="btn-upgrade disabled" disabled>
+              <i class="fas fa-lock"></i> Lower Tier
+            </button>
+          } 
+          <!-- 3. Higher/Upgrade Plan -->
+          @else {
             <button class="btn-upgrade primary" (click)="pay(plan)">
               @if (plan.name === 'Eco') {
                 <i class="fas fa-arrow-right"></i>
@@ -69,5 +75,8 @@
         </div>
       </div>
     }
+  </div>
+    <div class="footer-note support-note">
+    <i class="fas fa-info-circle"></i> If you want to downgrade the plan please contact support.
   </div>
 </div>

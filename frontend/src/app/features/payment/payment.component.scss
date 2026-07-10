@@ -94,34 +94,9 @@ body {
     border-color: $accent;
   }
 
-  &.popular {
-    // border-color: $accent;
-    background: $card-bg;
-    box-shadow: 0 8px 24px rgba($accent, 0.15);
-
-    .popular-badge {
-      display: inline-block;
-    }
-  }
-
   &.current {
     border-color: $accent;
     background: rgba($accent, 0.05);
-  }
-
-  &.go-plan {
-    border-color: $border;
-
-    .btn-upgrade {
-      background: $accent;
-      border: 1px solid $accent;
-      color: $btn-dark;
-
-      &:hover {
-        background: $accent-dark;
-        border-color: $accent-dark;
-      }
-    }
   }
 }
 
@@ -359,6 +334,10 @@ body {
       color: $accent-dark;
     }
   }
+}
+.support-note{
+  border-top: none;
+
 }
 
 

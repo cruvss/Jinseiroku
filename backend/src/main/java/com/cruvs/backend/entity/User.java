@@ -43,7 +43,7 @@ public class User {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "subscription_plan_id")
-    private SubscriptionPlan subscriptionPlan;
+    private SubscriptionPlan subscriptionPlan ;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
