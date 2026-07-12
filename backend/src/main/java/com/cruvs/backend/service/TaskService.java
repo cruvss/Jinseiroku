@@ -5,6 +5,7 @@ import com.cruvs.backend.dto.task.TaskDto;
 import com.cruvs.backend.entity.Task;
 import com.cruvs.backend.entity.TaskCompletion;
 import com.cruvs.backend.entity.VaultDocument;
+import com.cruvs.backend.exception.ResourceNotFoundException;
 import com.cruvs.backend.repository.TaskCompletionRepository;
 import com.cruvs.backend.repository.TaskRepository;
 import com.cruvs.backend.repository.VaultDocumentRepository;
@@ -34,7 +35,7 @@ public class TaskService {
 
     public TaskDto getTaskById(UUID userId, UUID taskId) {
         Task task = taskRepo.findById(taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task",taskId));
         if (!task.getUserId().equals(userId)) {
             throw new SecurityException("Access denied");
         }
@@ -46,7 +47,7 @@ public class TaskService {
         VaultDocument document = null;
         if (dto.getLinkedDocumentId() != null) {
             document = vaultRepo.findById(dto.getLinkedDocumentId())
-                    .orElseThrow(() -> new IllegalArgumentException("Document not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Document",dto.getLinkedDocumentId()));
         }
 
         Task task = Task.builder()
@@ -83,7 +84,7 @@ public class TaskService {
     @Transactional
     public TaskDto updateTask(UUID userId, UUID taskId, TaskDto dto) {
         Task task = taskRepo.findById(taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task",taskId));
         if (!task.getUserId().equals(userId)) {
             throw new SecurityException("Access denied");
         }
@@ -91,7 +92,7 @@ public class TaskService {
         VaultDocument document = null;
         if (dto.getLinkedDocumentId() != null) {
             document = vaultRepo.findById(dto.getLinkedDocumentId())
-                    .orElseThrow(() -> new IllegalArgumentException("Document not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Document",dto.getLinkedDocumentId()));
         }
 
         task.setTitleEncrypted(dto.getTitleEncrypted());
@@ -125,7 +126,7 @@ public class TaskService {
     @Transactional
     public void deleteTask(UUID userId, UUID taskId) {
         Task task = taskRepo.findById(taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task",taskId));
         if (!task.getUserId().equals(userId)) {
             throw new SecurityException("Access denied");
         }
@@ -136,7 +137,7 @@ public class TaskService {
     @Transactional
     public TaskDto completeTask(UUID userId, UUID taskId, String notesEncrypted) {
         Task task = taskRepo.findById(taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task",taskId));
         if (!task.getUserId().equals(userId)) {
             throw new SecurityException("Access denied");
         }
@@ -176,7 +177,7 @@ public class TaskService {
 
     public List<TaskCompletionDto> getCompletionsByTaskId(UUID userId, UUID taskId) {
         Task task = taskRepo.findById(taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task",taskId));
         if (!task.getUserId().equals(userId)) {
             throw new SecurityException("Access denied");
         }

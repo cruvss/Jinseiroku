@@ -2,6 +2,8 @@ package com.cruvs.backend.service;
 
 import com.cruvs.backend.dto.subscription.Sub;
 import com.cruvs.backend.entity.Subscription;
+import com.cruvs.backend.exception.AccessDeniedException;
+import com.cruvs.backend.exception.ResourceNotFoundException;
 import com.cruvs.backend.repository.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -60,10 +62,10 @@ public class SubscriptionService {
     @Transactional
     public Sub updateSubscription(UUID userId, UUID subscriptionId, Sub dto) {
         Subscription entity = subscriptionRepository.findById(subscriptionId)
-                .orElseThrow(() -> new IllegalArgumentException("Subscription not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Subscription",subscriptionId));
 
         if (!entity.getUserId().equals(userId)) {
-            throw new SecurityException("Access denied");
+            throw new AccessDeniedException("Access denied");
         }
 
         entity.setName(dto.getName());
@@ -94,10 +96,10 @@ public class SubscriptionService {
     @Transactional
     public void deleteSubscription(UUID userId, UUID subscriptionId) {
         Subscription entity = subscriptionRepository.findById(subscriptionId)
-                .orElseThrow(() -> new IllegalArgumentException("Subscription not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Subscription",subscriptionId));
 
         if (!entity.getUserId().equals(userId)) {
-            throw new SecurityException("Access denied");
+            throw new AccessDeniedException("Access denied");
         }
         reminderService.deleteRemindersForSource("SUBSCRIPTION", entity.getId());
         subscriptionRepository.delete(entity);

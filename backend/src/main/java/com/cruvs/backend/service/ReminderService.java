@@ -3,6 +3,8 @@ package com.cruvs.backend.service;
 import com.cruvs.backend.dto.reminder.ScheduledNotificationDto;
 import com.cruvs.backend.entity.ReminderRule;
 import com.cruvs.backend.entity.ScheduledNotification;
+import com.cruvs.backend.exception.AccessDeniedException;
+import com.cruvs.backend.exception.ResourceNotFoundException;
 import com.cruvs.backend.repository.ReminderRuleRepository;
 import com.cruvs.backend.repository.ScheduledNotificationRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -104,7 +106,7 @@ public class ReminderService {
     @Transactional
     public void dismissNotification(UUID userId, UUID notificationId) {
         ScheduledNotification notification = scheduledNotificationRepository.findById(notificationId)
-                .orElseThrow();
+                .orElseThrow(() -> new ResourceNotFoundException("Notification", notificationId));
         notification.setStatus("dismissed");
         notification.setSentAt(LocalDateTime.now());
         scheduledNotificationRepository.save(notification);
@@ -113,9 +115,9 @@ public class ReminderService {
     @Transactional
     public void snoozeNotification(UUID userId, UUID notificationId, int days) {
         ScheduledNotification notification = scheduledNotificationRepository.findById(notificationId)
-                .orElseThrow();
+                .orElseThrow(() -> new ResourceNotFoundException("Notification", notificationId));
         if (!notification.getUserId().equals(userId)) {
-            throw new SecurityException("Access denied");
+            throw new AccessDeniedException("Access denied to notification: " + notificationId);
         }
         notification.setScheduledFor(LocalDateTime.now().plusDays(days));
         notification.setStatus("pending");

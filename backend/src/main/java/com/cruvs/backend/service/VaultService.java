@@ -4,6 +4,9 @@ import com.cruvs.backend.dto.minio.VaultDocumentResponse;
 import com.cruvs.backend.entity.SubscriptionPlan;
 import com.cruvs.backend.entity.User;
 import com.cruvs.backend.entity.VaultDocument;
+import com.cruvs.backend.exception.AccessDeniedException;
+import com.cruvs.backend.exception.BusinessRuleException;
+import com.cruvs.backend.exception.ResourceNotFoundException;
 import com.cruvs.backend.repository.SubscriptionPlanRepository;
 import com.cruvs.backend.repository.UserRepository;
 import com.cruvs.backend.repository.VaultDocumentRepository;
@@ -34,16 +37,16 @@ public class VaultService {
                                         String category, String encryptedDek, Long size, String mimeType,
                                         String tagsEncrypted, String notesEncrypted, LocalDate expiryDate) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User",userId));
 
         SubscriptionPlan plan = user.getSubscriptionPlan();
         if (plan ==null){
             plan = subscriptionPlanRepository.findById(UUID.fromString("b199d750-a9cf-4bc1-9f93-4a6c8e310001"))
-                    .orElseThrow();
+                    .orElseThrow(()-> new ResourceNotFoundException("Default subscription plan not configured"));
         }
 
         if (plan.getMaxAttachmentSizeBytes() !=null && size > plan.getMaxAttachmentSizeBytes()){
-            throw new IllegalArgumentException("File size exceeds your plan limit of "+
+            throw new BusinessRuleException("File size exceeds your plan limit of "+
                     (plan.getMaxAttachmentSizeBytes() / (1024 * 1024)) + " MB.");
         }
 
@@ -53,7 +56,7 @@ public class VaultService {
         long newTotalBytes = totalUsedBytes + size;
 
         if (plan.getMaxAttachmentSizeBytes() !=null && size > plan.getMaxVaultSizeBytes()){
-            throw new IllegalArgumentException("Uploading this file will exceed your plan's total vault storage limit of "+
+            throw new BusinessRuleException("Uploading this file will exceed your plan's total vault storage limit of "+
                     (plan.getMaxVaultSizeBytes()/(1024*1024)) + "MB. Currently used: "+
                     String.format("%.2f", (double) totalUsedBytes/(1024*1024)) + "MB.");
         }
@@ -93,7 +96,7 @@ public class VaultService {
 
     public Page<VaultDocumentResponse> list(UUID userId, String category, Pageable pageable) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User",userId));
 
         Page<VaultDocument> page = (category != null && !category.isEmpty())
                 ? documentRepository.findByUserAndCategory(user, category, pageable)
@@ -104,18 +107,18 @@ public class VaultService {
 
     public VaultDocumentResponse getMetadata(UUID userId, UUID documentId) {
         VaultDocument doc = documentRepository.findById(documentId)
-                .orElseThrow(() -> new IllegalArgumentException("Document not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Document",documentId));
         if (!doc.getUser().getId().equals(userId)) {
-            throw new SecurityException("Access denied");
+            throw new AccessDeniedException("Access denied");
         }
         return mapToResponse(doc);
     }
 
     public byte[] download(UUID userId, UUID documentId) {
         VaultDocument doc = documentRepository.findById(documentId)
-                .orElseThrow(() -> new IllegalArgumentException("Document not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Document",documentId));
         if (!doc.getUser().getId().equals(userId)) {
-            throw new SecurityException("Access denied");
+            throw new AccessDeniedException("Access denied");
         }
         return storageService.downloadFile(doc.getBlobStorageKey());
     }
@@ -123,9 +126,9 @@ public class VaultService {
     @Transactional
     public void delete(UUID userId, UUID documentId) {
         VaultDocument doc = documentRepository.findById(documentId)
-                .orElseThrow(() -> new IllegalArgumentException("Document not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Document",documentId));
         if (!doc.getUser().getId().equals(userId)) {
-            throw new SecurityException("Access denied");
+            throw new AccessDeniedException("Access denied");
         }
         storageService.deleteFile(doc.getBlobStorageKey());
 
