@@ -4,6 +4,9 @@ import com.cruvs.backend.dto.atuh.*;
 import com.cruvs.backend.entity.SubscriptionPlan;
 import com.cruvs.backend.entity.User;
 import com.cruvs.backend.entity.UserSession;
+import com.cruvs.backend.exception.BusinessRuleException;
+import com.cruvs.backend.exception.InvalidTokenException;
+import com.cruvs.backend.exception.ResourceNotFoundException;
 import com.cruvs.backend.repository.SubscriptionPlanRepository;
 import com.cruvs.backend.repository.UserRepository;
 import com.cruvs.backend.repository.UserSessionRepository;
@@ -16,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.module.ResolutionException;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.Base64;
@@ -45,7 +49,7 @@ public class AuthService {
     public AuthResponse register(RegisterRequest request){
 
         if (userRepository.existsByEmail(request.getEmail())){
-            throw new IllegalArgumentException("Email already registered");
+            throw new BusinessRuleException("Email already registered");
         }
 
         String passwordHash = passwordEncoder.encode(request.getPassword());
@@ -54,7 +58,7 @@ public class AuthService {
         String recoveryKeyHash = passwordEncoder.encode(recoveryKey);
 
         SubscriptionPlan freePlan = subscriptionPlanRepository.findById(UUID.fromString("b199d750-a9cf-4bc1-9f93-4a6c8e310001"))
-                .orElseThrow();
+                .orElseThrow(()-> new ResolutionException("Default subscription plan not configured"));
 
         User user = User.builder()
                 .email(request.getEmail())
@@ -108,17 +112,17 @@ public class AuthService {
     @Transactional
     public AuthResponse refreshToken(String refreshToken) {
         if (refreshToken == null) {
-            throw new IllegalArgumentException("Refresh token required");
+            throw new InvalidTokenException("Refresh token required");
         }
         if (!jwtTokenProvider.validateToken(refreshToken)) {
-            throw new IllegalArgumentException("Invalid refresh token");
+            throw new InvalidTokenException("Invalid refresh token");
         }
         UUID sessionId = jwtTokenProvider.getSessionIdFromToken(refreshToken);
         UserSession session = userSessionRepository.findById(sessionId)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid session or session revoked"));
+                .orElseThrow(() -> new InvalidTokenException("Invalid session or session revoked"));
         if (session.getExpiresAt().isBefore(LocalDateTime.now())) {
             userSessionRepository.delete(session);
-            throw new IllegalArgumentException("Refresh token expired");
+            throw new InvalidTokenException("Refresh token expired");
         }
         String newAccessToken = jwtTokenProvider.generateAccessToken(session.getUser().getId());
         return AuthResponse.builder()
@@ -130,7 +134,7 @@ public class AuthService {
     public String getSaltByEmail(String email) {
         return userRepository.findByEmail(email)
                 .map(User::getEncryptionSalt)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     public VaultParamsResponse getVaultParamsByEmail(String email) {
@@ -139,13 +143,13 @@ public class AuthService {
                         .encryptionSalt(user.getEncryptionSalt())
                         .encryptedKekVerification(user.getEncryptedKekVerification())
                         .build())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 
     @Transactional
     public void updateKekVerification(java.util.UUID userId, String verification) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User",userId));
         user.setEncryptedKekVerification(verification);
         userRepository.save(user);
     }
@@ -163,7 +167,7 @@ public class AuthService {
 
     public UserDto getUserProfile(UUID userId){
         User user = userRepository.findById(userId)
-                .orElseThrow();
+                .orElseThrow(()->new ResourceNotFoundException("User",userId));
 
         return UserDto.builder()
                 .id(user.getId())
