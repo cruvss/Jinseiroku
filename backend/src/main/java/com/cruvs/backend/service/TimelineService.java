@@ -3,6 +3,8 @@ package com.cruvs.backend.service;
 
 import com.cruvs.backend.dto.timeline.TimelineEventDto;
 import com.cruvs.backend.entity.TimelineEvent;
+import com.cruvs.backend.exception.AccessDeniedException;
+import com.cruvs.backend.exception.ResourceNotFoundException;
 import com.cruvs.backend.repository.TimelineEventRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,9 +30,9 @@ public class TimelineService {
 
     public TimelineEventDto getEventsById(UUID userId, UUID id){
         TimelineEvent event = timelineEventRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(()-> new ResourceNotFoundException("TimelineEvent",id));
         if (!event.getUserId().equals(userId)){
-            throw new SecurityException("Access Denied");
+            throw new AccessDeniedException("Access Denied to timeline event: "+id);
         }
 
         return mapToDto(event);
@@ -55,10 +57,10 @@ public class TimelineService {
     public TimelineEventDto updateEvent(UUID userId, UUID eventId,TimelineEventDto dto){
 
         TimelineEvent event = timelineEventRepository.findById(eventId)
-                .orElseThrow();
+                .orElseThrow(() -> new ResourceNotFoundException("TimelineEvent", eventId));
 
         if (!event.getUserId().equals(userId)){
-            throw new SecurityException("Access Denied");
+            throw new AccessDeniedException("Access denied to timeline event: " + eventId);
         }
         event.setTitleEncrypted(dto.getTitleEncrypted());
         event.setDescriptionEncrypted(dto.getDescriptionEncrypted());
@@ -76,9 +78,9 @@ public class TimelineService {
     public void deleteEvent(UUID userId, UUID eventId){
 
         TimelineEvent event = timelineEventRepository.findById(eventId)
-                .orElseThrow();
+                .orElseThrow(() -> new ResourceNotFoundException("TimelineEvent", eventId));
         if (!event.getUserId().equals(userId)){
-            throw new SecurityException("Access Denied");
+            throw new AccessDeniedException("Access denied to timeline event: " + eventId);
         }
 
         timelineEventRepository.delete(event);

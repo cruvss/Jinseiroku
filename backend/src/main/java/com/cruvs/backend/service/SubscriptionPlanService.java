@@ -1,6 +1,7 @@
 package com.cruvs.backend.service;
 
 import com.cruvs.backend.entity.SubscriptionPlan;
+import com.cruvs.backend.exception.ResourceNotFoundException;
 import com.cruvs.backend.repository.SubscriptionPlanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,6 @@ public class SubscriptionPlanService {
     public String getPlanName(UUID planId){
         return subscriptionPlanRepository.findById(planId)
                 .map(SubscriptionPlan::getName)
-                .orElseThrow();
+                .orElseThrow(() -> new ResourceNotFoundException("SubscriptionPlan", planId));
     }
 }

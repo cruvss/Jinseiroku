@@ -4,6 +4,8 @@ import com.cruvs.backend.dto.stripe.StripeRequest;
 import com.cruvs.backend.dto.stripe.StripeResponse;
 import com.cruvs.backend.entity.SubscriptionPlan;
 import com.cruvs.backend.entity.User;
+import com.cruvs.backend.exception.PaymentException;
+import com.cruvs.backend.exception.ResourceNotFoundException;
 import com.cruvs.backend.repository.SubscriptionPlanRepository;
 import com.cruvs.backend.repository.UserRepository;
 import com.stripe.Stripe;
@@ -82,17 +84,17 @@ public class StripeService {
                 UUID planId = UUID.fromString(planIdStr);
 
                 User user = userRepository.findById(userId)
-                        .orElseThrow();
+                        .orElseThrow(() -> new ResourceNotFoundException("User", userId));
 
                 SubscriptionPlan plan = subscriptionPlanRepository.findById(planId)
-                        .orElseThrow();
+                        .orElseThrow(() -> new ResourceNotFoundException("SubscriptionPlan", planId));
 
                 user.setSubscriptionPlan(plan);
                 userRepository.save(user);
                 log.info("User {} successfully upgraded to plan {}", userId, plan.getName());
             }
         } else {
-            throw new RuntimeException("Payment not completed");
+            throw new PaymentException("Payment not completed for session: "+sessionId);
         }
     }
 }
