@@ -48,7 +48,9 @@ public class AuthService {
     @Transactional
     public AuthResponse register(RegisterRequest request){
 
+        log.debug("Register attempt for email: {}",request.getEmail());
         if (userRepository.existsByEmail(request.getEmail())){
+            log.warn("Registration failed - email already exists: {}",request.getEmail());
             throw new BusinessRuleException("Email already registered");
         }
 
@@ -70,7 +72,7 @@ public class AuthService {
                 .build();
 
         user = userRepository.save(user);
-        log.info("User registered: {}",user.getEmail());
+        log.info("User registered with email: {}",user.getEmail());
 
         return AuthResponse.builder()
                 .recoveryKey(recoveryKey)
@@ -81,10 +83,12 @@ public class AuthService {
     @Transactional
     public AuthResponse login(LoginRequest request, HttpServletResponse response){
 
+        log.debug("Login attempt for email: {}",request.getEmail());
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(()-> new BadCredentialsException("Invalid email or password"));
 
         if (!passwordEncoder.matches(request.getPassword(),user.getPasswordHash())){
+            log.warn("Failed login attempt - wrong password for: {}",request.getEmail());
             throw new BadCredentialsException("Invalid email or password");
         }
 
@@ -112,9 +116,11 @@ public class AuthService {
     @Transactional
     public AuthResponse refreshToken(String refreshToken) {
         if (refreshToken == null) {
+            log.warn("Refresh token null");
             throw new InvalidTokenException("Refresh token required");
         }
         if (!jwtTokenProvider.validateToken(refreshToken)) {
+            log.warn("Refresh token invalid");
             throw new InvalidTokenException("Invalid refresh token");
         }
         UUID sessionId = jwtTokenProvider.getSessionIdFromToken(refreshToken);
@@ -122,9 +128,11 @@ public class AuthService {
                 .orElseThrow(() -> new InvalidTokenException("Invalid session or session revoked"));
         if (session.getExpiresAt().isBefore(LocalDateTime.now())) {
             userSessionRepository.delete(session);
+            log.warn("Refresh token expired");
             throw new InvalidTokenException("Refresh token expired");
         }
         String newAccessToken = jwtTokenProvider.generateAccessToken(session.getUser().getId());
+        log.debug("Token refreshed for userId: {}",session.getUser().getEmail());
         return AuthResponse.builder()
                 .accessToken(newAccessToken)
                 .email(session.getUser().getEmail())
@@ -151,6 +159,7 @@ public class AuthService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User",userId));
         user.setEncryptedKekVerification(verification);
+        log.info("KEK verification updated for userId: {}",user.getEmail());
         userRepository.save(user);
     }
 
@@ -158,14 +167,18 @@ public class AuthService {
 
     @Transactional
     public void logout(String refreshToken) {
-        log.info(refreshToken);
         if (refreshToken != null && jwtTokenProvider.validateToken(refreshToken)) {
             UUID sessionId = jwtTokenProvider.getSessionIdFromToken(refreshToken);
             userSessionRepository.deleteById(sessionId);
+            log.info("User logged out successfully. Session revoked: {}", sessionId);
+        } else{
+            log.warn("Logout request received with an invalid or missing refresh token.");
+
         }
     }
 
     public UserDto getUserProfile(UUID userId){
+        log.debug("Fetching profile for userId: {}",userId);
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new ResourceNotFoundException("User",userId));
 

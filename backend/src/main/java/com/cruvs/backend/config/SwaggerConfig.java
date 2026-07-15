@@ -15,9 +15,9 @@ public class SwaggerConfig {
 
         return new OpenAPI()
                 .info(new Info()
-                        .title("Jenseiroku API")
+                        .title("Jinserroku API")
                         .version("1.0")
-                        .description("REST API for the renseiroku lifemanager backend."))
+                        .description("REST API for the Jinserroku lifemanager backend."))
                 .components(new Components()
 
                         .addSecuritySchemes(

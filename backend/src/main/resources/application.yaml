@@ -64,5 +64,4 @@ stripe:
 
 logging:
   file:
-    path: logs
-
+    name: logs/application.log
