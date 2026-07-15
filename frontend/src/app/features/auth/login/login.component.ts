@@ -63,7 +63,7 @@ export class LoginComponent {
       },
       error: (error) => {
         this.isLoading.set(false);
-        const message = error.error?.error?.message || 'Login failed. Please try again.';
+        const message = error.error?.message || 'Login failed. Please try again.';
         this.snackBar.open(message, 'Close', { duration: 2000 });
       }
     });
