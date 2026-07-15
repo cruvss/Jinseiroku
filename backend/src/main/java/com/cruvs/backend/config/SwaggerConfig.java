@@ -11,13 +11,13 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfig {
     @Bean
-    public OpenAPI mythicGatesOpenAPI() {
+    public OpenAPI jenseirokuOpenAPI() {
 
         return new OpenAPI()
                 .info(new Info()
-                        .title("Jinserroku API")
+                        .title("Jinseiroku API")
                         .version("1.0")
-                        .description("REST API for the Jinserroku lifemanager backend."))
+                        .description("REST API for the Jinseiroku lifemanager backend."))
                 .components(new Components()
 
                         .addSecuritySchemes(
