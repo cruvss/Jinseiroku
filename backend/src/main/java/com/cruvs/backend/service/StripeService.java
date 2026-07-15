@@ -33,6 +33,7 @@ public class StripeService {
     }
 
     public StripeResponse checkoutProducts(UUID userId, StripeRequest request){
+        log.info("Creating checkout session for userId: {}, planId: {}",userId,request.getPlanId());
         Stripe.apiKey = secretKey;
 
         SessionCreateParams.LineItem.PriceData.ProductData productData = SessionCreateParams.LineItem.PriceData.ProductData.builder()
@@ -60,8 +61,9 @@ public class StripeService {
 
         try{
             session = Session.create(params);
+            log.info("Checkout session created: sessionId: {}, userId: {}",session.getId(), userId);
         }catch (StripeException e){
-            log.info("Cannot Create Session {}",e.getMessage());
+            log.error("Stripe session creation failed for userId: {}:",userId);
         }
 
         return StripeResponse.builder()
@@ -72,6 +74,8 @@ public class StripeService {
 
     @Transactional
     public void verifyCheckoutSession(String sessionId) throws StripeException{
+        log.info("Verifying String session: {}",sessionId);
+
         Stripe.apiKey = secretKey;
         Session session = Session.retrieve(sessionId);
 
@@ -92,8 +96,9 @@ public class StripeService {
                 user.setSubscriptionPlan(plan);
                 userRepository.save(user);
                 log.info("User {} successfully upgraded to plan {}", userId, plan.getName());
-            }
+            } else log.error("Stripe session {} missing userId or planId metadata",sessionId);
         } else {
+            log.warn("Stripe session {} has status: {} — not paid", sessionId, session.getPaymentStatus());
             throw new PaymentException("Payment not completed for session: "+sessionId);
         }
     }
