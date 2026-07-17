@@ -10,6 +10,7 @@ import { TaskComponent } from './features/tasks/task.component';
 import { TimelineComponent } from './features/timeline/timeline.component';
 import { PaymentComponent } from './features/payment/payment.component';
 import { PaymentSuccessComponent } from './features/payment-success/payment-success.component';
+import { HomeComponent } from './features/home/home.component';
 
 export const routes: Routes = [
     // Public routes (no authentication needed)
@@ -17,6 +18,7 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'payment', component:PaymentComponent},
     { path: 'payment-success', component:PaymentSuccessComponent},
+    { path: '', component:HomeComponent},
     
     // Protected routes wrapped in shell layout
     {

@@ -1,0 +1,296 @@
+/* Color Variables */
+$bg-color: #09090b;
+$surface: rgba(255, 255, 255, 0.05);
+$surface-border: rgba(255, 255, 255, 0.1);
+$text-main: #fafafa;
+$text-muted: #a1a1aa;
+$primary-color: #8b5cf6; // Vibrant Purple
+$secondary-color: #3b82f6; // Vibrant Blue
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: $bg-color;
+  color: $text-main;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  overflow-x: hidden;
+}
+
+.landing-page {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- Navigation --- */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    
+    .logo-icon {
+      color: $primary-color;
+      font-size: 1.5rem;
+    }
+    
+    .logo-text {
+      background: linear-gradient(to right, #fff, #a1a1aa);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+  }
+
+  .nav-actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+}
+
+/* --- Buttons --- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-decoration: none;
+  border: none;
+
+  &.btn-lg {
+    padding: 0.75rem 1.75rem;
+    font-size: 1rem;
+  }
+
+  &.btn-primary {
+    background: linear-gradient(135deg, $primary-color, $secondary-color);
+    color: white;
+    box-shadow: 0 4px 14px 0 rgba($primary-color, 0.39);
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba($primary-color, 0.5);
+    }
+  }
+
+  &.btn-ghost {
+    background: transparent;
+    color: $text-main;
+    
+    &:hover {
+      background: $surface;
+    }
+  }
+
+  &.btn-secondary {
+    background: $surface;
+    border: 1px solid $surface-border;
+    color: $text-main;
+    backdrop-filter: blur(10px);
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+/* --- Hero Section --- */
+.hero-section {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5rem 2rem 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+/* --- Ambient Glowing Orbs --- */
+.glow {
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: -1;
+  opacity: 0.4;
+  animation: pulse 8s infinite alternate;
+
+  &.glow-left {
+    top: -100px;
+    left: -200px;
+    background: $primary-color;
+  }
+
+  &.glow-right {
+    top: 200px;
+    right: -200px;
+    background: $secondary-color;
+    animation-delay: -4s;
+  }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.3; }
+  100% { transform: scale(1.1); opacity: 0.5; }
+}
+
+.hero-content {
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: fadeUp 1s ease-out forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- Badge --- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba($primary-color, 0.1);
+  border: 1px solid rgba($primary-color, 0.2);
+  color: #c4b5fd;
+  padding: 0.35rem 1rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2rem;
+
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: $primary-color;
+    box-shadow: 0 0 8px $primary-color;
+  }
+}
+
+/* --- Typography --- */
+.hero-title {
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+
+  .gradient-text {
+    background: linear-gradient(to right, $primary-color, $secondary-color);
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+}
+
+.hero-subtitle {
+  font-size: 1.125rem;
+  color: $text-muted;
+  max-width: 600px;
+  line-height: 1.6;
+  margin-bottom: 2.5rem;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 5rem;
+  
+  @media (max-width: 640px) {
+    flex-direction: column;
+    width: 100%;
+    .btn { width: 100%; }
+  }
+}
+
+/* --- Glassmorphism Visual --- */
+.hero-visual {
+  width: 100%;
+  max-width: 800px;
+  perspective: 1000px;
+  
+  .glass-panel {
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transform: rotateX(8deg) scale(0.95);
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    
+    &:hover {
+      transform: rotateX(0deg) scale(1);
+    }
+
+    .panel-header {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      gap: 0.5rem;
+      
+      .dot {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        &.red { background: #ef4444; }
+        &.yellow { background: #eab308; }
+        &.green { background: #22c55e; }
+      }
+    }
+
+    .panel-body {
+      padding: 2.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      min-height: 250px;
+      
+      .skeleton-line {
+        height: 2rem;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 0.5rem;
+        animation: shimmer 2s infinite linear;
+        background-image: linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0) 0,
+          rgba(255, 255, 255, 0.05) 20%,
+          rgba(255, 255, 255, 0) 40%,
+          rgba(255, 255, 255, 0)
+        );
+        background-size: 1000px 100%;
+
+        &.full { width: 100%; }
+        &.w-75 { width: 75%; }
+        &.w-50 { width: 50%; }
+      }
+    }
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
