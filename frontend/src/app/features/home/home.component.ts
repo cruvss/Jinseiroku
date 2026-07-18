@@ -100,6 +100,14 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     this.navScrolled = target.scrollTop > 40;
   }
 
+  scrollToTop(event: Event) {
+    event.preventDefault();
+    const page = document.querySelector('.page');
+    if (page) {
+      page.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
   // ─── Typing ─────────────────────────────────────────────────────────────────
 
   private startTypingEffect() {

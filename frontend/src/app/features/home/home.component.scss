@@ -715,6 +715,248 @@ h1,h2,h3 { letter-spacing:-0.025em; }
 
 
 /* ══════════════════════════════════════════════════════════════
+   SECURITY SECTION
+   ══════════════════════════════════════════════════════════════ */
+.sec-header-center {
+  text-align: center;
+  margin-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .sec-sub {
+    text-align: center;
+    margin: 0 auto;
+  }
+}
+
+.security-sec {
+  padding: 8rem 2.5rem;
+  background: #f8fafc; // Light gray for contrast
+  border-top: 1px solid $border;
+}
+
+.security-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.security-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+
+  @media (max-width: 900px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.sf-card {
+  background: $white;
+  padding: 2.5rem;
+  border-radius: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+  border: 1px solid $border;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+  }
+
+  .sf-icon {
+    width: 64px;
+    height: 64px;
+    background: rgba($primary, 0.05);
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    color: $primary;
+    font-size: 1.75rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: $primary;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+    color: $gray-6;
+    line-height: 1.6;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════
+   PRICING SECTION
+   ══════════════════════════════════════════════════════════════ */
+.pricing-sec {
+  padding: 8rem 2.5rem;
+  background: $white;
+}
+
+.pricing-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.pricing-cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  align-items: stretch;
+  margin-top: 2rem;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.price-card {
+  position: relative;
+  background: $white;
+  padding: 2.5rem 1.5rem;
+  border-radius: 1.5rem;
+  border: 1px solid $border;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.02);
+  display: flex;
+  flex-direction: column;
+
+  &.popular {
+    background: #0f172a;
+    color: $white;
+    border: none;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2);
+    transform: scale(1.05);
+    z-index: 2;
+
+    @media (max-width: 1200px) {
+      transform: none;
+    }
+
+    .pc-header h3 { color: $white; }
+    .pc-header p { color: rgba($white, 0.6); }
+    .pc-price { color: $white; }
+    .pc-features li { color: rgba($white, 0.9); }
+    .pc-features i.pi-check { color: $accent; }
+  }
+}
+
+.pc-badge {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: $accent;
+  color: #0f172a;
+  padding: 0.5rem 1.25rem;
+  border-radius: 100px;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.pc-header {
+  margin-bottom: 2.5rem;
+  
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: $primary;
+    margin-bottom: 0.5rem;
+  }
+  
+  .pc-price {
+    font-size: 3rem;
+    font-weight: 900;
+    color: $primary;
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+
+    span {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: $gray-4;
+    }
+  }
+
+  p {
+    font-size: 0.95rem;
+    color: $gray-6;
+  }
+}
+
+.pc-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 3rem 0;
+  flex: 1;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #475569;
+
+    i {
+      font-size: 1.1rem;
+      color: $primary;
+    }
+
+    &.disabled {
+      color: $gray-4;
+      text-decoration: line-through;
+      i { color: #cbd5e1; }
+    }
+  }
+}
+
+.btn-pc-primary, .btn-pc-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 1.25rem;
+  border-radius: 100px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-pc-primary {
+  background: $accent;
+  color: #0f172a;
+  &:hover {
+    background: darken($accent, 5%);
+    transform: translateY(-2px);
+  }
+}
+
+.btn-pc-secondary {
+  background: rgba($primary, 0.05);
+  color: $primary;
+  &:hover {
+    background: rgba($primary, 0.1);
+    transform: translateY(-2px);
+  }
+}
+
+
+/* ══════════════════════════════════════════════════════════════
    UNIFIED CTA & FOOTER
    ══════════════════════════════════════════════════════════════ */
 .unified-footer {

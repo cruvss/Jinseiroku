@@ -3,13 +3,14 @@
   <!-- ══ NAVBAR ══ -->
   <nav class="nav" [class.nav--scrolled]="navScrolled">
     <div class="nav-inner">
-      <a class="nav-brand" routerLink="/">
+      <a class="nav-brand" href="#" (click)="scrollToTop($event)">
         <span class="brand-dot"></span>
         <span class="brand-text">Jinseiroku</span>
       </a>
       <div class="nav-links">
-        <a class="nav-link" href="#modules">Modules</a>
-        <a class="nav-link" href="#stack">Stack</a>
+        <a class="nav-link" href="#modules">Features</a>
+        <a class="nav-link" href="#security">Security</a>
+        <a class="nav-link" href="#pricing">Pricing</a>
       </div>
       <div class="nav-actions">
         <a routerLink="/login"    class="nav-ghost">Login</a>
@@ -144,6 +145,116 @@
     </div>
   </section>
 
+
+  <!-- ══════════════════════════════════
+       SECURITY SECTION
+       ══════════════════════════════════ -->
+  <section class="security-sec" id="security">
+    <div class="security-inner">
+      <div class="sec-header-center">
+        <div class="sec-label fade-in">Security</div>
+        <h2 class="sec-heading fade-in">Your data, fortress-grade.</h2>
+        <p class="sec-sub fade-in">
+          We built Jinseiroku on a privacy-first architecture. From AES-256 encrypted vaults to secure cloud backups, your life's data remains exclusively yours.
+        </p>
+      </div>
+
+      <div class="security-features">
+        <div class="sf-card fade-in">
+          <div class="sf-icon"><i class="pi pi-lock"></i></div>
+          <h3>End-to-End Encryption</h3>
+          <p>Your vault files and notes are encrypted on your device before they ever reach our servers. Only you hold the key.</p>
+        </div>
+        <div class="sf-card fade-in">
+          <div class="sf-icon"><i class="pi pi-server"></i></div>
+          <h3>Secure Infrastructure</h3>
+          <p>Built on enterprise-grade Spring Boot and deployed via hardened Docker containers to ensure maximum isolation.</p>
+        </div>
+        <div class="sf-card fade-in">
+          <div class="sf-icon"><i class="pi pi-eye-slash"></i></div>
+          <h3>Zero Knowledge</h3>
+          <p>We cannot see, mine, or sell your data. Our architecture guarantees that your private life stays completely private.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       PRICING SECTION
+       ══════════════════════════════════ -->
+  <section class="pricing-sec" id="pricing">
+    <div class="pricing-inner">
+      <div class="sec-header-center">
+        <div class="sec-label fade-in">Pricing</div>
+        <h2 class="sec-heading fade-in">Simple, transparent pricing.</h2>
+        <p class="sec-sub fade-in">
+          Start organizing your life for free, and upgrade when you need advanced security and unlimited storage.
+        </p>
+      </div>
+
+      <div class="pricing-cards">
+        <!-- Free Tier -->
+        <div class="price-card fade-in">
+          <div class="pc-header">
+            <h3>Free</h3>
+            <div class="pc-price">$0<span>/mo</span></div>
+            <p>Begin documenting your life journey securely.</p>
+          </div>
+          <ul class="pc-features">
+            <li><i class="pi pi-check"></i> 250 MB Encrypted Vault</li>
+            <li><i class="pi pi-check"></i> Up to 1 MB attachments</li>
+          </ul>
+          <a routerLink="/register" class="btn-pc-secondary">Default plan</a>
+        </div>
+
+        <!-- Eco Tier -->
+        <div class="price-card fade-in">
+          <div class="pc-header">
+            <h3>Eco</h3>
+            <div class="pc-price">$5<span>/mo</span></div>
+            <p>Keep uploading with expanded access.</p>
+          </div>
+          <ul class="pc-features">
+            <li><i class="pi pi-check"></i> 1 GB Encrypted Vault</li>
+            <li><i class="pi pi-check"></i> Everything in Free Plan</li>
+            <li><i class="pi pi-check"></i> Up to 25 MB attachments</li>
+          </ul>
+          <a routerLink="/register" class="btn-pc-secondary">Upgrade to Eco</a>
+        </div>
+
+        <!-- Plus Tier (Popular) -->
+        <div class="price-card popular fade-in">
+          <div class="pc-badge">Most Popular</div>
+          <div class="pc-header">
+            <h3>Plus</h3>
+            <div class="pc-price">$20<span>/mo</span></div>
+            <p>Unlock the full experience.</p>
+          </div>
+          <ul class="pc-features">
+            <li><i class="pi pi-check"></i> 5 GB Encrypted Vault</li>
+            <li><i class="pi pi-check"></i> Everything in ECO Plan</li>
+            <li><i class="pi pi-check"></i> Up to 100 MB attachments</li>
+          </ul>
+          <a routerLink="/register" class="btn-pc-primary">Upgrade to Plus</a>
+        </div>
+
+        <!-- Pro Tier -->
+        <div class="price-card fade-in">
+          <div class="pc-header">
+            <h3>Pro</h3>
+            <div class="pc-price">$113<span>/mo</span></div>
+            <p>Maximize your productivity.</p>
+          </div>
+          <ul class="pc-features">
+            <li><i class="pi pi-check"></i> 500 GB Encrypted Vault</li>
+            <li><i class="pi pi-check"></i> Everything in Plus Plan</li>
+            <li><i class="pi pi-check"></i> Up to 1 GB attachments</li>
+          </ul>
+          <a routerLink="/register" class="btn-pc-secondary">Upgrade to Pro</a>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- ══════════════════════════════════
        UNIFIED CTA & FOOTER
