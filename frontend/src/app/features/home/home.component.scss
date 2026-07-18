@@ -534,40 +534,6 @@ h1,h2,h3 { letter-spacing:-0.025em; }
   object-fit: contain;
 }
 
-/* ══════════════════════════════════════════════════════════════
-   TICKER BAND  (dark bg · white text · lime stars)
-   ══════════════════════════════════════════════════════════════ */
-.ticker-band {
-  background: $primary;
-  padding: 1rem 0;
-  overflow: hidden;
-  border-top: 1px solid rgba($white, 0.06);
-  border-bottom: 1px solid rgba($white, 0.06);
-}
-
-.ticker-track {
-  display: flex;
-  width: max-content;
-  animation: ticker 24s linear infinite;
-  white-space: nowrap;
-}
-
-.ticker-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0 2rem;
-  font-size: 0.875rem;
-  font-weight: 700;
-  color: $white;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-
-  .ticker-star {
-    color: $accent;
-    font-size: 1.1rem;
-  }
-}
 
 /* ══════════════════════════════════════════════════════════════
    SHARED SECTION LABELS

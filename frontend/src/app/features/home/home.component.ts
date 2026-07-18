@@ -34,18 +34,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   private isDeleting = false;
   private typingTimeout!: ReturnType<typeof setTimeout>;
 
-  // Ticker items (doubled for seamless loop)
-  private _ticker = [
-    'TIMELINE TRACKING',
-    'TASK MANAGEMENT',
-    'ENCRYPTED VAULT',
-    'SUBSCRIPTION ALERTS',
-    'FULL-STACK BUILT',
-    'SPRING BOOT BACKEND',
-    'ANGULAR FRONTEND',
-    'DOCKER DEPLOYED',
-  ];
-  tickerDouble = [...this._ticker, ...this._ticker];
+
 
   // Feature steps (stacking cards)
   steps = [
