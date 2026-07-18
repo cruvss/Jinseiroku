@@ -1,61 +1,221 @@
-<div class="landing-page">
-  <!-- Navigation -->
-  <nav class="navbar">
-    <div class="logo">
-      <span class="logo-icon pi pi-bolt"></span>
-      <span class="logo-text">Jinseiroku</span>
-    </div>
-    <div class="nav-actions">
-      <a routerLink="/login" class="btn btn-ghost">Log in</a>
-      <a routerLink="/register" class="btn btn-primary">Get Started</a>
+<div class="page">
+
+  <!-- ══ NAVBAR ══ -->
+  <nav class="nav" [class.nav--scrolled]="navScrolled">
+    <div class="nav-inner">
+      <a class="nav-brand" routerLink="/">
+        <span class="brand-dot"></span>
+        <span class="brand-text">Jinseiroku</span>
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="#modules">Modules</a>
+        <a class="nav-link" href="#stack">Stack</a>
+      </div>
+      <div class="nav-actions">
+        <a routerLink="/login"    class="nav-ghost">Login</a>
+        <a routerLink="/register" class="nav-cta">Open App</a>
+      </div>
     </div>
   </nav>
 
-  <!-- Hero Section -->
-  <main class="hero-section">
-    <!-- Ambient glowing backgrounds -->
-    <div class="glow glow-left"></div>
-    <div class="glow glow-right"></div>
-    
-    <div class="hero-content">
-      <div class="badge">
-        <span class="badge-dot"></span>
-        v1.0 is now live
-      </div>
-      
-      <h1 class="hero-title">
-        The Future of <br/>
-        <span class="gradient-text">Personal Management</span>
-      </h1>
-      
-      <p class="hero-subtitle">
-        Organize your timeline, secure your vaults, and manage subscriptions in one unified platform designed for ultimate clarity.
-      </p>
-      
-      <div class="hero-cta">
-        <a routerLink="/register" class="btn btn-primary btn-lg">
-          Start for free <i class="pi pi-arrow-right"></i>
-        </a>
-        <a routerLink="/login" class="btn btn-secondary btn-lg">
-          Explore features
-        </a>
-      </div>
-      
-      <!-- Abstract Glass UI Mockup -->
-      <div class="hero-visual">
-        <div class="glass-panel">
-          <div class="panel-header">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
+  <!-- ══════════════════════════════════
+       HERO
+       ══════════════════════════════════ -->
+  <section class="hero">
+    <!-- Lime glow blobs -->
+    <div class="blob blob-1" aria-hidden="true"></div>
+    <div class="blob blob-2" aria-hidden="true"></div>
+
+    <div class="hero-inner">
+      <!-- Left: text -->
+      <div class="hero-text">
+        <p class="hero-eyebrow">Personal Management Platform</p>
+
+        <h1 class="hero-heading">
+          Your <span class="typed-word">Life.</span><br/>
+          managed<br/>
+          <span class="hero-underline-wrap">
+            securely.
+            <svg class="underline-svg" viewBox="0 0 320 14" fill="none" aria-hidden="true">
+              <path d="M4 10C80 3 240 3 316 10" stroke="#bef264" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </h1>
+
+        <p class="hero-body">
+          One platform for your timeline, tasks, encrypted vault,
+          and subscriptions. Built end-to-end from scratch.
+        </p>
+
+        <div class="hero-actions">
+          <a routerLink="/register" class="btn-primary">
+            Open the app <i class="pi pi-arrow-right"></i>
+          </a>
+          <a routerLink="/login" class="btn-secondary">Sign in</a>
+        </div>
+
+        <!-- Social proof -->
+        <div class="hero-proof">
+          <div class="proof-avatars">
+            <span class="proof-av av1">T</span>
+            <span class="proof-av av2">A</span>
+            <span class="proof-av av3">V</span>
+            <span class="proof-av av4">S</span>
           </div>
-          <div class="panel-body">
-            <div class="skeleton-line full">Mbappu</div>
-            <div class="skeleton-line w-75">Kholi</div>
-            <div class="skeleton-line w-50">bige woot</div>
+          <p class="proof-text">4 core modules · Built from scratch</p>
+        </div>
+      </div>
+
+      <!-- Right: mascot + orbiting icons -->
+      <div class="hero-orbit-wrap">
+        <!-- Glow behind mascot -->
+        <div class="orbit-glow" aria-hidden="true"></div>
+
+        <!-- Orbit ring -->
+        <div class="orbit-ring"></div>
+
+        <!-- Orbiting module icons -->
+        <div class="orbit-items">
+          <div class="orbit-item"
+               *ngFor="let o of orbitItems"
+               [style.--deg]="o.deg + 'deg'"
+               [style.--bg]="o.bg"
+               [style.--col]="o.color">
+            <i class="pi {{ o.icon }}"></i>
           </div>
+        </div>
+
+        <!-- Mascot at center -->
+        <div class="orbit-mascot">
+          <img src="MascotNoBgWide.png" alt="Jinseiroku mascot" class="mascot-img" />
         </div>
       </div>
     </div>
-  </main>
+  </section>
+
+  <!-- ══ TICKER BAND ══ -->
+  <div class="ticker-band">
+    <div class="ticker-track">
+      <span class="ticker-item" *ngFor="let t of tickerDouble">
+        <span class="ticker-star">✦</span> {{ t }}
+      </span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       MODULE STEPS
+       ══════════════════════════════════ -->
+  <section class="steps-sec" id="modules">
+    <div class="steps-inner">
+
+      <div class="sec-label fade-in">Modules</div>
+      <h2 class="sec-heading fade-in">
+        Everything in one place.
+      </h2>
+      <p class="sec-sub fade-in">
+        Four purpose-built modules that work together to keep your life organised.
+      </p>
+
+      <!-- Stacked feature cards -->
+      <div class="steps-grid">
+        <div class="step-card fade-in"
+             *ngFor="let s of steps; let i = index"
+             [style.transition-delay]="(i * 0.1) + 's'">
+
+          <!-- Top row -->
+          <div class="sc-top">
+            <span class="sc-num">{{ s.num }}</span>
+            <div class="sc-icon">
+              <i class="pi {{ s.icon }}"></i>
+            </div>
+          </div>
+
+          <h3 class="sc-title">{{ s.title }}</h3>
+          <p class="sc-body">{{ s.body }}</p>
+
+          <!-- Preview card -->
+          <div class="sc-preview">
+            <div class="sc-prev-left">
+              <p class="sc-prev-label">{{ s.preview.label }}</p>
+              <p class="sc-prev-sub">{{ s.preview.sub }}</p>
+            </div>
+            <span class="sc-prev-val">{{ s.preview.value }}</span>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       STATS BAND
+       ══════════════════════════════════ -->
+  <section class="stats-sec fade-in">
+    <div class="stats-inner">
+      <div class="stat-item fade-in" *ngFor="let st of [
+        {val:'4',    label:'Core modules'},
+        {val:'E2E',  label:'Encrypted vault'},
+        {val:'100%', label:'Custom built'},
+        {val:'∞',    label:'Timeline events'}
+      ]">
+        <span class="stat-val">{{ st.val }}</span>
+        <span class="stat-label">{{ st.label }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       TECH STACK MARQUEE
+       ══════════════════════════════════ -->
+  <section class="tech-sec fade-in" id="stack">
+    <div class="tech-header">
+      <p class="sec-label">Built With</p>
+      <h2 class="sec-heading">The full stack.</h2>
+    </div>
+
+    <div class="tech-mask">
+      <div class="tech-track">
+        <span class="tech-chip" *ngFor="let t of techDouble">
+          <span class="chip-dot" [style.background]="t.color"></span>
+          {{ t.name }}
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════
+       CTA
+       ══════════════════════════════════ -->
+  <section class="cta-sec fade-in">
+    <div class="cta-card">
+      <!-- Lime glow inside cta -->
+      <div class="cta-glow" aria-hidden="true"></div>
+
+      <p class="cta-eyebrow">Ready?</p>
+      <h2 class="cta-heading">
+        Start managing<br/>your life better.
+      </h2>
+      <p class="cta-body">
+        Sign up and explore all four modules instantly.
+      </p>
+      <a routerLink="/register" class="btn-primary btn-primary--lg">
+        Open the app <i class="pi pi-arrow-right"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══ -->
+  <footer class="footer">
+    <div class="footer-brand">
+      <span class="brand-dot"></span>
+      <span>Jinseiroku</span>
+    </div>
+    <p class="footer-note">A personal full-stack project · 2026</p>
+    <div class="footer-links">
+      <a routerLink="/login">Login</a>
+      <a routerLink="/register">Register</a>
+    </div>
+  </footer>
+
 </div>
