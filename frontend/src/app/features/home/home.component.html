@@ -1,4 +1,4 @@
-<div class="page">
+<div class="page" (scroll)="onScroll($event)">
 
   <!-- ══ NAVBAR ══ -->
   <nav class="nav" [class.nav--scrolled]="navScrolled">
@@ -71,17 +71,17 @@
         <!-- Glow behind mascot -->
         <div class="orbit-glow" aria-hidden="true"></div>
 
-        <!-- Orbit ring -->
+        <!-- Cartoonish orbit ring -->
         <div class="orbit-ring"></div>
 
         <!-- Orbiting module icons -->
         <div class="orbit-items">
           <div class="orbit-item"
                *ngFor="let o of orbitItems"
-               [style.--deg]="o.deg + 'deg'"
-               [style.--bg]="o.bg"
-               [style.--col]="o.color">
-            <i class="pi {{ o.icon }}"></i>
+               [style.--deg]="o.deg + 'deg'">
+            <div class="orbit-item-inner">
+              <img [src]="o.image" class="orbit-icon-img" alt="Module Icon" />
+            </div>
           </div>
         </div>
 
@@ -108,25 +108,30 @@
   <section class="steps-sec" id="modules">
     <div class="steps-inner">
 
-      <div class="sec-label fade-in">Modules</div>
-      <h2 class="sec-heading fade-in">
-        Everything in one place.
-      </h2>
-      <p class="sec-sub fade-in">
-        Four purpose-built modules that work together to keep your life organised.
-      </p>
+      <div class="header-wrapper">
+        <div class="steps-header">
+          <div class="sec-label fade-in">Modules</div>
+          <h2 class="sec-heading fade-in">
+            Everything in one place.
+          </h2>
+          <p class="sec-sub fade-in">
+            Four powerful modules seamlessly integrated into one unified dashboard. Stop switching context and start building.
+          </p>
+        </div>
+      </div>
 
       <!-- Stacked feature cards -->
       <div class="steps-grid">
         <div class="step-card fade-in"
              *ngFor="let s of steps; let i = index"
+             [style.--index]="i"
              [style.transition-delay]="(i * 0.1) + 's'">
 
           <!-- Top row -->
           <div class="sc-top">
-            <span class="sc-num">{{ s.num }}</span>
+            <span class="sc-num">STEP {{ s.num }}</span>
             <div class="sc-icon">
-              <i class="pi {{ s.icon }}"></i>
+              <img [src]="s.icon" alt="{{ s.title }} Icon" />
             </div>
           </div>
 
@@ -148,41 +153,6 @@
     </div>
   </section>
 
-  <!-- ══════════════════════════════════
-       STATS BAND
-       ══════════════════════════════════ -->
-  <section class="stats-sec fade-in">
-    <div class="stats-inner">
-      <div class="stat-item fade-in" *ngFor="let st of [
-        {val:'4',    label:'Core modules'},
-        {val:'E2E',  label:'Encrypted vault'},
-        {val:'100%', label:'Custom built'},
-        {val:'∞',    label:'Timeline events'}
-      ]">
-        <span class="stat-val">{{ st.val }}</span>
-        <span class="stat-label">{{ st.label }}</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══════════════════════════════════
-       TECH STACK MARQUEE
-       ══════════════════════════════════ -->
-  <section class="tech-sec fade-in" id="stack">
-    <div class="tech-header">
-      <p class="sec-label">Built With</p>
-      <h2 class="sec-heading">The full stack.</h2>
-    </div>
-
-    <div class="tech-mask">
-      <div class="tech-track">
-        <span class="tech-chip" *ngFor="let t of techDouble">
-          <span class="chip-dot" [style.background]="t.color"></span>
-          {{ t.name }}
-        </span>
-      </div>
-    </div>
-  </section>
 
   <!-- ══════════════════════════════════
        CTA

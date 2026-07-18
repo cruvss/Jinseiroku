@@ -51,55 +51,43 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   steps = [
     {
       num: '01',
-      icon: 'pi-calendar',
+      icon: '/timeline.png',
       title: 'Timeline',
       body: 'See your entire life in a single chronological view. Every milestone, event, and plan — past, present, and future — always in context.',
-      preview: { label: 'Events this month', value: '14', sub: '3 upcoming this week' },
+      preview: { label: 'Events this month', sub: '3 upcoming this week', value: '14' }
     },
     {
       num: '02',
-      icon: 'pi-check-square',
+      icon: '/task.png',
       title: 'Tasks',
       body: 'Capture every commitment. Set priorities, deadlines, and categories. Nothing falls through the cracks.',
-      preview: { label: 'Active tasks', value: '12', sub: '4 due today · 8 pending' },
+      preview: { label: 'Active tasks', sub: '4 due today · 8 pending', value: '12' }
     },
     {
       num: '03',
-      icon: 'pi-lock',
+      icon: '/vault.png',
       title: 'Vault',
-      body: 'End-to-end encrypted document storage powered by MinIO. Upload any file type and access it securely from anywhere.',
-      preview: { label: 'Vault status', value: 'E2E', sub: 'Encrypted · 7 files stored' },
+      body: 'Store your most sensitive files, passwords, and documents with client-side end-to-end encryption.',
+      preview: { label: 'Secure items', sub: 'Encrypted locally', value: '48' }
     },
     {
       num: '04',
-      icon: 'pi-credit-card',
+      icon: '/subscription.png',
       title: 'Subscriptions',
-      body: 'Track every recurring charge, see total monthly spend, and get alerts before renewals hit your account.',
-      preview: { label: 'Monthly spend', value: '₹2,840', sub: '6 active subscriptions' },
-    },
+      body: 'Track recurring expenses, get renewal reminders, and see exactly where your money goes every month.',
+      preview: { label: 'Monthly spend', sub: 'Next billing in 4 days', value: '$84' }
+    }
   ];
 
-  // Tech marquee
-  private _tech = [
-    { name: 'Angular 17', color: '#dd0031' },
-    { name: 'Spring Boot', color: '#6db33f' },
-    { name: 'PostgreSQL', color: '#336791' },
-    { name: 'MinIO', color: '#c7250a' },
-    { name: 'Docker', color: '#2496ed' },
-    { name: 'JWT Auth', color: '#0f172a' },
-    { name: 'PrimeNG', color: '#4f46e5' },
-    { name: 'TypeScript', color: '#3178c6' },
-  ];
-  techDouble = [...this._tech, ...this._tech];
 
-  // Orbiting icons for hero
+
+  // Orbiting image icons for hero
   orbitItems = [
-    { icon: 'pi-calendar',    deg: 0,   bg: '#f0fdf4', color: '#16a34a' },
-    { icon: 'pi-check-square',deg: 60,  bg: '#eff6ff', color: '#2563eb' },
-    { icon: 'pi-lock',        deg: 120, bg: '#fdf4ff', color: '#9333ea' },
-    { icon: 'pi-credit-card', deg: 180, bg: '#fff7ed', color: '#ea580c' },
-    { icon: 'pi-chart-bar',   deg: 240, bg: '#f0fdfa', color: '#0d9488' },
-    { icon: 'pi-bolt',        deg: 300, bg: '#fefce8', color: '#ca8a04' },
+    { image: '/timeline.png',     deg: 0 },
+    { image: '/task.png',         deg: 72 },
+    { image: '/vault.png',        deg: 144 },
+    { image: '/subscription.png', deg: 216 },
+    { image: '/reminder.png',     deg: 288 },
   ];
 
   // ─── Lifecycle ──────────────────────────────────────────────────────────────
@@ -118,9 +106,9 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   // ─── Scroll ─────────────────────────────────────────────────────────────────
 
-  @HostListener('window:scroll')
-  onScroll() {
-    this.navScrolled = window.scrollY > 40;
+  onScroll(event: Event) {
+    const target = event.target as HTMLElement;
+    this.navScrolled = target.scrollTop > 40;
   }
 
   // ─── Typing ─────────────────────────────────────────────────────────────────
