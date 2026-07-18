@@ -603,7 +603,7 @@ h1,h2,h3 { letter-spacing:-0.025em; }
 .steps-sec {
   position: relative;
   z-index: 1;
-  padding: 8rem 2.5rem;
+  padding: 8rem 2.5rem 0; // Removed bottom padding to close the gap
   background: $white;
 
   &::before {
@@ -625,13 +625,6 @@ h1,h2,h3 { letter-spacing:-0.025em; }
   margin: 0 auto;
 }
 
-.header-wrapper {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  bottom: 80vh; // Header container ends 80vh before the grid container
-  pointer-events: none;
-}
-
 .steps-header {
   position: sticky;
   top: 120px;
@@ -640,7 +633,15 @@ h1,h2,h3 { letter-spacing:-0.025em; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  pointer-events: auto;
+  margin-bottom: 4rem;
+
+  &::after {
+    content: '';
+    display: block;
+    height: 600px;
+    width: 1px;
+    pointer-events: none;
+  }
 
   .sec-sub {
     text-align: center;
@@ -649,14 +650,13 @@ h1,h2,h3 { letter-spacing:-0.025em; }
 }
 
 .steps-grid {
-  position: relative;
   display: flex;
   flex-direction: column;
   gap: 30vh;
   max-width: 580px;
   margin: 0 auto;
-  padding-top: 340px; // Offset the absolute header
-  padding-bottom: 80vh; // Matches the header offset to synchronize exits!
+  margin-top: -600px;
+  padding-bottom: 80vh;
 }
 
 /* ─── Step card ─────────────────────────────────────────────── */
@@ -754,7 +754,7 @@ h1,h2,h3 { letter-spacing:-0.025em; }
 .cta-sec {
   position: relative;
   z-index: 2;
-  padding: 6rem 2.5rem 7rem;
+  padding: 2rem 2.5rem 7rem; // Reduced top padding to close the gap
   background: $white;
 }
 
