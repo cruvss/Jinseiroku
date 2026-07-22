@@ -1,9 +1,3 @@
-/* ════════════════════════════════════════════════════════════════
-   JINSEIROKU  —  Kamaucha-inspired Design
-   Pure white · navy primary · lime accent
-   Font: Hanken Grotesk (loaded below)
-   ════════════════════════════════════════════════════════════════ */
-
 @use 'sass:color';
 @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800;900&display=swap');
 
@@ -15,7 +9,7 @@ $gray-6  : #64748b;
 $gray-4  : #94a3b8;
 $gray-1  : #f1f5f9;
 $border  : #e2e8f0;
-$accent  : #bef264;   // lime green — THE only accent
+$accent  : #bef264;   
 $accent-d: #a3e635;
 
 /* ── Typography ──────────────────────────────────────────────── */
