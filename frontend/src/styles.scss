@@ -1,7 +1,8 @@
+@use 'styles-variables.scss' as *;
+
 @import '@angular/material/prebuilt-themes/indigo-pink.css';
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Lavishly+Yours&family=Noto+Sans+Nushu&family=Patrick+Hand&display=swap');
-@import 'styles-variables.scss';
 
 :root {
   --primary-color: #{$accent};

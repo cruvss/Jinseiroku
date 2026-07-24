@@ -9,11 +9,18 @@ $gray-6  : #64748b;
 $gray-4  : #94a3b8;
 $gray-1  : #f1f5f9;
 $border  : #e2e8f0;
+
 $accent  : #bef264;   
 $accent-d: #a3e635;
 
+
+
+
+
+
 /* ── Typography ──────────────────────────────────────────────── */
 $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+// $font:  "Noto Sans Nushu" !important;
 
 /* ══════════════════════════════════════════════════════════════
    KEYFRAMES
@@ -935,7 +942,7 @@ h1,h2,h3 { letter-spacing:-0.025em; }
   background: $accent;
   color: #0f172a;
   &:hover {
-    background: darken($accent, 5%);
+    background: color.adjust($accent, $lightness: -5%);
     transform: translateY(-2px);
   }
 }
@@ -1118,7 +1125,7 @@ h1,h2,h3 { letter-spacing:-0.025em; }
   position: absolute;
   bottom: -1.5rem;
   left: -2rem;
-  background: #a3e635;
+  background: $accent;
   color: #0f172a;
   padding: 1rem 1.5rem;
   font-weight: 800;
