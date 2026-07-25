@@ -1,43 +1,130 @@
-<div class="login-container">
-  <div class="login-card glass-effect">
-    <div class="login-header">
-      <h1 >Jinseiroku</h1>
-    </div>
+<div class="auth-page">
 
-    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" placeholder="you@example.com">
-        <mat-error *ngIf="loginForm.get('email')?.hasError('required')">
-          Email is required
-        </mat-error>
-        <mat-error *ngIf="loginForm.get('email')?.hasError('email')">
-          Please enter a valid email
-        </mat-error>
-      </mat-form-field>
+  <!-- ══ LEFT PANEL ══ -->
+  <div class="auth-left">
+    <!-- Blobs -->
+    <div class="blob blob-1" aria-hidden="true"></div>
+    <div class="blob blob-2" aria-hidden="true"></div>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Password</mat-label>
-        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
-        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
-          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-        <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
-          Password is required
-        </mat-error>
-        <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">
-          Password must be at least 8 characters
-        </mat-error>
-      </mat-form-field>
+    <!-- Back to home -->
+    <a routerLink="/" class="back-link">
+      <i class="pi pi-arrow-left"></i> Back to home
+    </a>
 
-      <button mat-raised-button color="primary" class="full-width" type="submit" [disabled]="loginForm.invalid || isLoading()">
-        <mat-spinner diameter="20" *ngIf="isLoading()"></mat-spinner>
-        <span *ngIf="!isLoading()">Login</span>
-      </button>
-
-      <div class="login-footer">
-        <p>Don't have an account? <a routerLink="/register">Register</a></p>
+    <!-- Brand -->
+    <div class="left-content">
+      <div class="brand-mark">
+        <span class="brand-dot"></span>
+        <span class="brand-text">Jinseiroku</span>
       </div>
-    </form>
+
+      <p class="left-eyebrow">Personal Management Platform</p>
+
+      <h2 class="left-heading">
+        Welcome<br/>
+        <span class="left-underline-wrap">
+          back.
+          <svg class="underline-svg" viewBox="0 0 200 14" fill="none" aria-hidden="true">
+            <path d="M4 10C50 3 150 3 196 10" stroke="#f59e0b" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </h2>
+
+      <p class="left-body">
+        Sign in to continue managing your timeline, tasks, vault, and subscriptions.
+      </p>
+
+      <!-- Feature pills -->
+      <div class="left-pills">
+        <span class="pill"><i class="pi pi-calendar"></i> Timeline</span>
+        <span class="pill"><i class="pi pi-check-square"></i> Tasks</span>
+        <span class="pill"><i class="pi pi-lock"></i> Vault</span>
+        <span class="pill"><i class="pi pi-credit-card"></i> Subscriptions</span>
+      </div>
+    </div>
   </div>
+
+  <!-- ══ RIGHT PANEL ══ -->
+  <div class="auth-right">
+    <div class="form-card">
+
+      <!-- Header -->
+      <div class="form-header">
+        <div class="form-icon">
+          <i class="pi pi-user"></i>
+        </div>
+        <h1 class="form-title">Sign in</h1>
+        <p class="form-subtitle">Enter your credentials to access your account</p>
+      </div>
+
+      <!-- Form -->
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <!-- Email -->
+        <div class="field-group">
+          <label class="field-label" for="login-email">Email</label>
+          <div class="field-input-wrap" [class.field-error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+            <i class="pi pi-envelope field-icon"></i>
+            <input
+              id="login-email"
+              type="email"
+              formControlName="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              class="field-input"
+            />
+          </div>
+          <span class="field-err-msg" *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched">
+            Email is required
+          </span>
+          <span class="field-err-msg" *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">
+            Please enter a valid email
+          </span>
+        </div>
+
+        <!-- Password -->
+        <div class="field-group">
+          <label class="field-label" for="login-password">Password</label>
+          <div class="field-input-wrap" [class.field-error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <i class="pi pi-lock field-icon"></i>
+            <input
+              id="login-password"
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+              placeholder="Min. 8 characters"
+              autocomplete="current-password"
+              class="field-input"
+            />
+            <button type="button" class="field-toggle" (click)="hidePassword = !hidePassword" tabindex="-1" aria-label="Toggle password visibility">
+              <i class="pi" [class.pi-eye]="hidePassword" [class.pi-eye-slash]="!hidePassword"></i>
+            </button>
+          </div>
+          <span class="field-err-msg" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
+            Password is required
+          </span>
+          <span class="field-err-msg" *ngIf="loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched">
+            Password must be at least 8 characters
+          </span>
+        </div>
+
+        <!-- Submit -->
+        <button
+          type="submit"
+          class="btn-submit"
+          [disabled]="loginForm.invalid || isLoading()"
+        >
+          <span class="spinner" *ngIf="isLoading()"></span>
+          <span *ngIf="!isLoading()">Sign in <i class="pi pi-arrow-right"></i></span>
+        </button>
+
+      </form>
+
+      <!-- Footer -->
+      <div class="form-footer">
+        <p>Don't have an account? <a routerLink="/register" class="form-link">Create one</a></p>
+      </div>
+
+    </div>
+  </div>
+
 </div>

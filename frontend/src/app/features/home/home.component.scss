@@ -2,16 +2,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800;900&display=swap');
 
 /* ── Tokens ──────────────────────────────────────────────────── */
-$white   : #ffffff;
-$surface : #f7f9fb;
-$primary : #0f172a;
-$gray-6  : #64748b;
-$gray-4  : #94a3b8;
-$gray-1  : #f1f5f9;
-$border  : #e2e8f0;
+$white   : #fffef9;
+$surface : #f7f1e8;
+$primary : #1e120a;
+$gray-6  : #87684a;
+$gray-4  : #b89b7a;
+$gray-1  : #ede8de;
+$border  : #dcd0bc;
 
-$accent  : #bef264;   
-$accent-d: #a3e635;
+$accent  : #e8b84b;
+$accent-d: #d4a43a;
 
 
 
@@ -733,7 +733,7 @@ h1,h2,h3 { letter-spacing:-0.025em; }
 
 .security-sec {
   padding: 8rem 2.5rem;
-  background: #f8fafc; // Light gray for contrast
+  background: #f5ede0; // Warm cream for contrast
   border-top: 1px solid $border;
 }
 
@@ -833,10 +833,10 @@ h1,h2,h3 { letter-spacing:-0.025em; }
   flex-direction: column;
 
   &.popular {
-    background: #0f172a;
+    background: $primary;
     color: $white;
     border: none;
-    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.2);
+    box-shadow: 0 20px 50px rgba(30, 18, 10, 0.2);
     transform: scale(1.05);
     z-index: 2;
 
@@ -858,7 +858,7 @@ h1,h2,h3 { letter-spacing:-0.025em; }
   left: 50%;
   transform: translateX(-50%);
   background: $accent;
-  color: #0f172a;
+  color: $primary;
   padding: 0.5rem 1.25rem;
   border-radius: 100px;
   font-weight: 800;
@@ -940,7 +940,7 @@ h1,h2,h3 { letter-spacing:-0.025em; }
 
 .btn-pc-primary {
   background: $accent;
-  color: #0f172a;
+  color: $primary;
   &:hover {
     background: color.adjust($accent, $lightness: -5%);
     transform: translateY(-2px);
@@ -963,7 +963,7 @@ h1,h2,h3 { letter-spacing:-0.025em; }
 .unified-footer {
   position: relative;
   z-index: 2;
-  background: #0f172a;
+  background: $primary;
   color: $white;
   border-radius: 48px 48px 0 0;
   padding: 6rem 4rem 2rem;
@@ -1025,7 +1025,7 @@ h1,h2,h3 { letter-spacing:-0.025em; }
 
   .btn-uf-primary {
     background: $white;
-    color: #0f172a;
+    color: $primary;
     &:hover {
       background: rgba($white, 0.9);
       transform: translateY(-2px);
@@ -1097,7 +1097,7 @@ h1,h2,h3 { letter-spacing:-0.025em; }
 
 .mascot-card {
   position: relative;
-  background: #1e293b;
+  background: #2d1d0f;
   border-radius: 32px;
   padding: 2rem;
   width: 400px;
@@ -1126,14 +1126,14 @@ h1,h2,h3 { letter-spacing:-0.025em; }
   bottom: -1.5rem;
   left: -2rem;
   background: $accent;
-  color: #0f172a;
+  color: $primary;
   padding: 1rem 1.5rem;
   font-weight: 800;
   font-size: 1.1rem;
   border-radius: 16px;
   transform: rotate(-5deg);
-  box-shadow: 0 10px 20px rgba(163, 230, 53, 0.3);
-  border: 4px solid #0f172a;
+  box-shadow: 0 10px 20px rgba(232, 184, 75, 0.35);
+  border: 4px solid $primary;
 
   @media (max-width: 768px) {
     left: -1rem;
