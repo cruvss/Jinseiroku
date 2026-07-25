@@ -114,21 +114,13 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
 .brand-mark {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  font-weight: 900;
-  font-size: 1.15rem;
-  color: $primary;
-  letter-spacing: -0.02em;
   margin-bottom: 2.5rem;
   animation: fadeUp 0.5s ease 0.1s both;
 
-  .brand-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    background: $accent;
-    flex-shrink: 0;
-    animation: pulse 2.5s ease-in-out infinite;
-    box-shadow: 0 0 8px rgba($accent, 0.6);
+  .auth-brand-logo {
+    height: 64px;
+    width: auto;
+    object-fit: contain;
   }
 }
 
@@ -240,17 +232,21 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .form-icon {
-  width: 52px; height: 52px;
-  border-radius: 14px;
+  width: 64px; height: 64px;
+  border-radius: 16px;
   background: rgba($accent, 0.12);
   border: 1px solid rgba($accent, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
-  color: $accent;
   margin-bottom: 1.25rem;
   box-shadow: 0 0 20px rgba($accent, 0.1);
+
+  .form-logo-icon {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+  }
 }
 
 .form-title {
