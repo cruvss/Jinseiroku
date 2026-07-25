@@ -1,17 +1,21 @@
 @use 'sass:color';
 @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800;900&display=swap');
 
-/* ── Design Tokens (mirrored from home) ─────────────────────── */
-$white   : #fffef9;
-$surface : #f7f1e8;
-$primary : #1e120a;
-$gray-6  : #87684a;
-$gray-4  : #b89b7a;
-$gray-1  : #ede8de;
-$border  : #dcd0bc;
-$accent  : #e8b84b;
-$accent-d: #d4a43a;
-$error   : #c0392b;
+/* ── Design Tokens — Dark (mascot-matched) ───────────────────── */
+$bg      : #0d1117;       // Page bg — deep dark
+$card    : #161b22;       // Form card bg
+$raised  : #1c2333;       // Slightly elevated panel
+$primary : #e8edf5;       // Primary text (soft white)
+$gray-6  : #8b9ab4;       // Muted text
+$gray-4  : #4a5568;       // Subtle / placeholder
+$gray-1  : #1c2333;       // Light fill (dark mode)
+$border  : #2d3748;       // Borders
+
+$accent  : #2aada6;       // Mascot teal
+$accent-l: #38d6ce;       // Lighter teal for glows
+$accent-d: #1f8a84;       // Darker teal
+$gold    : #f5a623;       // Mascot padlock gold
+$error   : #f87171;       // Soft red for dark bg
 
 $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
 
@@ -50,6 +54,7 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 100vh;
+  background: $bg;
 
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
@@ -61,11 +66,12 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
    ══════════════════════════════════════════════════════════════ */
 .auth-left {
   position: relative;
-  background: $surface;
+  background: #0a0e15;
   padding: 3rem;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  border-right: 1px solid $border;
 
   @media (max-width: 900px) {
     display: none;
@@ -73,28 +79,8 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 /* ── Blobs ───────────────────────────────────────────────────── */
-.blob {
-  position: absolute;
-  border-radius: 50%;
-  pointer-events: none;
-  animation: blobDrift 12s ease-in-out infinite;
-
-  &-1 {
-    width: 480px; height: 480px;
-    background: rgba($accent, 0.2);
-    filter: blur(80px);
-    top: -120px; right: -80px;
-    animation-delay: 0s;
-  }
-
-  &-2 {
-    width: 280px; height: 280px;
-    background: rgba($primary, 0.04);
-    filter: blur(60px);
-    bottom: -60px; left: -40px;
-    animation-delay: -6s;
-  }
-}
+/* Blobs removed */
+.blob { display: none; }
 
 /* ── Back link ───────────────────────────────────────────────── */
 .back-link {
@@ -110,7 +96,7 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   transition: color 0.15s;
   margin-bottom: auto;
 
-  &:hover { color: $primary; }
+  &:hover { color: $accent; }
 }
 
 /* ── Left content ────────────────────────────────────────────── */
@@ -142,6 +128,7 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
     background: $accent;
     flex-shrink: 0;
     animation: pulse 2.5s ease-in-out infinite;
+    box-shadow: 0 0 8px rgba($accent, 0.6);
   }
 }
 
@@ -153,7 +140,7 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: $gray-6;
+  color: $accent;
   margin-bottom: 1.25rem;
   animation: fadeUp 0.5s ease 0.15s both;
 
@@ -164,6 +151,7 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
     border-radius: 50%;
     background: $accent;
     flex-shrink: 0;
+    box-shadow: 0 0 6px rgba($accent, 0.7);
   }
 }
 
@@ -210,17 +198,16 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  background: $white;
-  border: 1px solid $border;
+  background: rgba($accent, 0.1);
+  border: 1px solid rgba($accent, 0.2);
   border-radius: 9999px;
   padding: 0.4rem 0.875rem;
   font-size: 0.8rem;
   font-weight: 600;
-  color: $primary;
+  color: $accent;
 
   .pi {
     font-size: 0.75rem;
-    color: $gray-6;
   }
 }
 
@@ -228,15 +215,13 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
    RIGHT FORM PANEL
    ══════════════════════════════════════════════════════════════ */
 .auth-right {
-  background: $white;
+  background: $bg;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 3rem 2rem;
-  border-left: 1px solid $border;
 
   @media (max-width: 900px) {
-    border-left: none;
     padding: 2.5rem 1.5rem;
     align-items: flex-start;
     padding-top: 4rem;
@@ -257,14 +242,15 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
 .form-icon {
   width: 52px; height: 52px;
   border-radius: 14px;
-  background: $gray-1;
-  border: 1px solid $border;
+  background: rgba($accent, 0.12);
+  border: 1px solid rgba($accent, 0.2);
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.25rem;
-  color: $primary;
+  color: $accent;
   margin-bottom: 1.25rem;
+  box-shadow: 0 0 20px rgba($accent, 0.1);
 }
 
 .form-title {
@@ -302,17 +288,17 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   align-items: center;
   border: 1.5px solid $border;
   border-radius: 0.75rem;
-  background: $white;
+  background: $card;
   transition: border-color 0.18s, box-shadow 0.18s;
 
   &:focus-within {
-    border-color: $primary;
-    box-shadow: 0 0 0 3px rgba($primary, 0.07);
+    border-color: $accent;
+    box-shadow: 0 0 0 3px rgba($accent, 0.12);
   }
 
   &.field-error {
     border-color: $error;
-    &:focus-within { box-shadow: 0 0 0 3px rgba($error, 0.08); }
+    &:focus-within { box-shadow: 0 0 0 3px rgba($error, 0.12); }
   }
 }
 
@@ -349,7 +335,7 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   align-items: center;
   flex-shrink: 0;
   transition: color 0.15s;
-  &:hover { color: $primary; }
+  &:hover { color: $accent; }
 }
 
 .field-err-msg {
@@ -366,8 +352,8 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   gap: 0.5rem;
   width: 100%;
   padding: 0.9rem 1.75rem;
-  background: $primary;
-  color: $white;
+  background: $accent;
+  color: #0d1117;
   font-family: $font;
   font-weight: 700;
   font-size: 0.95rem;
@@ -377,19 +363,21 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   margin-top: 0.5rem;
   letter-spacing: -0.01em;
   transition: all 0.2s;
+  box-shadow: 0 4px 20px rgba($accent, 0.25);
 
   .pi { transition: transform 0.18s; }
 
   &:hover:not([disabled]) {
-    background: color.adjust($primary, $lightness: 8%);
-    box-shadow: 0 8px 28px rgba($primary, 0.25);
+    background: $accent-l;
+    box-shadow: 0 8px 28px rgba($accent, 0.4);
     transform: translateY(-1px);
     .pi { transform: translateX(3px); }
   }
 
   &[disabled] {
-    opacity: 0.5;
+    opacity: 0.4;
     cursor: not-allowed;
+    box-shadow: none;
   }
 }
 
@@ -397,8 +385,8 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
 .spinner {
   display: inline-block;
   width: 18px; height: 18px;
-  border: 2.5px solid rgba($white, 0.35);
-  border-top-color: $white;
+  border: 2.5px solid rgba(#0d1117, 0.25);
+  border-top-color: #0d1117;
   border-radius: 50%;
   animation: spin 0.75s linear infinite;
 }
@@ -413,15 +401,14 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .form-link {
-  color: $primary;
+  color: $accent;
   text-decoration: none;
   font-weight: 700;
   margin-left: 0.2rem;
   transition: color 0.15s;
-  border-bottom: 1.5px solid transparent;
 
   &:hover {
-    color: $primary;
-    border-bottom-color: $accent;
+    color: $accent-l;
+    text-decoration: underline;
   }
 }
