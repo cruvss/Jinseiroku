@@ -73,12 +73,12 @@
               class="field-input"
             />
           </div>
-          <span class="field-err-msg" *ngIf="loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched">
-            Email is required
-          </span>
-          <span class="field-err-msg" *ngIf="loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched">
-            Please enter a valid email
-          </span>
+          @if (loginForm.get('email')?.hasError('required') && loginForm.get('email')?.touched) {
+            <span class="field-err-msg">Email is required</span>
+          }
+          @if (loginForm.get('email')?.hasError('email') && loginForm.get('email')?.touched) {
+            <span class="field-err-msg">Please enter a valid email</span>
+          }
         </div>
 
         <!-- Password -->
@@ -98,12 +98,12 @@
               <i class="pi" [class.pi-eye]="hidePassword" [class.pi-eye-slash]="!hidePassword"></i>
             </button>
           </div>
-          <span class="field-err-msg" *ngIf="loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched">
-            Password is required
-          </span>
-          <span class="field-err-msg" *ngIf="loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched">
-            Password must be at least 8 characters
-          </span>
+          @if (loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched) {
+            <span class="field-err-msg">Password is required</span>
+          }
+          @if (loginForm.get('password')?.hasError('minlength') && loginForm.get('password')?.touched) {
+            <span class="field-err-msg">Password must be at least 8 characters</span>
+          }
         </div>
 
         <!-- Submit -->
@@ -112,8 +112,11 @@
           class="btn-submit"
           [disabled]="loginForm.invalid || isLoading()"
         >
-          <span class="spinner" *ngIf="isLoading()"></span>
-          <span *ngIf="!isLoading()">Sign in <i class="pi pi-arrow-right"></i></span>
+          @if (isLoading()) {
+            <span class="spinner"></span>
+          } @else {
+            <span>Sign in <i class="pi pi-arrow-right"></i></span>
+          }
         </button>
 
       </form>

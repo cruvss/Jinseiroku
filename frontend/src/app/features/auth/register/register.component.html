@@ -73,12 +73,12 @@
               class="field-input"
             />
           </div>
-          <span class="field-err-msg" *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched">
-            Email is required
-          </span>
-          <span class="field-err-msg" *ngIf="registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched">
-            Please enter a valid email
-          </span>
+          @if (registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched) {
+            <span class="field-err-msg">Email is required</span>
+          }
+          @if (registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched) {
+            <span class="field-err-msg">Please enter a valid email</span>
+          }
         </div>
 
         <!-- Master Password -->
@@ -98,12 +98,12 @@
               <i class="pi" [class.pi-eye]="hidePassword" [class.pi-eye-slash]="!hidePassword"></i>
             </button>
           </div>
-          <span class="field-err-msg" *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched">
-            Password is required
-          </span>
-          <span class="field-err-msg" *ngIf="registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched">
-            Password must be at least 8 characters
-          </span>
+          @if (registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched) {
+            <span class="field-err-msg">Password is required</span>
+          }
+          @if (registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched) {
+            <span class="field-err-msg">Password must be at least 8 characters</span>
+          }
         </div>
 
         <!-- Confirm Password -->
@@ -123,12 +123,12 @@
               <i class="pi" [class.pi-eye]="hideConfirmPassword" [class.pi-eye-slash]="!hideConfirmPassword"></i>
             </button>
           </div>
-          <span class="field-err-msg" *ngIf="registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched">
-            Please confirm your password
-          </span>
-          <span class="field-err-msg" *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched">
-            Passwords do not match
-          </span>
+          @if (registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched) {
+            <span class="field-err-msg">Please confirm your password</span>
+          }
+          @if (registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched) {
+            <span class="field-err-msg">Passwords do not match</span>
+          }
         </div>
 
         <!-- Submit -->
@@ -137,8 +137,11 @@
           class="btn-submit"
           [disabled]="registerForm.invalid || isLoading"
         >
-          <span class="spinner" *ngIf="isLoading"></span>
-          <span *ngIf="!isLoading">Create account <i class="pi pi-arrow-right"></i></span>
+          @if (isLoading) {
+            <span class="spinner"></span>
+          } @else {
+            <span>Create account <i class="pi pi-arrow-right"></i></span>
+          }
         </button>
 
       </form>

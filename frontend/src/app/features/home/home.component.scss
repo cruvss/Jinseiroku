@@ -2,29 +2,24 @@
 @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800;900&display=swap');
 
 /* ── Tokens ──────────────────────────────────────────────────── */
-$white   : #e8edf5;       // Soft white for text
-$surface : #0d1117;       // Page bg — deep dark
-$card    : #161b22;       // Card bg
-$raised  : #1c2333;       // Slightly lighter panel
-$primary : #e8edf5;       // Primary text (light on dark)
-$gray-6  : #8b9ab4;       // Muted text
-$gray-4  : #4a5568;       // Subtle/placeholder
-$gray-1  : #1c2333;       // Light fill (dark mode: darker)
-$border  : #2d3748;       // Borders
+$white   : #e8edf5;       
+$surface : #0d1117;      
+$card    : #161b22;       
+$raised  : #1c2333;      
+$primary : #e8edf5;      
+$gray-6  : #8b9ab4;       
+$gray-4  : #4a5568;       
+$gray-1  : #1c2333;      
+$border  : #2d3748;    
 
-$accent  : #2aada6;       // Mascot teal
-$accent-l: #38d6ce;       // Lighter teal glow
-$accent-d: #1f8a84;       // Darker teal
-$gold    : #f5a623;       // Mascot golden padlock
-
-
-
-
-
+$accent  : #2aada6;       
+$accent-l: #38d6ce;      
+$accent-d: #1f8a84;      
+$gold    : #f5a623; 
 
 /* ── Typography ──────────────────────────────────────────────── */
 $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-// $font:  "Noto Sans Nushu" !important;
+
 
 /* ══════════════════════════════════════════════════════════════
    KEYFRAMES

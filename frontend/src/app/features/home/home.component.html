@@ -65,13 +65,14 @@
 
         <!-- Orbiting module icons -->
         <div class="orbit-items">
-          <div class="orbit-item"
-               *ngFor="let o of orbitItems"
-               [style.--deg]="o.deg + 'deg'">
-            <div class="orbit-item-inner">
-              <img [src]="o.image" class="orbit-icon-img" alt="Module Icon" />
+          @for (o of orbitItems; track o.deg) {
+            <div class="orbit-item"
+                 [style.--deg]="o.deg + 'deg'">
+              <div class="orbit-item-inner">
+                <img [src]="o.image" class="orbit-icon-img" alt="Module Icon" />
+              </div>
             </div>
-          </div>
+          }
         </div>
 
         <!-- Mascot at center -->
@@ -102,32 +103,32 @@
 
       <!-- Stacked feature cards -->
       <div class="steps-grid">
-        <div class="step-card fade-in"
-             *ngFor="let s of steps; let i = index"
-             [style.--index]="i"
-             [style.transition-delay]="(i * 0.1) + 's'">
+        @for (s of steps; track s.num; let i = $index) {
+          <div class="step-card"
+               [style.--index]="i">
 
-          <!-- Top row -->
-          <div class="sc-top">
-            <span class="sc-num">STEP {{ s.num }}</span>
-            <div class="sc-icon">
-              <img [src]="s.icon" alt="{{ s.title }} Icon" />
+            <!-- Top row -->
+            <div class="sc-top">
+              <span class="sc-num">STEP {{ s.num }}</span>
+              <div class="sc-icon">
+                <img [src]="s.icon" alt="{{ s.title }} Icon" />
+              </div>
             </div>
-          </div>
 
-          <h3 class="sc-title">{{ s.title }}</h3>
-          <p class="sc-body">{{ s.body }}</p>
+            <h3 class="sc-title">{{ s.title }}</h3>
+            <p class="sc-body">{{ s.body }}</p>
 
-          <!-- Preview card -->
-          <div class="sc-preview">
-            <div class="sc-prev-left">
-              <p class="sc-prev-label">{{ s.preview.label }}</p>
-              <p class="sc-prev-sub">{{ s.preview.sub }}</p>
+            <!-- Preview card -->
+            <div class="sc-preview">
+              <div class="sc-prev-left">
+                <p class="sc-prev-label">{{ s.preview.label }}</p>
+                <p class="sc-prev-sub">{{ s.preview.sub }}</p>
+              </div>
+              <span class="sc-prev-val">{{ s.preview.value }}</span>
             </div>
-            <span class="sc-prev-val">{{ s.preview.value }}</span>
-          </div>
 
-        </div>
+          </div>
+        }
       </div>
 
     </div>
