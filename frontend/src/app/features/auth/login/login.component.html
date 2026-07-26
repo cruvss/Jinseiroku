@@ -1,17 +1,10 @@
 <div class="auth-page">
 
-  <!-- ══ LEFT PANEL ══ -->
   <div class="auth-left">
-    <!-- Blobs -->
-    <div class="blob blob-1" aria-hidden="true"></div>
-    <div class="blob blob-2" aria-hidden="true"></div>
-
-    <!-- Back to home -->
     <a routerLink="/" class="back-link">
       <i class="pi pi-arrow-left"></i> Back to home
     </a>
 
-    <!-- Brand -->
     <div class="left-content">
       <div class="brand-mark">
         <img src="LogoHorizontal.png" alt="Jinseiroku" class="auth-brand-logo" />
@@ -33,7 +26,6 @@
         Sign in to continue managing your timeline, tasks, vault, and subscriptions.
       </p>
 
-      <!-- Feature pills -->
       <div class="left-pills">
         <span class="pill"><i class="pi pi-calendar"></i> Timeline</span>
         <span class="pill"><i class="pi pi-check-square"></i> Tasks</span>
@@ -43,11 +35,9 @@
     </div>
   </div>
 
-  <!-- ══ RIGHT PANEL ══ -->
   <div class="auth-right">
     <div class="form-card">
 
-      <!-- Header -->
       <div class="form-header">
         <div class="form-icon">
           <img src="Logo.png" alt="Jinseiroku Icon" class="form-logo-icon" />
@@ -56,10 +46,8 @@
         <p class="form-subtitle">Enter your credentials to access your account</p>
       </div>
 
-      <!-- Form -->
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
 
-        <!-- Email -->
         <div class="field-group">
           <label class="field-label" for="login-email">Email</label>
           <div class="field-input-wrap" [class.field-error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
@@ -81,7 +69,6 @@
           }
         </div>
 
-        <!-- Password -->
         <div class="field-group">
           <label class="field-label" for="login-password">Password</label>
           <div class="field-input-wrap" [class.field-error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
@@ -106,7 +93,6 @@
           }
         </div>
 
-        <!-- Submit -->
         <button
           type="submit"
           class="btn-submit"
@@ -121,7 +107,6 @@
 
       </form>
 
-      <!-- Footer -->
       <div class="form-footer">
         <p>Don't have an account? <a routerLink="/register" class="form-link">Create one</a></p>
       </div>

@@ -1,6 +1,5 @@
 <div class="page" (scroll)="onScroll($event)">
 
-  <!-- ══ NAVBAR ══ -->
   <nav class="nav" [class.nav--scrolled]="navScrolled">
     <div class="nav-inner">
       <a class="nav-brand" href="#" (click)="scrollToTop($event)">
@@ -18,16 +17,8 @@
     </div>
   </nav>
 
-  <!-- ══════════════════════════════════
-       HERO
-       ══════════════════════════════════ -->
   <section class="hero">
-    <!-- Lime glow blobs -->
-    <div class="blob blob-1" aria-hidden="true"></div>
-    <div class="blob blob-2" aria-hidden="true"></div>
-
     <div class="hero-inner">
-      <!-- Left: text -->
       <div class="hero-text">
         <p class="hero-eyebrow">Personal Management Platform</p>
 
@@ -44,7 +35,7 @@
 
         <p class="hero-body">
           One platform for your timeline, tasks, encrypted vault,
-          and subscriptions. Built end-to-end from scratch.
+          and subscriptions.
         </p>
 
         <div class="hero-actions">
@@ -55,15 +46,9 @@
         </div>
       </div>
 
-      <!-- Right: mascot + orbiting icons -->
       <div class="hero-orbit-wrap">
-        <!-- Glow behind mascot -->
-        <div class="orbit-glow" aria-hidden="true"></div>
-
-        <!-- Cartoonish orbit ring -->
         <div class="orbit-ring"></div>
 
-        <!-- Orbiting module icons -->
         <div class="orbit-items">
           @for (o of orbitItems; track o.deg) {
             <div class="orbit-item"
@@ -75,7 +60,6 @@
           }
         </div>
 
-        <!-- Mascot at center -->
         <div class="orbit-mascot">
           <img src="MascotNoBgWide.png" alt="Jinseiroku mascot" class="mascot-img" />
         </div>
@@ -83,11 +67,6 @@
     </div>
   </section>
 
-
-
-  <!-- ══════════════════════════════════
-       MODULE STEPS
-       ══════════════════════════════════ -->
   <section class="steps-sec" id="modules">
     <div class="steps-inner">
 
@@ -101,13 +80,11 @@
         </p>
       </div>
 
-      <!-- Stacked feature cards -->
       <div class="steps-grid">
         @for (s of steps; track s.num; let i = $index) {
           <div class="step-card"
                [style.--index]="i">
 
-            <!-- Top row -->
             <div class="sc-top">
               <span class="sc-num">STEP {{ s.num }}</span>
               <div class="sc-icon">
@@ -118,7 +95,6 @@
             <h3 class="sc-title">{{ s.title }}</h3>
             <p class="sc-body">{{ s.body }}</p>
 
-            <!-- Preview card -->
             <div class="sc-preview">
               <div class="sc-prev-left">
                 <p class="sc-prev-label">{{ s.preview.label }}</p>
@@ -134,10 +110,6 @@
     </div>
   </section>
 
-
-  <!-- ══════════════════════════════════
-       SECURITY SECTION
-       ══════════════════════════════════ -->
   <section class="security-sec" id="security">
     <div class="security-inner">
       <div class="sec-header-center">
@@ -170,21 +142,17 @@
     </div>
   </section>
 
-  <!-- ══════════════════════════════════
-       PRICING SECTION
-       ══════════════════════════════════ -->
   <section class="pricing-sec" id="pricing">
     <div class="pricing-inner">
       <div class="sec-header-center">
         <div class="sec-label fade-in">Pricing</div>
         <h2 class="sec-heading fade-in">Simple, transparent pricing.</h2>
         <p class="sec-sub fade-in">
-          Start organizing your life nfor free, and upgrade when you need advanced security and unlimited storage.
+          Start organizing your life for free, and upgrade when you need advanced security and unlimited storage.
         </p>
       </div>
 
       <div class="pricing-cards">
-        <!-- Free Tier -->
         <div class="price-card fade-in">
           <div class="pc-header">
             <h3>Free</h3>
@@ -198,7 +166,6 @@
           <a routerLink="/register" class="btn-pc-secondary">Default plan</a>
         </div>
 
-        <!-- Eco Tier -->
         <div class="price-card fade-in">
           <div class="pc-header">
             <h3>Eco</h3>
@@ -213,7 +180,6 @@
           <a routerLink="/register" class="btn-pc-secondary">Upgrade to Eco</a>
         </div>
 
-        <!-- Plus Tier -->
         <div class="price-card fade-in">
           <div class="pc-header">
             <h3>Plus</h3>
@@ -231,13 +197,9 @@
     </div>
   </section>
 
-  <!-- ══════════════════════════════════
-       UNIFIED CTA & FOOTER
-       ══════════════════════════════════ -->
   <footer class="unified-footer fade-in">
     <div class="uf-top">
       
-      <!-- Left: Content & Links -->
       <div class="uf-left">
         <h2 class="uf-heading">
           Start managing<br/>your life better.
@@ -249,7 +211,6 @@
         </div>
       </div>
 
-      <!-- Right: Mascot Card -->
       <div class="uf-right">
         <div class="mascot-card">
           <img src="MascotNoBgWide.png" alt="Jinseiroku Mascot" class="mascot-img">
@@ -259,7 +220,6 @@
 
     </div>
 
-    <!-- Bottom: Brand & Copyright -->
     <div class="uf-bottom">
       <div class="uf-brand">
         <img src="LogoHorizontal.png" alt="Jinseiroku" class="footer-logo" />

@@ -1,17 +1,10 @@
 <div class="auth-page">
 
-  <!-- ══ LEFT PANEL ══ -->
   <div class="auth-left">
-    <!-- Blobs -->
-    <div class="blob blob-1" aria-hidden="true"></div>
-    <div class="blob blob-2" aria-hidden="true"></div>
-
-    <!-- Back to home -->
     <a routerLink="/" class="back-link">
       <i class="pi pi-arrow-left"></i> Back to home
     </a>
 
-    <!-- Brand -->
     <div class="left-content">
       <div class="brand-mark">
         <img src="LogoHorizontal.png" alt="Jinseiroku" class="auth-brand-logo" />
@@ -33,7 +26,6 @@
         Create your account and start organizing your entire life — timeline, tasks, encrypted vault, and subscriptions — all in one place.
       </p>
 
-      <!-- Feature pills -->
       <div class="left-pills">
         <span class="pill"><i class="pi pi-shield"></i> AES-256 Encrypted</span>
         <span class="pill"><i class="pi pi-eye-slash"></i> Zero Knowledge</span>
@@ -43,11 +35,9 @@
     </div>
   </div>
 
-  <!-- ══ RIGHT PANEL ══ -->
   <div class="auth-right">
     <div class="form-card">
 
-      <!-- Header -->
       <div class="form-header">
         <div class="form-icon">
           <img src="Logo.png" alt="Jinseiroku Icon" class="form-logo-icon" />
@@ -56,10 +46,8 @@
         <p class="form-subtitle">Initialize your secure personal archive</p>
       </div>
 
-      <!-- Form -->
       <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
-        <!-- Email -->
         <div class="field-group">
           <label class="field-label" for="reg-email">Email</label>
           <div class="field-input-wrap" [class.field-error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
@@ -81,7 +69,6 @@
           }
         </div>
 
-        <!-- Master Password -->
         <div class="field-group">
           <label class="field-label" for="reg-password">Master Password</label>
           <div class="field-input-wrap" [class.field-error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
@@ -106,7 +93,6 @@
           }
         </div>
 
-        <!-- Confirm Password -->
         <div class="field-group">
           <label class="field-label" for="reg-confirm">Confirm Password</label>
           <div class="field-input-wrap" [class.field-error]="(registerForm.get('confirmPassword')?.invalid || registerForm.hasError('mismatch')) && registerForm.get('confirmPassword')?.touched">
@@ -131,7 +117,6 @@
           }
         </div>
 
-        <!-- Submit -->
         <button
           type="submit"
           class="btn-submit"
@@ -146,7 +131,6 @@
 
       </form>
 
-      <!-- Footer -->
       <div class="form-footer">
         <p>Already have a vault? <a routerLink="/login" class="form-link">Sign in</a></p>
       </div>

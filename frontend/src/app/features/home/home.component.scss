@@ -1,22 +1,20 @@
 @use 'sass:color';
 @import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@300;400;500;600;700;800;900&display=swap');
-
-/* ── Tokens ──────────────────────────────────────────────────── */
-$white   : #e8edf5;       
-$surface : #0d1117;      
-$card    : #161b22;       
-$raised  : #1c2333;      
-$primary : #e8edf5;      
-$gray-6  : #8b9ab4;       
-$gray-4  : #4a5568;       
-$gray-1  : #1c2333;      
-$border  : #2d3748;    
+$white       : #e8edf5;
+$surface     : #0d1117;
+$card    : #161b22;
+$raised  : #1c2333;
+$primary : #e8edf5;
+$gray-6  : #8b9ab4;
+$gray-4  : #4a5568;
+$gray-1  : #1c2333;
+$border  : #2d3748;
 $bg-contrast : #1c2b3a;
 
-$accent  : #2aada6;       
-$accent-l: #38d6ce;      
-$accent-d: #1f8a84;      
-$gold    : #f5a623; 
+$accent  : #2aada6;
+$accent-l: #38d6ce;
+$accent-d: #1f8a84;
+$gold    : #f5a623;
 
 /* ── Typography ──────────────────────────────────────────────── */
 $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -241,9 +239,6 @@ h1,h2,h3 { letter-spacing:-0.025em; }
   &:active { transform: scale(0.97); }
 }
 
-/* ══════════════════════════════════════════════════════════════
-   HERO SECTION
-   ══════════════════════════════════════════════════════════════ */
 .hero {
   position: relative;
   background: $surface;
@@ -253,9 +248,6 @@ h1,h2,h3 { letter-spacing:-0.025em; }
   display: flex;
   align-items: center;
 }
-
-/* Blobs removed */
-.blob { display: none; }
 
 .hero-inner {
   position: relative;
@@ -399,8 +391,6 @@ h1,h2,h3 { letter-spacing:-0.025em; }
     height: 300px;
   }
 }
-
-.orbit-glow { display: none; }
 
 .orbit-ring {
   position: absolute;
