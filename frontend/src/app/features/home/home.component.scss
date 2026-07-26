@@ -11,6 +11,7 @@ $gray-6  : #8b9ab4;
 $gray-4  : #4a5568;       
 $gray-1  : #1c2333;      
 $border  : #2d3748;    
+$bg-contrast : #1c2b3a;
 
 $accent  : #2aada6;       
 $accent-l: #38d6ce;      
@@ -35,11 +36,6 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   50%     { opacity:0; }
 }
 
-@keyframes orbit {
-  from { transform: rotate(var(--deg)) translateX(130px) rotate(calc(-1 * var(--deg))); }
-  to   { transform: rotate(calc(var(--deg) + 360deg)) translateX(130px) rotate(calc(-1 * (var(--deg) + 360deg))); }
-}
-
 @keyframes orbitSpin {
   from { rotate: 0deg; }
   to   { rotate: 360deg; }
@@ -51,25 +47,9 @@ $font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   66%      { translate: -12px 8px; }
 }
 
-@keyframes ticker {
-  from { transform:translateX(0); }
-  to   { transform:translateX(-50%); }
-}
-
-@keyframes techTicker {
-  from { transform:translateX(0); }
-  to   { transform:translateX(-50%); }
-}
-
 @keyframes pulse {
   0%,100% { transform:scale(1);   }
   50%     { transform:scale(1.06); }
-}
-
-@keyframes blobDrift {
-  0%,100% { transform:translate(0,0)   scale(1);   }
-  33%     { transform:translate(30px,-20px) scale(1.05); }
-  66%     { transform:translate(-20px,15px) scale(0.95); }
 }
 
 /* ══════════════════════════════════════════════════════════════

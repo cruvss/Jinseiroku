@@ -1,4 +1,3 @@
-import { CommonModule } from "@angular/common";
 import { Component, signal } from "@angular/core";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { MatSnackBar, MatSnackBarModule } from "@angular/material/snack-bar";
@@ -9,7 +8,6 @@ import { AuthService } from "../../../core/services/auth.service";
     selector:'app-login',
     standalone: true,
     imports: [
-        CommonModule,
         ReactiveFormsModule,
         RouterLink,
         MatSnackBarModule,
