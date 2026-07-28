@@ -1,0 +1,105 @@
+package com.cruvs.backend.service;
+
+import com.cruvs.backend.dto.stripe.StripeRequest;
+import com.cruvs.backend.dto.stripe.StripeResponse;
+import com.cruvs.backend.entity.SubscriptionPlan;
+import com.cruvs.backend.entity.User;
+import com.cruvs.backend.exception.PaymentException;
+import com.cruvs.backend.exception.ResourceNotFoundException;
+import com.cruvs.backend.repository.SubscriptionPlanRepository;
+import com.cruvs.backend.repository.UserRepository;
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.checkout.Session;
+import com.stripe.param.checkout.SessionCreateParams;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.UUID;
+
+@Service
+@Slf4j
+public class StripeService {
+    private final UserRepository userRepository;
+    private final SubscriptionPlanRepository subscriptionPlanRepository;
+    @Value("${stripe.secret-key}")
+    private String secretKey;
+
+    public StripeService(UserRepository userRepository, SubscriptionPlanRepository subscriptionPlanRepository) {
+        this.userRepository = userRepository;
+        this.subscriptionPlanRepository = subscriptionPlanRepository;
+    }
+
+    public StripeResponse checkoutProducts(UUID userId, StripeRequest request){
+        log.info("Creating checkout session for userId: {}, planId: {}",userId,request.getPlanId());
+        Stripe.apiKey = secretKey;
+
+        SessionCreateParams.LineItem.PriceData.ProductData productData = SessionCreateParams.LineItem.PriceData.ProductData.builder()
+                .setName(request.getName())
+                .build();
+        SessionCreateParams.LineItem.PriceData priceData  = SessionCreateParams.LineItem.PriceData.builder()
+                .setCurrency(request.getCurrency() == null ? "USD" : request.getCurrency())
+                .setUnitAmount(request.getAmount())
+                .setProductData(productData)
+                .build();
+        SessionCreateParams.LineItem lineItem = SessionCreateParams.LineItem.builder()
+                .setQuantity(request.getQuantity())
+                .setPriceData(priceData)
+                .build();
+        SessionCreateParams params = SessionCreateParams.builder()
+                .setMode(SessionCreateParams.Mode.PAYMENT)
+                .setSuccessUrl("https://vault.sachinkoirala.com.np/payment-success?session_id={CHECKOUT_SESSION_ID}")
+                .setCancelUrl("http://vault.sachinkoirala.com.np/payment-cancel")
+                .putMetadata("userId", userId.toString())
+                .putMetadata("planId", request.getPlanId().toString())
+                .addLineItem(lineItem)
+                .build();
+
+        Session session = null;
+
+        try{
+            session = Session.create(params);
+            log.info("Checkout session created: sessionId: {}, userId: {}",session.getId(), userId);
+        }catch (StripeException e){
+            log.error("Stripe session creation failed for userId: {}:",userId);
+        }
+
+        return StripeResponse.builder()
+                .sessionId(session.getId())
+                .sessionUrl(session.getUrl())
+                .build();
+    }
+
+    @Transactional
+    public void verifyCheckoutSession(String sessionId) throws StripeException{
+        log.info("Verifying String session: {}",sessionId);
+
+        Stripe.apiKey = secretKey;
+        Session session = Session.retrieve(sessionId);
+
+        if ("paid".equalsIgnoreCase(session.getPaymentStatus())){
+            String userIdStr = session.getMetadata().get("userId");
+            String planIdStr = session.getMetadata().get("planId");
+
+            if (userIdStr !=null && planIdStr !=null){
+                UUID userId = UUID.fromString(userIdStr);
+                UUID planId = UUID.fromString(planIdStr);
+
+                User user = userRepository.findById(userId)
+                        .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+
+                SubscriptionPlan plan = subscriptionPlanRepository.findById(planId)
+                        .orElseThrow(() -> new ResourceNotFoundException("SubscriptionPlan", planId));
+
+                user.setSubscriptionPlan(plan);
+                userRepository.save(user);
+                log.info("User {} successfully upgraded to plan {}", userId, plan.getName());
+            } else log.error("Stripe session {} missing userId or planId metadata",sessionId);
+        } else {
+            log.warn("Stripe session {} has status: {} — not paid", sessionId, session.getPaymentStatus());
+            throw new PaymentException("Payment not completed for session: "+sessionId);
+        }
+    }
+}

@@ -8,11 +8,15 @@ import { SubscriptionComponent } from './features/subscription/subscription.comp
 import { InboxComponent } from './features/inbox/inbox.component';
 import { TaskComponent } from './features/tasks/task.component';
 import { TimelineComponent } from './features/timeline/timeline.component';
+import { PaymentComponent } from './features/payment/payment.component';
+import { PaymentSuccessComponent } from './features/payment-success/payment-success.component';
 
 export const routes: Routes = [
     // Public routes (no authentication needed)
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
+    { path: 'payment', component:PaymentComponent},
+    { path: 'payment-success', component:PaymentSuccessComponent},
     
     // Protected routes wrapped in shell layout
     {

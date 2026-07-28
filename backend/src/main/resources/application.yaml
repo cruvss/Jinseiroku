@@ -59,3 +59,9 @@ minio:
   secret-key: ${MINIO_SECRET_KEY}
   bucket: ${MINIO_BUCKET}
 
+stripe:
+  secret-key: ${STRIPE_KEY}
+
+logging:
+  file:
+    name: logs/application.log

@@ -4,7 +4,7 @@ export interface Subscription {
     cost: number;
     currency: string;
     billingCycle: 'WEEKLY' | 'FORTNIGHTLY' | 'MONTHLY' | 'QUARTERLY' | 'SEMI-YEARLY' | 'YEARLY';
-    nextBillingDate: string;
+    nextBillingDate?: string;
     status: 'ACTIVE' | 'CANCELLED' | 'PAUSED';
     linkedDocumentId: string;
 }

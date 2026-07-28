@@ -180,8 +180,8 @@ export class VaultComponent implements OnInit {
         error: (err) => {
           console.error(err);
           this.isUploading.set(false);
-          alert('Upload failed.');
-        }
+          const errorMsg = err.error?.message || 'Upload failed.';
+          this.snackBar.open(errorMsg, 'Close', { duration: 6000 });        }
       });
 
     } catch (e) {

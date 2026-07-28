@@ -1,0 +1,82 @@
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<div class="upgrade-container">
+  <div class="section-title">Upgrade your plan</div>
+
+  <button class="close-btn" (click)="closeDialog()">
+    <i class="fas fa-times"></i>
+  </button>
+
+  <div class="plan-grid">
+    @for (plan of plans(); track plan.id) {
+      
+      <div class="plan-card" 
+           [class.current]="plan.id === currentPlanId()">
+        
+        @if (plan.isPopular) {
+          <!-- <div class="popular-badge">
+            <i class="fas fa-star"></i> Popular
+          </div> -->
+        }
+
+        <div class="plan-name">{{ plan.name }}</div>
+        
+        <div class="plan-price">
+          <span class="currency">$</span>
+          <span class="amount">{{ plan.price }}</span>
+          <span class="period">{{ plan.currency }} / {{ plan.billingCycle }}</span>
+        </div>
+
+        <div class="plan-sub">{{ plan.subtitle }}</div>
+
+        <ul class="plan-features">
+          @for (feature of plan.features; track feature) {
+            <li>
+              @if (feature.toLowerCase().includes('vault')) {
+                <i class="fas fa-box-archive"></i>
+              } @else if (feature.toLowerCase().includes('attachment')) {
+                <i class="fas fa-paperclip"></i>
+              } @else {
+                <i class="fas fa-circle-check"></i>
+              }
+              {{ feature }}
+            </li>
+          }
+        </ul>
+
+        <div class="plan-footer">
+          <!-- 1. Current Plan -->
+          @if (plan.id === currentPlanId()) {
+            <button class="btn-upgrade disabled" disabled>
+              <i class="fas fa-lock"></i> Current plan
+            </button>
+          } 
+          <!-- 2. Lower/Cheaper Plan -->
+          @else if (plan.price < getCurrentPlanPrice()) {
+            <button class="btn-upgrade disabled" disabled>
+              <i class="fas fa-lock"></i> Lower Tier
+            </button>
+          } 
+          <!-- 3. Higher/Upgrade Plan -->
+          @else {
+            <button class="btn-upgrade primary" (click)="pay(plan)">
+              @if (plan.name === 'Eco') {
+                <i class="fas fa-arrow-right"></i>
+              } @else if (plan.name === 'Plus') {
+                <i class="fas fa-rocket"></i>
+              } @else {
+                <i class="fas fa-bolt"></i>
+              }
+              Upgrade to {{ plan.name }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+  </div>
+    <div class="footer-note support-note">
+    <i class="fas fa-info-circle"></i> If you want to downgrade the plan please contact support.
+  </div>
+</div>

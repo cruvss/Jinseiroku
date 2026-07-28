@@ -2,8 +2,11 @@ package com.cruvs.backend.service;
 
 import com.cruvs.backend.dto.subscription.Sub;
 import com.cruvs.backend.entity.Subscription;
+import com.cruvs.backend.exception.AccessDeniedException;
+import com.cruvs.backend.exception.ResourceNotFoundException;
 import com.cruvs.backend.repository.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,6 +16,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class SubscriptionService {
 
     private final SubscriptionRepository subscriptionRepository;
@@ -39,7 +43,7 @@ public class SubscriptionService {
                 .build();
 
         entity = subscriptionRepository.save(entity);
-        System.out.println(entity.getNextBillingDate());
+        log.info("Subscription created: id: {}, name: {}, userId: {}", entity.getId(), dto.getName(), userId);
         if (entity.getNextBillingDate() != null) {
             reminderService.createOrUpdateReminders(
                     userId,
@@ -59,10 +63,11 @@ public class SubscriptionService {
     @Transactional
     public Sub updateSubscription(UUID userId, UUID subscriptionId, Sub dto) {
         Subscription entity = subscriptionRepository.findById(subscriptionId)
-                .orElseThrow(() -> new IllegalArgumentException("Subscription not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Subscription",subscriptionId));
 
         if (!entity.getUserId().equals(userId)) {
-            throw new SecurityException("Access denied");
+            log.warn("Unauthorized subscription update: userId: {}, subscriptionId: {}", userId, entity.getId());
+            throw new AccessDeniedException("Access denied");
         }
 
         entity.setName(dto.getName());
@@ -93,12 +98,14 @@ public class SubscriptionService {
     @Transactional
     public void deleteSubscription(UUID userId, UUID subscriptionId) {
         Subscription entity = subscriptionRepository.findById(subscriptionId)
-                .orElseThrow(() -> new IllegalArgumentException("Subscription not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Subscription",subscriptionId));
 
         if (!entity.getUserId().equals(userId)) {
-            throw new SecurityException("Access denied");
+            log.warn("Unauthorized subscription delete: userId: {}, subscriptionId: {}", userId, entity.getId());
+            throw new AccessDeniedException("Access denied");
         }
         reminderService.deleteRemindersForSource("SUBSCRIPTION", entity.getId());
+        log.info("Subscription deleted: id: {}, userId: {}",entity.getId(), userId);
         subscriptionRepository.delete(entity);
     }
 

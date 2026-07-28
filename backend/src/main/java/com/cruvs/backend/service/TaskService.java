@@ -5,10 +5,12 @@ import com.cruvs.backend.dto.task.TaskDto;
 import com.cruvs.backend.entity.Task;
 import com.cruvs.backend.entity.TaskCompletion;
 import com.cruvs.backend.entity.VaultDocument;
+import com.cruvs.backend.exception.ResourceNotFoundException;
 import com.cruvs.backend.repository.TaskCompletionRepository;
 import com.cruvs.backend.repository.TaskRepository;
 import com.cruvs.backend.repository.VaultDocumentRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class TaskService {
     private final TaskRepository taskRepo;
     private final TaskCompletionRepository completionRepo;
@@ -26,6 +29,7 @@ public class TaskService {
     private final ReminderService reminderService;
 
     public List<TaskDto> getTasksByUserId(UUID userId) {
+        log.debug("Fetching tasks for userId: {}",userId);
         return taskRepo.findByUserIdOrderByDueDateAsc(userId)
                 .stream()
                 .map(this::mapToDto)
@@ -34,8 +38,9 @@ public class TaskService {
 
     public TaskDto getTaskById(UUID userId, UUID taskId) {
         Task task = taskRepo.findById(taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task",taskId));
         if (!task.getUserId().equals(userId)) {
+            log.warn("Unauthorized task access attempt by: {}",userId);
             throw new SecurityException("Access denied");
         }
         return mapToDto(task);
@@ -44,9 +49,10 @@ public class TaskService {
     @Transactional
     public TaskDto createTask(UUID userId, TaskDto dto) {
         VaultDocument document = null;
+        log.debug("Task create attempt by user: {}",userId);
         if (dto.getLinkedDocumentId() != null) {
             document = vaultRepo.findById(dto.getLinkedDocumentId())
-                    .orElseThrow(() -> new IllegalArgumentException("Document not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Document",dto.getLinkedDocumentId()));
         }
 
         Task task = Task.builder()
@@ -64,6 +70,8 @@ public class TaskService {
                 .build();
 
         task = taskRepo.save(task);
+        log.info("Task created with id: {} for userId: {}",task.getId(),userId);
+
         if (task.getDueDate() != null) {
             int leadDays = task.getLeadTimeDays() != null ? task.getLeadTimeDays() : 7;
             reminderService.createOrUpdateReminders(
@@ -76,22 +84,25 @@ public class TaskService {
                     "Task Due Soon",
                     "Your task is due on " + task.getDueDate()
             );
+            log.debug("Reminder scheduled for task: {}, dueDate: {}. leadDays: {}",task.getId(),task.getDueDate(),leadDays);
         }
         return mapToDto(task);
     }
 
     @Transactional
     public TaskDto updateTask(UUID userId, UUID taskId, TaskDto dto) {
+        log.debug("Task update attempt - userId: {}, taskId: {}",taskId, userId);
         Task task = taskRepo.findById(taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task",taskId));
         if (!task.getUserId().equals(userId)) {
+            log.warn("Unauthorized task update attempt - userId: {}, taskId: {}",userId,taskId);
             throw new SecurityException("Access denied");
         }
 
         VaultDocument document = null;
         if (dto.getLinkedDocumentId() != null) {
             document = vaultRepo.findById(dto.getLinkedDocumentId())
-                    .orElseThrow(() -> new IllegalArgumentException("Document not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("Document",dto.getLinkedDocumentId()));
         }
 
         task.setTitleEncrypted(dto.getTitleEncrypted());
@@ -106,6 +117,7 @@ public class TaskService {
         task.setLinkedDocument(document);
 
         task = taskRepo.save(task);
+        log.info("Task updated: taskId: {}, userId: {}",taskId,userId);
         if (task.getDueDate() != null) {
             int leadDays = task.getLeadTimeDays() != null ? task.getLeadTimeDays() : 7;
             reminderService.createOrUpdateReminders(
@@ -125,19 +137,21 @@ public class TaskService {
     @Transactional
     public void deleteTask(UUID userId, UUID taskId) {
         Task task = taskRepo.findById(taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task",taskId));
         if (!task.getUserId().equals(userId)) {
             throw new SecurityException("Access denied");
         }
         reminderService.deleteRemindersForSource("TASK", task.getId());
+        log.info("Task deleted: taskId: {}, userId: {}",taskId,userId);
         taskRepo.delete(task);
     }
 
     @Transactional
     public TaskDto completeTask(UUID userId, UUID taskId, String notesEncrypted) {
         Task task = taskRepo.findById(taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task",taskId));
         if (!task.getUserId().equals(userId)) {
+            log.warn("Unauthorized task complete attempt - userId: {}, taskId: {}",userId,taskId);
             throw new SecurityException("Access denied");
         }
 
@@ -147,6 +161,7 @@ public class TaskService {
                 .notesEncrypted(notesEncrypted)
                 .build();
         completionRepo.save(completion);
+        log.info("Task {} completed by userId: {}",taskId, userId);
 
         // 2. Adjust state
         if (task.isRecurring()) {
@@ -176,7 +191,7 @@ public class TaskService {
 
     public List<TaskCompletionDto> getCompletionsByTaskId(UUID userId, UUID taskId) {
         Task task = taskRepo.findById(taskId)
-                .orElseThrow(() -> new IllegalArgumentException("Task not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Task",taskId));
         if (!task.getUserId().equals(userId)) {
             throw new SecurityException("Access denied");
         }
@@ -189,7 +204,10 @@ public class TaskService {
 
     private LocalDate calculateNextDueDate(LocalDate currentDue, String cycleType, Integer interval) {
         LocalDate start = currentDue != null ? currentDue : LocalDate.now();
-        if (cycleType == null || interval == null) return start;
+        if (cycleType == null || interval == null) {
+            log.warn("Unrecognized cycleType '{}' for task, using current date",cycleType);
+            return start;
+        }
 
         return switch (cycleType.toUpperCase()) {
             case "DAYS" -> start.plusDays(interval);

@@ -26,36 +26,37 @@
   }
 }
 
+
 .add-task-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.25rem;
-  background-color: var(--color-accent);
+  all: unset;
+  box-sizing: border-box;
+  background-color: $accent;
   color: $btn-dark;
-  border: 1px solid var(--color-accent-dark);
-  border-radius: var(--r-md);
+  border-radius: $r-md;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.875rem;
   font-weight: 700;
   cursor: pointer;
-  box-shadow: var(--shadow-sm);
-  transition: transform 0.1s ease, box-shadow 0.1s ease;
-
-  mat-icon {
-    font-size: 1.25rem;
-    width: 1.25rem;
-    height: 1.25rem;
-  }
-
+  transition: all 0.2s ease-in-out;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: $shadow-sm;
+  
   &:hover {
-    transform: translate(-1px, -1px);
-    box-shadow: 3px 3px 0px var(--color-dark);
+    background-color: $accent-dark;
+    box-shadow: $shadow-md;
   }
 
   &:active {
-    transform: translate(0px, 0px);
-    box-shadow: 1px 1px 0px var(--color-dark);
+    transform: translateY(0);
   }
 }
+
+
+
+
+
 
 .tasks-layout {
   display: grid;

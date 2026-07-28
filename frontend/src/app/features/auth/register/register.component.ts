@@ -81,7 +81,7 @@ export class RegisterComponent {
       },
       error: (error) => {
         this.isLoading = false;
-        const message = error.error?.error?.message || 'Registration failed. Please try again.';
+        const message = error.error?.message || 'Registration failed. Please try again.';
         this.snackBar.open(message, 'Close', { duration: 5000 });
       }
     });

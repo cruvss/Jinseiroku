@@ -10,6 +10,7 @@ import com.cruvs.backend.entity.User;
 import com.cruvs.backend.entity.VaultDocument;
 import com.cruvs.backend.entity.TimelineEvent;
 import com.cruvs.backend.entity.ScheduledNotification;
+import com.cruvs.backend.exception.ResourceNotFoundException;
 import com.cruvs.backend.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,9 @@ public class DashboardService {
     private final ReminderService reminderService;
 
     public DashboardStatsResponse getStats(UUID userId){
-        User user = userRepo.findById(userId).orElseThrow();
+        User user = userRepo.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", userId));
+        ;
         LocalDate today = LocalDate.now();
 
         // 1. Subscriptions Calc

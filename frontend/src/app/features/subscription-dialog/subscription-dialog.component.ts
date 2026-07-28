@@ -23,11 +23,9 @@ import currencyCodes from 'currency-codes';
     MatSelectModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
   ],
-  providers: [
-    provideNativeDateAdapter() 
-  ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './subscription-dialog.component.html',
   styleUrl: './subscription-dialog.component.scss',
 })
@@ -36,13 +34,12 @@ export class SubscriptionDialogComponent implements OnInit {
   private dialogRef = inject(MatDialogRef<SubscriptionDialogComponent>);
   public data: SubscriptionDialogData = inject(MAT_DIALOG_DATA) || {};
 
-
   currencies = [
     { code: 'JPY', symbol: '¥' },
     { code: 'NPR', symbol: 'रु' },
     { code: 'USD', symbol: '$' },
     { code: 'GBP', symbol: '£' },
-    { code: 'EUR', symbol: '€' }
+    { code: 'EUR', symbol: '€' },
   ];
 
   form = this.fb.group({
@@ -50,7 +47,7 @@ export class SubscriptionDialogComponent implements OnInit {
     cost: [0, [Validators.required, Validators.min(0)]],
     currency: ['NPR', Validators.required],
     billingCycle: ['MONTHLY', Validators.required],
-    nextBillingDate: ['', Validators.required],
+    nextBillingDate: this.fb.control<Date | null>(null, Validators.required),
     status: ['ACTIVE', Validators.required],
   });
 
@@ -62,24 +59,38 @@ export class SubscriptionDialogComponent implements OnInit {
         cost: s.cost,
         currency: s.currency,
         billingCycle: s.billingCycle,
-        nextBillingDate: s.nextBillingDate,
-        status: s.status
+        nextBillingDate: s.nextBillingDate ? this.toLocalDate(s.nextBillingDate) : null,
+        status: s.status,
       });
     } else if (this.data?.inboxText) {
       this.form.patchValue({ name: this.data.inboxText });
     }
   }
 
+  private toLocalDate(dateString: string): Date {
+    const [year, month, day] = dateString.split('-').map(Number);
+    return new Date(year, month - 1, day);
+  }
+
   submit() {
     if (this.form.valid) {
       const formValue = this.form.value;
+
+      // console.log('Next Billing Date:', formValue.nextBillingDate);
+      // console.log(this.form.value.nextBillingDate?.toString());
+
+      const date = formValue.nextBillingDate as Date;
+      const nextBillingDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+      console.log(nextBillingDate);
+
       const result: Subscription = {
         ...this.data?.subscription,
         name: formValue.name!,
         cost: formValue.cost!,
         currency: formValue.currency!,
         billingCycle: formValue.billingCycle! as any,
-        nextBillingDate: formValue.nextBillingDate!,
+        nextBillingDate: nextBillingDate,
         status: formValue.status! as any,
       };
       this.dialogRef.close(result);

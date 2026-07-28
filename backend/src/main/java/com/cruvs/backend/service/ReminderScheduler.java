@@ -25,6 +25,8 @@ public class ReminderScheduler {
     private final ScheduledNotificationRepository notificationRepo;
     private final UserRepository userRepo;
     private final EmailService emailService;
+    private int successCount = 0;
+    private int failureCount = 0;
 
     @Scheduled(fixedRate = 60_000)
     @Transactional
@@ -62,10 +64,12 @@ public class ReminderScheduler {
                 boolean sent = emailService.sendReminderEmail(email, title, body);
 
                 if (sent) {
+                    successCount +=1;
                     notification.setStatus("sent");
                     notification.setSentAt(now);
                     log.info(" Reminder sent to {} — {}", email, title);
                 } else {
+                    failureCount+=1;
                     notification.setStatus("failed");
                     notification.setSentAt(now);
                     log.warn(" Email delivery failed for {} — {}", email, title);
@@ -81,5 +85,7 @@ public class ReminderScheduler {
                 notificationRepo.save(notification);
             }
         }
+
+        log.info("Reminder processing complete. Sent: {}, Failed: {}",successCount, failureCount);
     }
 }
