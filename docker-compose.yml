@@ -7,7 +7,7 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: life
       TZ: Asia/Kathmandu
-      PGTZ: Asia/Kathmandu  # PostgreSQL specific timezone
+      PGTZ: Asia/Kathmandu 
     ports:
       - "5431:5432"
     volumes:
@@ -36,8 +36,9 @@ services:
       - jenseiroku-network
 
   backend:
-    build: ./backend
+    image: ghcr.io/cruvss/jenseiroku-backend:latest
     container_name: jenseiroku-backend
+    restart: unless-stopped
     ports:
       - "9090:9090"
     depends_on:
@@ -53,8 +54,9 @@ services:
       - jenseiroku-network
 
   frontend:
-    build: ./frontend
+    image: ghcr.io/cruvss/jenseiroku-frontend:latest
     container_name: jenseiroku-frontend
+    restart: unless-stopped
     ports:
       - "8081:80"
     depends_on:
@@ -64,7 +66,6 @@ services:
     volumes:
       - /etc/timezone:/etc/timezone:ro
       - /etc/localtime:/etc/localtime:ro
-      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
       - jenseiroku-network
 
