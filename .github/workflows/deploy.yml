@@ -26,7 +26,7 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          
+
       
       - name: Backend metadata
         id: backend_meta
@@ -78,7 +78,8 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
 
           script: |
-            cd /opt/jenseiroku
+            set -e
+            cd /home/sachin/Jinseiroku
             docker compose pull
             docker compose up -d
             docker image prune -f
