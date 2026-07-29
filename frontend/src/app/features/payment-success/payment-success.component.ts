@@ -41,7 +41,7 @@ export class PaymentSuccessComponent implements OnInit {
         next: () => {
           this.loading = false;
           setTimeout(() => {
-            this.router.navigate(['/']);
+            this.router.navigate(['/dashboard']);
           }, 3000);
         },
         error: (err) => {
@@ -58,6 +58,6 @@ export class PaymentSuccessComponent implements OnInit {
   }
 
   goHome() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/dashboard']);
   }
 }

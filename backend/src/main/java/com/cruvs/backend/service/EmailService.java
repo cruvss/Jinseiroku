@@ -19,6 +19,9 @@ public class EmailService {
     @Value("${spring.mail.properties.mail.smtp.from}")
     private String fromAddress;
 
+    @Value("${app.frontend-url}")
+    private String frontendUrl;
+
     public boolean sendReminderEmail(String toEmail, String title, String body) {
         try {
             MimeMessage message = mailSender.createMimeMessage();
@@ -27,7 +30,8 @@ public class EmailService {
             helper.setFrom(fromAddress);
             helper.setTo(toEmail);
             helper.setSubject("🔔 Reminder: " + title);
-            helper.setText(buildHtmlContent(title, body), true);
+            helper.setText(buildHtmlContent(title, body, frontendUrl), true);
+
 
             mailSender.send(message);
             log.info("Reminder email sent to {} — subject: {}", toEmail, title);
@@ -38,7 +42,7 @@ public class EmailService {
         }
     }
 
-    private String buildHtmlContent(String title, String body) {
+    private String buildHtmlContent(String title, String body, String baseUrl) {
         return """
             <!DOCTYPE html>
             <html>
@@ -79,7 +83,7 @@ public class EmailService {
                           <table cellpadding="0" cellspacing="0">
                             <tr>
                               <td style="background-color:#2A231E; border-radius:8px; box-shadow:2px 2px 0px #D4C5B5;">
-                                <a href="http://localhost:4200/dashboard"
+                                <a href="%s/dashboard".formatted(baseUrl)
                                    style="display:inline-block; padding:12px 28px; color:#FCF8F2; text-decoration:none; font-weight:600; font-size:14px;">
                                   Open Dashboard →
                                 </a>

@@ -19,7 +19,7 @@ export const routes: Routes = [
     { path: 'payment', component:PaymentComponent},
     { path: 'payment-success', component:PaymentSuccessComponent},
     { path: '', component:HomeComponent},
-    
+
     // Protected routes wrapped in shell layout
     {
         path: '',

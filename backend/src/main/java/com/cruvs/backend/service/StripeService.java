@@ -24,8 +24,13 @@ import java.util.UUID;
 public class StripeService {
     private final UserRepository userRepository;
     private final SubscriptionPlanRepository subscriptionPlanRepository;
+
     @Value("${stripe.secret-key}")
     private String secretKey;
+
+    @Value("${app.frontend-url}")
+    private String frontendUrl;
+
 
     public StripeService(UserRepository userRepository, SubscriptionPlanRepository subscriptionPlanRepository) {
         this.userRepository = userRepository;
@@ -50,8 +55,8 @@ public class StripeService {
                 .build();
         SessionCreateParams params = SessionCreateParams.builder()
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("https://vault.sachinkoirala.com.np/payment-success?session_id={CHECKOUT_SESSION_ID}")
-                .setCancelUrl("http://vault.sachinkoirala.com.np/payment-cancel")
+                .setSuccessUrl(frontendUrl +"/payment-success?session_id={CHECKOUT_SESSION_ID}")
+                .setCancelUrl(frontendUrl + "/payment-cancel")
                 .putMetadata("userId", userId.toString())
                 .putMetadata("planId", request.getPlanId().toString())
                 .addLineItem(lineItem)

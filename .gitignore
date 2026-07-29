@@ -1,4 +1,7 @@
 minio-data/
 node_modules/
 .env
+backend/logs
+minioInit/
+.idea/
 *.gz
