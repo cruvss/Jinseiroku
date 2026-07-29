@@ -80,6 +80,7 @@ jobs:
           script: |
             set -e
             cd /home/sachin/Jinseiroku
+            docker-compose down
             docker-compose pull
             docker-compose up -d
             docker image prune -f
