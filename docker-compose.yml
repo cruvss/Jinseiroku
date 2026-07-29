@@ -17,7 +17,6 @@ services:
     networks:
       - jenseiroku-network
 
-
   minio:
     image: minio/minio:latest
     container_name: jenseiroku-minio
@@ -76,5 +75,5 @@ networks:
     driver: bridge
 
 volumes:
-  postgres_data: 
+  postgres_data:
   minio_data:
