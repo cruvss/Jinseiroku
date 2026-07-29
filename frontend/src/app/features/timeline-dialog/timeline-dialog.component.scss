@@ -1,4 +1,4 @@
-@import '../../../styles-variables.scss';
+@use '../../../styles-variables.scss' as *;
 
 .dialog-header {
   font-weight: 800 !important;

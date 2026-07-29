@@ -1,62 +1,141 @@
-<div class="register-container">
-  <div class="register-card glass-effect">
-    <div class="register-header">
-      <h1 class="gradient-text">Jinseiroku</h1>
-      <p>Initialize your secure personal archive</p>
-    </div>
+<div class="auth-page">
 
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-      <!-- Email Field -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Email</mat-label>
-        <input matInput type="email" formControlName="email" placeholder="you@example.com" autocomplete="email">
-        <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
-          Email is required
-        </mat-error>
-        <mat-error *ngIf="registerForm.get('email')?.hasError('email')">
-          Please enter a valid email
-        </mat-error>
-      </mat-form-field>
+  <div class="auth-left">
+    <a routerLink="/" class="back-link">
+      <i class="pi pi-arrow-left"></i> Back to home
+    </a>
 
-      <!-- Password Field -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Master Password</mat-label>
-        <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password" autocomplete="new-password">
-        <button mat-icon-button matSuffix type="button" (click)="hidePassword = !hidePassword">
-          <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-        <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
-          Password is required
-        </mat-error>
-        <mat-error *ngIf="registerForm.get('password')?.hasError('minlength')">
-          Password must be at least 8 characters
-        </mat-error>
-      </mat-form-field>
-
-      <!-- Confirm Password Field -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Confirm Password</mat-label>
-        <input matInput [type]="hideConfirmPassword ? 'password' : 'text'" formControlName="confirmPassword" autocomplete="new-password">
-        <button mat-icon-button matSuffix type="button" (click)="hideConfirmPassword = !hideConfirmPassword">
-          <mat-icon>{{hideConfirmPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
-        </button>
-        <mat-error *ngIf="registerForm.get('confirmPassword')?.hasError('required')">
-          Please confirm your password
-        </mat-error>
-        <mat-error *ngIf="registerForm.hasError('mismatch')">
-          Passwords do not match
-        </mat-error>
-      </mat-form-field>
-
-      <!-- Submit Button -->
-      <button mat-raised-button color="primary" class="full-width" type="submit" [disabled]="registerForm.invalid || isLoading">
-        <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
-        <span *ngIf="!isLoading">Register</span>
-      </button>
-
-      <div class="register-footer">
-        <p>Already have a vault? <a routerLink="/login">Login</a></p>
+    <div class="left-content">
+      <div class="brand-mark">
+        <img src="LogoHorizontal.png" alt="Jinseiroku" class="auth-brand-logo" />
       </div>
-    </form>
+
+      <p class="left-eyebrow">Personal Management Platform</p>
+
+      <h2 class="left-heading">
+        Build your<br/>
+        <span class="left-underline-wrap">
+          secure vault.
+          <svg class="underline-svg" viewBox="0 0 300 14" fill="none" aria-hidden="true">
+            <path d="M4 10C75 3 225 3 296 10" stroke="#2aada6" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </h2>
+
+      <p class="left-body">
+        Create your account and start organizing your entire life — timeline, tasks, encrypted vault, and subscriptions — all in one place.
+      </p>
+
+      <div class="left-pills">
+        <span class="pill"><i class="pi pi-shield"></i> AES-256 Encrypted</span>
+        <span class="pill"><i class="pi pi-eye-slash"></i> Zero Knowledge</span>
+        <span class="pill"><i class="pi pi-server"></i> Secure Infrastructure</span>
+        <span class="pill"><i class="pi pi-star"></i> Free to start</span>
+      </div>
+    </div>
   </div>
+
+  <div class="auth-right">
+    <div class="form-card">
+
+      <div class="form-header">
+        <div class="form-icon">
+          <img src="Logo.png" alt="Jinseiroku Icon" class="form-logo-icon" />
+        </div>
+        <h1 class="form-title">Create account</h1>
+        <p class="form-subtitle">Initialize your secure personal archive</p>
+      </div>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+        <div class="field-group">
+          <label class="field-label" for="reg-email">Email</label>
+          <div class="field-input-wrap" [class.field-error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            <i class="pi pi-envelope field-icon"></i>
+            <input
+              id="reg-email"
+              type="email"
+              formControlName="email"
+              placeholder="you@example.com"
+              autocomplete="email"
+              class="field-input"
+            />
+          </div>
+          @if (registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched) {
+            <span class="field-err-msg">Email is required</span>
+          }
+          @if (registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched) {
+            <span class="field-err-msg">Please enter a valid email</span>
+          }
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="reg-password">Master Password</label>
+          <div class="field-input-wrap" [class.field-error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+            <i class="pi pi-lock field-icon"></i>
+            <input
+              id="reg-password"
+              [type]="hidePassword ? 'password' : 'text'"
+              formControlName="password"
+              placeholder="Min. 8 characters"
+              autocomplete="new-password"
+              class="field-input"
+            />
+            <button type="button" class="field-toggle" (click)="hidePassword = !hidePassword" tabindex="-1" aria-label="Toggle password visibility">
+              <i class="pi" [class.pi-eye]="hidePassword" [class.pi-eye-slash]="!hidePassword"></i>
+            </button>
+          </div>
+          @if (registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched) {
+            <span class="field-err-msg">Password is required</span>
+          }
+          @if (registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched) {
+            <span class="field-err-msg">Password must be at least 8 characters</span>
+          }
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="reg-confirm">Confirm Password</label>
+          <div class="field-input-wrap" [class.field-error]="(registerForm.get('confirmPassword')?.invalid || registerForm.hasError('mismatch')) && registerForm.get('confirmPassword')?.touched">
+            <i class="pi pi-lock field-icon"></i>
+            <input
+              id="reg-confirm"
+              [type]="hideConfirmPassword ? 'password' : 'text'"
+              formControlName="confirmPassword"
+              placeholder="Repeat your password"
+              autocomplete="new-password"
+              class="field-input"
+            />
+            <button type="button" class="field-toggle" (click)="hideConfirmPassword = !hideConfirmPassword" tabindex="-1" aria-label="Toggle confirm password visibility">
+              <i class="pi" [class.pi-eye]="hideConfirmPassword" [class.pi-eye-slash]="!hideConfirmPassword"></i>
+            </button>
+          </div>
+          @if (registerForm.get('confirmPassword')?.hasError('required') && registerForm.get('confirmPassword')?.touched) {
+            <span class="field-err-msg">Please confirm your password</span>
+          }
+          @if (registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched) {
+            <span class="field-err-msg">Passwords do not match</span>
+          }
+        </div>
+
+        <button
+          type="submit"
+          class="btn-submit"
+          [disabled]="registerForm.invalid || isLoading"
+        >
+          @if (isLoading) {
+            <span class="spinner"></span>
+          } @else {
+            <span>Create account <i class="pi pi-arrow-right"></i></span>
+          }
+        </button>
+
+      </form>
+
+      <div class="form-footer">
+        <p>Already have a vault? <a routerLink="/login" class="form-link">Sign in</a></p>
+      </div>
+
+    </div>
+  </div>
+
 </div>

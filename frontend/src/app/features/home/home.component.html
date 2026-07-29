@@ -1,0 +1,231 @@
+<div class="page" (scroll)="onScroll($event)">
+
+  <nav class="nav" [class.nav--scrolled]="navScrolled">
+    <div class="nav-inner">
+      <a class="nav-brand" href="#" (click)="scrollToTop($event)">
+        <img src="LogoHorizontal.png" alt="Jinseiroku" class="nav-logo" />
+      </a>
+      <div class="nav-links">
+        <a class="nav-link" href="#modules">Features</a>
+        <a class="nav-link" href="#security">Security</a>
+        <a class="nav-link" href="#pricing">Pricing</a>
+      </div>
+      <div class="nav-actions">
+        <a routerLink="/login"    class="nav-ghost">Login</a>
+        <a routerLink="/register" class="nav-cta">Open App</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <p class="hero-eyebrow">Personal Management Platform</p>
+
+        <h1 class="hero-heading">
+          Your <span class="typed-word">Life.</span><br/>
+          managed<br/>
+          <span class="hero-underline-wrap">
+            securely.
+            <svg class="underline-svg" viewBox="0 0 320 14" fill="none" aria-hidden="true">
+              <path d="M4 10C80 3 240 3 316 10" stroke="#2aada6" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+          </span>
+        </h1>
+
+        <p class="hero-body">
+          One platform for your timeline, tasks, encrypted vault,
+          and subscriptions.
+        </p>
+
+        <div class="hero-actions">
+          <a routerLink="/register" class="btn-primary">
+            Open the app <i class="pi pi-arrow-right"></i>
+          </a>
+          <a routerLink="/login" class="btn-secondary">Sign in</a>
+        </div>
+      </div>
+
+      <div class="hero-orbit-wrap">
+        <div class="orbit-ring"></div>
+
+        <div class="orbit-items">
+          @for (o of orbitItems; track o.deg) {
+            <div class="orbit-item"
+                 [style.--deg]="o.deg + 'deg'">
+              <div class="orbit-item-inner">
+                <img [src]="o.image" class="orbit-icon-img" alt="Module Icon" />
+              </div>
+            </div>
+          }
+        </div>
+
+        <div class="orbit-mascot">
+          <img src="MascotNoBgWide.png" alt="Jinseiroku mascot" class="mascot-img" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="steps-sec" id="modules">
+    <div class="steps-inner">
+
+      <div class="steps-header">
+        <div class="sec-label fade-in">Modules</div>
+        <h2 class="sec-heading fade-in">
+          Everything in one place.
+        </h2>
+        <p class="sec-sub fade-in">
+          Scroll to see everything Jinseiroku offers.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+        @for (s of steps; track s.num; let i = $index) {
+          <div class="step-card"
+               [style.--index]="i">
+
+            <div class="sc-top">
+              <span class="sc-num">STEP {{ s.num }}</span>
+              <div class="sc-icon">
+                <img [src]="s.icon" alt="{{ s.title }} Icon" />
+              </div>
+            </div>
+
+            <h3 class="sc-title">{{ s.title }}</h3>
+            <p class="sc-body">{{ s.body }}</p>
+
+            <div class="sc-preview">
+              <div class="sc-prev-left">
+                <p class="sc-prev-label">{{ s.preview.label }}</p>
+                <p class="sc-prev-sub">{{ s.preview.sub }}</p>
+              </div>
+              <span class="sc-prev-val">{{ s.preview.value }}</span>
+            </div>
+
+          </div>
+        }
+      </div>
+
+    </div>
+  </section>
+
+  <section class="security-sec" id="security">
+    <div class="security-inner">
+      <div class="sec-header-center">
+        <div class="sec-label fade-in">Security</div>
+        <h2 class="sec-heading fade-in">Your data, fortress-grade.</h2>
+        <p class="sec-sub fade-in">
+          We built Jinseiroku on a privacy-first architecture. From AES-256 encrypted vaults to secure cloud backups, your life's data remains exclusively yours.
+        </p>
+      </div>
+
+      <div class="security-features">
+        <div class="sf-card fade-in">
+          <div class="sf-status"><span class="sf-dot"></span>Privacy First</div>
+          <h3>End-to-End Encryption</h3>
+          <p>Your vault files and notes are encrypted on your device before they ever reach our servers. Only you hold the key.</p>
+        </div>
+
+        <div class="sf-card fade-in">
+          <div class="sf-status"><span class="sf-dot"></span>Isolated Cloud</div>
+          <h3>Secure Infrastructure</h3>
+          <p>Built on enterprise-grade Spring Boot and deployed via hardened Docker containers to ensure maximum isolation.</p>
+        </div>
+
+        <div class="sf-card fade-in">
+          <div class="sf-status"><span class="sf-dot"></span>Zero Data Access</div>
+          <h3>Zero Knowledge</h3>
+          <p>We cannot see, mine, or sell your data. Our architecture guarantees that your private life stays completely private.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing-sec" id="pricing">
+    <div class="pricing-inner">
+      <div class="sec-header-center">
+        <div class="sec-label fade-in">Pricing</div>
+        <h2 class="sec-heading fade-in">Simple, transparent pricing.</h2>
+        <p class="sec-sub fade-in">
+          Start organizing your life for free, and upgrade when you need advanced security and unlimited storage.
+        </p>
+      </div>
+
+      <div class="pricing-cards">
+        <div class="price-card fade-in">
+          <div class="pc-header">
+            <h3>Free</h3>
+            <div class="pc-price">$0<span>/mo</span></div>
+            <p>Begin documenting your life journey securely.</p>
+          </div>
+          <ul class="pc-features">
+            <li><i class="pi pi-check"></i> 250 MB Encrypted Vault</li>
+            <li><i class="pi pi-check"></i> Up to 1 MB attachments</li>
+          </ul>
+          <a routerLink="/register" class="btn-pc-secondary">Default plan</a>
+        </div>
+
+        <div class="price-card fade-in">
+          <div class="pc-header">
+            <h3>Eco</h3>
+            <div class="pc-price">$5<span>/mo</span></div>
+            <p>Keep uploading with expanded access.</p>
+          </div>
+          <ul class="pc-features">
+            <li><i class="pi pi-check"></i> 1 GB Encrypted Vault</li>
+            <li><i class="pi pi-check"></i> Everything in Free Plan</li>
+            <li><i class="pi pi-check"></i> Up to 25 MB attachments</li>
+          </ul>
+          <a routerLink="/register" class="btn-pc-secondary">Upgrade to Eco</a>
+        </div>
+
+        <div class="price-card fade-in">
+          <div class="pc-header">
+            <h3>Plus</h3>
+            <div class="pc-price">$20<span>/mo</span></div>
+            <p>Unlock the full experience.</p>
+          </div>
+          <ul class="pc-features">
+            <li><i class="pi pi-check"></i> 5 GB Encrypted Vault</li>
+            <li><i class="pi pi-check"></i> Everything in ECO Plan</li>
+            <li><i class="pi pi-check"></i> Up to 100 MB attachments</li>
+          </ul>
+          <a routerLink="/register" class="btn-pc-secondary">Upgrade to Plus</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="unified-footer fade-in">
+    <div class="uf-top">
+      
+      <div class="uf-left">
+        <h2 class="uf-heading">
+          Start managing<br/>your life better.
+        </h2>
+        
+        <div class="uf-actions">
+          <a routerLink="/register" class="btn-uf-primary">Create Free Account</a>
+          <a routerLink="/login" class="btn-uf-secondary">Login</a>
+        </div>
+      </div>
+
+      <div class="uf-right">
+        <div class="mascot-card">
+          <img src="MascotNoBgWide.png" alt="Jinseiroku Mascot" class="mascot-img">
+          <div class="mascot-badge">Get Organized Instantly!</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="uf-bottom">
+      <div class="uf-brand">
+        <img src="LogoHorizontal.png" alt="Jinseiroku" class="footer-logo" />
+      </div>
+      <p class="uf-copyright">© 2026 Jinseiroku. All rights reserved.</p>
+    </div>
+  </footer>
+
+</div>
