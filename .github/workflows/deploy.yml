@@ -79,7 +79,7 @@ jobs:
 
           script: |
             set -e
-            cd /home/sachin/Jinseiroku
+            cd /home/ubuntu/Jinseiroku
             docker-compose down
             docker-compose pull
             docker-compose up -d
