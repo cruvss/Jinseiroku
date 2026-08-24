@@ -3,15 +3,14 @@
   <!-- ════════ SIDEBAR ════════ -->
   <nav class="sidebar">
     <div class="brand">
-      <div class="brand-icon"><mat-icon>lock</mat-icon></div>
-      <span class="brand-name">Jinseiroku</span>
+      <img src="LogoHorizontal.png" alt="Jinseiroku" class="brand-logo" />
     </div>
 
     <div class="nav-links">
       @for (link of navLinks; track link.id) {
       <button class="nav-link" [class.active]="activeTab() === link.id" (click)="navigate(link.id)">
         <span class="nav-link-left">
-          <mat-icon>{{ link.icon }}</mat-icon>
+          <i class="pi" [ngClass]="link.icon"></i>
           {{ link.label }}
         </span>
         @if (link.hasBadge) {
@@ -25,11 +24,11 @@
 
     <div class="sidebar-footer">
       <button class="encrypt-chip"  (click)="openDialog()">
-        <mat-icon>payment</mat-icon>
-        <span >Upgrade Plan</span>
+        <i class="pi pi-bolt"></i>
+        <span>Upgrade Plan</span>
       </button>
       <button class="logout-btn" (click)="logout()">
-        <mat-icon>logout</mat-icon>
+        <i class="pi pi-sign-out"></i>
         <span>Logout</span>
       </button>
     </div>
@@ -41,7 +40,7 @@
       <h1 class="topbar-title">{{ activeTab() }}</h1>
       <div class="topbar-right">
         <div class="search" style="position: relative;">
-          <mat-icon class="search-icon">search</mat-icon>
+          <i class="pi pi-search search-icon"></i>
           <input type="text" class="search-input" placeholder="Search anywhere"
             [value]="searchQuery()" (input)="onSearchInput($event)" (focus)="onSearchFocus()" (blur)="onSearchBlur()" />
           <!-- Spotlight Search Dropdown -->
@@ -49,7 +48,7 @@
           <div class="search-results-dropdown card">
             @for (res of searchResults(); track res.title) {
             <div class="search-result-item" (mousedown)="goToResult(res)">
-              <mat-icon class="result-icon">{{ res.icon }}</mat-icon>
+              <i class="pi result-icon" [ngClass]="res.icon"></i>
               <div class="result-details">
                 <div class="result-title">{{ res.title }}</div>
                 <div class="result-subtitle">
@@ -78,16 +77,19 @@
           <!-- Quick Capture -->
           <section class="card capture-card">
             <h2 class="capture-heading">
-              <mat-icon>drive_file_move</mat-icon>
+              <span class="capture-dot"></span>
               Dump it here, organize it later.
             </h2>
             <form class="capture-form" (submit)="capture($event, captureInput)">
-              <input #captureInput class="capture-input" type="text"
-                placeholder="Type a thought, paste a link, or upload a file here..." />
+              <div class="capture-input-wrap">
+                <i class="pi pi-file-edit capture-field-icon"></i>
+                <input #captureInput class="capture-input" type="text"
+                  placeholder="Type a thought, paste a link, or upload a file here..." />
+              </div>
               <div class="capture-btns">
                 <input type="file" #fileInput hidden (change)="onFileSelected($event)" />
                 <button type="button" class="icon-btn"
-                  (click)="fileInput.click()"><mat-icon>attach_file</mat-icon></button>
+                  (click)="fileInput.click()"><i class="pi pi-paperclip"></i></button>
                 <span *ngIf="selectedFile" class="file-badge">{{selectedFile.name}}</span>
                 <button type="submit" class="submit-btn" [disabled]="isCapturing()">
                   {{ isCapturing() ? 'Capturing...' : 'Capture' }}
@@ -100,7 +102,7 @@
           <div class="stats">
             <!-- Staging Inbox -->
             <div class="card stat" (click)="navigate('inbox')">
-              <div class="stat-icon coral"><mat-icon>inbox</mat-icon></div>
+              <div class="stat-icon coral"><i class="pi pi-inbox"></i></div>
               <div>
                 @if(dashboardStats().unprocessedInboxCount > 1){
                 <div class="stat-val">{{ dashboardStats().unprocessedInboxCount }}</div>
@@ -114,35 +116,27 @@
 
             <!-- Subscriptions Card (Total + Next Renewal) -->
             <div class="card stat" (click)="navigate('subscriptions')">
-              <div class="stat-icon slate"><mat-icon>credit_card</mat-icon></div>
+              <div class="stat-icon slate"><i class="pi pi-credit-card"></i></div>
               <div>
                 <div class="stat-val">{{ dashboardStats().totalMonthlySubscriptionCost | currency:'NPR ':'symbol' }}
                 </div>
                 <div class="stat-lbl">
                   Monthly Subscriptions
-                  <!-- <div class="stat-sub" *ngIf="dashboardStats().nextSubscriptionRenewalDate">
-                    Renewal: {{ dashboardStats().nextSubscriptionRenewalDate | date:'MM-dd' }}
-                  </div> -->
                 </div>
               </div>
             </div>
 
             <!-- Tasks Card (Overdue & Next Recurring) -->
             <div class="card stat" (click)="navigate('tasks')">
-              <div class="stat-icon pink"><mat-icon>event_available</mat-icon></div>
+              <div class="stat-icon pink"><i class="pi pi-check-square"></i></div>
               <div>
                 <div class="stat-val">
                   <span [class.overdue-text]="dashboardStats().overdueTasksCount > 0">
                     {{ dashboardStats().overdueTasksCount }}
                   </span>
-                  <!-- <span class="stat-meta">/{{ dashboardStats().pendingToDosCount }}</span> -->
                 </div>
                 <div class="stat-lbl">
                   Overdue 
-                  <!-- <div class="stat-sub" *ngIf="dashboardStats().nextRecurringTaskDueDate">
-                    Next Due: {{ dashboardStats().nextRecurringTaskDueDate | date:'MM-dd' }}
-                  </div> -->
-
                 </div>
               </div>
             </div>

@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { MatIconModule } from '@angular/material/icon';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { VaultComponent } from '../vault/vault.component';
@@ -26,7 +25,7 @@ import { PaymentComponent } from '../payment/payment.component';
 
 @Component({
   selector: 'app-dashboard-layout',
-  imports: [MatIconModule, RouterOutlet, CommonModule, MatDialogModule],
+  imports: [RouterOutlet, CommonModule, MatDialogModule],
   templateUrl: './dashboard-layout.component.html',
   styleUrl: './dashboard-layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -55,12 +54,12 @@ export class DashboardLayoutComponent implements OnInit {
   showResults = signal(false);
 
   readonly navLinks = [
-    { id: 'dashboard', icon: 'show_chart', label: 'Dashboard' },
-    { id: 'inbox', icon: 'inbox', label: 'Quick Capture', hasBadge: true },
-    { id: 'vault', icon: 'lock', label: 'Vault' },
-    { id: 'subscriptions', icon: 'credit_card', label: 'Subscriptions' },
-    { id: 'tasks', icon: 'event_available', label: 'Tasks' },
-    { id: 'timeline', icon: 'history', label: 'Timeline' },
+    { id: 'dashboard', icon: 'pi-chart-bar', label: 'Dashboard' },
+    { id: 'inbox', icon: 'pi-inbox', label: 'Quick Capture', hasBadge: true },
+    { id: 'vault', icon: 'pi-lock', label: 'Vault' },
+    { id: 'subscriptions', icon: 'pi-credit-card', label: 'Subscriptions' },
+    { id: 'tasks', icon: 'pi-check-square', label: 'Tasks' },
+    { id: 'timeline', icon: 'pi-history', label: 'Timeline' },
   ];
 
   // Dynamic search matching across Tasks, Timeline events, and Subscriptions
@@ -80,7 +79,7 @@ export class DashboardLayoutComponent implements OnInit {
           type: 'Task',
           title: title,
           subtitle: `Category: ${task.category} · Status: ${task.status}`,
-          icon: 'event_available',
+          icon: 'pi-check-square',
           tab: 'tasks',
         });
       }
@@ -95,7 +94,7 @@ export class DashboardLayoutComponent implements OnInit {
           type: 'Timeline',
           title: title,
           subtitle: `Category: ${event.category} · Date: ${event.eventDate}`,
-          icon: 'history',
+          icon: 'pi-history',
           tab: 'timeline',
         });
       }
@@ -109,7 +108,7 @@ export class DashboardLayoutComponent implements OnInit {
           type: 'Subscription',
           title: name,
           subtitle: `Cost: ${sub.cost} ${sub.currency} · Cycle: ${sub.billingCycle}`,
-          icon: 'credit_card',
+          icon: 'pi-credit-card',
           tab: 'subscriptions',
         });
       }
