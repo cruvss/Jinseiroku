@@ -33,7 +33,9 @@
         <mat-icon class="empty-icon">history</mat-icon>
         <h3>No timeline events yet</h3>
         <p>Start documenting key life events, milestones, and record details here.</p>
-        <button mat-stroked-button (click)="addEvent()">Create First Event</button>
+        <button mat-raised-button color="primary" (click)="addEvent()">
+          <mat-icon>add</mat-icon> Create First Event
+        </button>
       </div>
     } @else {
       <div class="timeline-tree">
