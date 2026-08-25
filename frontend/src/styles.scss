@@ -349,6 +349,13 @@ body {
   border-radius: 16px !important;
 }
 
+.payment-dialog-panel .mdc-dialog__surface {
+  border-radius: 20px !important;
+  max-width: 1240px !important;
+  background-color: $card-bg !important;
+  overflow-y: auto;
+}
+
 
 
 
@@ -409,6 +416,25 @@ body {
 
   &:hover {
     background-color: $accent-dark !important;
+  }
+}
+
+.mat-mdc-outlined-button {
+  color: $dark !important;
+  border-color: $border !important;
+
+  &:hover {
+    background-color: rgba($dark, 0.08) !important;
+    border-color: $muted !important;
+  }
+
+  &.mat-primary {
+    color: $accent !important;
+    border-color: $accent !important;
+
+    &:hover {
+      background-color: rgba($accent, 0.1) !important;
+    }
   }
 }
 

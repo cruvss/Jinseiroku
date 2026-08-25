@@ -6,6 +6,13 @@
   margin: 0 auto;
 }
 
+.card {
+  background-color: $card-bg;
+  border: 1px solid $border;
+  border-radius: $r-xl;
+  box-shadow: $shadow-md;
+}
+
 .unlock-panel {
   display: flex;
   flex-direction: column;
@@ -79,7 +86,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 3rem;
+  padding: 3.5rem 2rem;
   text-align: center;
 
   .empty-icon {
@@ -88,16 +95,28 @@
     width: 3.5rem;
     color: $muted;
     margin-bottom: 1rem;
+    opacity: 0.8;
   }
 
   h3 {
     margin-bottom: 0.5rem;
     color: $dark;
+    font-size: 1.25rem;
+    font-weight: 700;
   }
 
   p {
     color: $muted;
     margin-bottom: 1.5rem;
+    max-width: 420px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 }
 

@@ -213,11 +213,11 @@ export class DashboardLayoutComponent implements OnInit {
   }
 
   openDialog(){
-    const dialogRef = this.dialog.open(PaymentComponent,{
-      width:'1500px',
-      panelClass: 'rounded-dialog'
+    const dialogRef = this.dialog.open(PaymentComponent, {
+      maxWidth: '1240px',
+      width: '95vw',
+      panelClass: 'payment-dialog-panel'
     });
-
   }
 
 
