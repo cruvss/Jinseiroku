@@ -4,5 +4,4 @@ node_modules/
 backend/logs
 minioInit/
 .idea/
-*.gz
 .agents/
