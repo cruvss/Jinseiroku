@@ -19,53 +19,33 @@
 
   <section class="hero">
     <div class="hero-inner">
-      <div class="hero-text">
-        <p class="hero-eyebrow">Personal Management Platform</p>
+      <p class="hero-eyebrow">Personal Management Platform</p>
 
-        <h1 class="hero-heading">
-          Your <span class="typed-word">Life.</span><br/>
-          managed<br/>
-          <span class="hero-underline-wrap">
-            securely.
-            <svg class="underline-svg" viewBox="0 0 320 14" fill="none" aria-hidden="true">
-              <path d="M4 10C80 3 240 3 316 10" stroke="#2aada6" stroke-width="5" stroke-linecap="round"/>
-            </svg>
-          </span>
-        </h1>
+      <h1 class="hero-heading">
+        Your <span class="typed-word">Life.</span><br/>
+        managed<br/>
+        <span class="hero-underline-wrap">
+          securely.
+          <svg class="underline-svg" viewBox="0 0 320 14" fill="none" aria-hidden="true">
+            <path d="M4 10C80 3 240 3 316 10" stroke="#2aada6" stroke-width="5" stroke-linecap="round"/>
+          </svg>
+        </span>
+      </h1>
 
-        <p class="hero-body">
-          One platform for your timeline, tasks, encrypted vault,
-          and subscriptions.
-        </p>
+      <p class="hero-body">
+        One platform for your timeline, tasks, encrypted vault,
+        and subscriptions.
+      </p>
 
-        <div class="hero-actions">
-          <a routerLink="/register" class="btn-primary">
-            Open the app <i class="pi pi-arrow-right"></i>
-          </a>
-          <a routerLink="/login" class="btn-secondary">Sign in</a>
-        </div>
-      </div>
-
-      <div class="hero-orbit-wrap">
-        <div class="orbit-ring"></div>
-
-        <div class="orbit-items">
-          @for (o of orbitItems; track o.deg) {
-            <div class="orbit-item"
-                 [style.--deg]="o.deg + 'deg'">
-              <div class="orbit-item-inner">
-                <img [src]="o.image" class="orbit-icon-img" alt="Module Icon" />
-              </div>
-            </div>
-          }
-        </div>
-
-        <div class="orbit-mascot">
-          <img src="MascotNoBgWide.png" alt="Jinseiroku mascot" class="mascot-img" />
-        </div>
+      <div class="hero-actions">
+        <a routerLink="/register" class="btn-primary">
+          Open the app <i class="pi pi-arrow-right"></i>
+        </a>
+        <a routerLink="/login" class="btn-secondary">Sign in</a>
       </div>
     </div>
   </section>
+
 
   <section class="steps-sec" id="modules">
     <div class="steps-inner">
@@ -194,8 +174,17 @@
           <a routerLink="/register" class="btn-pc-secondary">Upgrade to Plus</a>
         </div>
       </div>
+
+      <div class="pricing-demo-note fade-in">
+        <i class="pi pi-info-circle"></i>
+        <span>
+          These prices are for <strong>demo purposes only</strong>. I built this pricing &amp; checkout flow to explore and learn
+          <strong>Stripe integration</strong> no real charges will be made.
+        </span>
+      </div>
     </div>
   </section>
+
 
   <footer class="unified-footer fade-in">
     <div class="uf-top">
@@ -211,16 +200,12 @@
         </div>
       </div>
 
-      <div class="uf-right">
-        <div class="mascot-card">
-          <img src="MascotNoBgWide.png" alt="Jinseiroku Mascot" class="mascot-img">
-          <div class="mascot-badge">Get Organized Instantly!</div>
-        </div>
-      </div>
+
 
     </div>
 
     <div class="uf-bottom">
+
       <div class="uf-brand">
         <img src="LogoHorizontal.png" alt="Jinseiroku" class="footer-logo" />
       </div>

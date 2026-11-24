@@ -344,7 +344,23 @@ body {
 }
 .support-note{
   border-top: none;
-
 }
 
+.demo-note {
+  margin-top: 0.75rem;
+  border-top: none;
+  background: rgba($accent, 0.06);
+  border: 1px solid rgba($accent, 0.18);
+  border-radius: 0.6rem;
+  padding: 0.75rem 1rem;
+  color: $muted;
+
+  strong {
+    color: $dark;
+  }
+
+  i {
+    color: $accent;
+  }
+}
 
