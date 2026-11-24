@@ -40,7 +40,7 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
       num: '01',
       icon: '/timeline.png',
       title: 'Timeline',
-      body: 'See your entire life in a single chronological view. Every milestone, event, and plan — past, present, and future — always in context.',
+      body: 'See your entire life in a single chronological view. Every milestone, event, and plan from past to present to future, always in context.',
       preview: { label: 'Events this month', sub: '3 upcoming this week', value: '14' }
     },
     {
