@@ -901,6 +901,30 @@ h1,h2,h3 { letter-spacing:-0.025em; }
   }
 }
 
+.pricing-demo-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-top: 2rem;
+  padding: 0.9rem 1.25rem;
+  background: rgba($accent, 0.06);
+  border: 1px solid rgba($accent, 0.15);
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  color: $gray-6;
+  line-height: 1.5;
+
+  i {
+    color: $accent;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+  }
+
+  strong {
+    color: $primary;
+  }
+}
+
 
 /* ══════════════════════════════════════════════════════════════
    UNIFIED CTA & FOOTER

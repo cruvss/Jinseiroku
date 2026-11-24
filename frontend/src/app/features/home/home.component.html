@@ -46,24 +46,7 @@
         </div>
       </div>
 
-      <div class="hero-orbit-wrap">
-        <div class="orbit-ring"></div>
 
-        <div class="orbit-items">
-          @for (o of orbitItems; track o.deg) {
-            <div class="orbit-item"
-                 [style.--deg]="o.deg + 'deg'">
-              <div class="orbit-item-inner">
-                <img [src]="o.image" class="orbit-icon-img" alt="Module Icon" />
-              </div>
-            </div>
-          }
-        </div>
-
-        <div class="orbit-mascot">
-          <img src="MascotNoBgWide.png" alt="Jinseiroku mascot" class="mascot-img" />
-        </div>
-      </div>
     </div>
   </section>
 
@@ -194,8 +177,17 @@
           <a routerLink="/register" class="btn-pc-secondary">Upgrade to Plus</a>
         </div>
       </div>
+
+      <div class="pricing-demo-note fade-in">
+        <i class="pi pi-info-circle"></i>
+        <span>
+          These prices are for <strong>demo purposes only</strong>. I built this pricing &amp; checkout flow to explore and learn
+          <strong>Stripe integration</strong> — no real charges will be made.
+        </span>
+      </div>
     </div>
   </section>
+
 
   <footer class="unified-footer fade-in">
     <div class="uf-top">
@@ -211,16 +203,12 @@
         </div>
       </div>
 
-      <div class="uf-right">
-        <div class="mascot-card">
-          <img src="MascotNoBgWide.png" alt="Jinseiroku Mascot" class="mascot-img">
-          <div class="mascot-badge">Get Organized Instantly!</div>
-        </div>
-      </div>
+
 
     </div>
 
     <div class="uf-bottom">
+
       <div class="uf-brand">
         <img src="LogoHorizontal.png" alt="Jinseiroku" class="footer-logo" />
       </div>
